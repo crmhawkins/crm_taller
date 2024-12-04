@@ -39,32 +39,42 @@ class EstadoSiniestroController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
+    {
+        //dd($id); // Verifica si el ID recibido es el correcto
+        $estadoSiniestro = EstadoSiniestro::findOrFail($id);
+        //dd($estadoSiniestro);
+        return view('estado-siniestro.edit', compact('estadoSiniestro'));
+    }
+    
+    public function update(Request $request, $id)
 {
-    $estadoSiniestro = EstadoSiniestro::findOrFail($id); // Cambiado a findOrFail para manejar errores
-    return view('estado-siniestro.edit', compact('estadoSiniestro'));
-}
+    // Aquí utilizamos findOrFail para asegurarnos de que el modelo se encuentra
+    $estadoSiniestro = EstadoSiniestro::findOrFail($id);
 
-public function update(Request $request, EstadoSiniestro $estadoSiniestro)
-{
+    // Validación de los datos
     $request->validate([
         'estado' => 'required|string|max:255',
     ]);
 
-    dd($estadoSiniestro);
-
+    // Actualizamos el estado del siniestro
     $estadoSiniestro->update([
         'estado' => $request->estado,
-    ]); // Asegúrate de que solo se actualicen los campos necesarios
-    dd($estadoSiniestro);
+    ]);
+
     return redirect()->route('estado-siniestro.index')
                      ->with('success', 'Estado de Siniestro actualizado exitosamente.');
 }
 
-    public function destroy(EstadoSiniestro $estadoSiniestro)
+    public function destroy($id)
     {
+        // Recuperar el modelo de EstadoSiniestro por su ID
+        $estadoSiniestro = EstadoSiniestro::findOrFail($id);
+
+        // Eliminar el modelo de forma blanda (SoftDelete)
         $estadoSiniestro->delete();
 
+        // Redirigir con mensaje de éxito
         return redirect()->route('estado-siniestro.index')
-                         ->with('success', 'Estado de Siniestro eliminado exitosamente.');
+                        ->with('success', 'Estado de Siniestro eliminado exitosamente.');
     }
 }
