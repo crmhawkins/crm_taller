@@ -1,6 +1,33 @@
 <div>
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Buscar..." wire:model.debounce.300ms="search">
+    <div class="mb-3 row">
+        <div class="col-md-3">
+            <select wire:model="campo" class="form-select">
+                <option value="identificador">Identificador</option>
+                <option value="seguro">Seguro</option>
+                <option value="cliente">Cliente</option>
+                <option value="matricula">Matrícula</option>
+                <option value="prioridad">Prioridad</option>
+            </select>
+        </div>
+        <div class="col-md-9">
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Buscar..." 
+                   wire:model.debounce.300ms="search">
+        </div>
+        <!-- Nuevos filtros de fecha -->
+        <div class="col-md-3 mt-3">
+            <input type="date" 
+                   class="form-control" 
+                   placeholder="Fecha inicio" 
+                   wire:model="fechaInicio">
+        </div>
+        <div class="col-md-3 mt-3">
+            <input type="date" 
+                   class="form-control" 
+                   placeholder="Fecha fin" 
+                   wire:model="fechaFin">
+        </div>
     </div>
 
     <table class="table">
@@ -9,8 +36,10 @@
                 <th>ID</th>
                 <th>Identificador</th>
                 <th>Fecha</th>
-                <th>Póliza</th>
+                <th>Seguro</th>
                 <th>Cliente</th>
+                <th>Coche</th>
+                <th>Prioridad</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -20,8 +49,21 @@
                     <td>{{ $siniestro->id }}</td>
                     <td>{{ $siniestro->identificador }}</td>
                     <td>{{ $siniestro->fecha }}</td>
-                    <td>{{ $siniestro->poliza }}</td>
-                    <td>{{ $siniestro->cliente->nombre }}</td>
+                    <td><a href="{{ route('seguro.edit', $siniestro->seguro->id) }}" class="btn btn-link">
+                        {{ $siniestro->seguro->aseguradora }}
+                    </a></td>
+                    <td>
+                        <a href="{{ route('clientes.edit', $siniestro->cliente->id) }}" class="btn btn-link">
+                            {{ $siniestro->cliente->name }} {{ $siniestro->cliente->surname }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link">
+                            {{ $siniestro->coche->matricula }}
+                        </a>
+                    </td>
+                    <td>{{$siniestro->prioridad}}</td>
+
                     <td>
                         <a href="{{ route('siniestro.edit', $siniestro->id) }}" class="btn btn-sm btn-warning">Editar</a>
                         <form action="{{ route('siniestro.destroy', $siniestro->id) }}" method="POST" style="display:inline;">

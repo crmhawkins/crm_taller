@@ -62,6 +62,7 @@ use App\Http\Controllers\TipoSiniestroController;
 use App\Http\Controllers\EstadoSiniestroController;
 use App\Http\Controllers\SeguroController;
 use App\Http\Controllers\SiniestroController;
+use App\Http\Controllers\CochesSustitucionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -680,6 +681,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('siniestros/{siniestro}/edit', [SiniestroController::class, 'edit'])->name('siniestro.edit');
     Route::put('siniestros/{siniestro}', [SiniestroController::class, 'update'])->name('siniestro.update');
     Route::delete('siniestros/{siniestro}', [SiniestroController::class, 'destroy'])->name('siniestro.destroy');
+
+    // Coches de Sustitución
+    Route::get('coches-sustitucion', [CochesSustitucionController::class, 'index'])->name('coches-sustitucion.index');
+    Route::get('coches-sustitucion/create', [CochesSustitucionController::class, 'create'])->name('coches-sustitucion.create');
+    Route::post('coches-sustitucion', [CochesSustitucionController::class, 'store'])->name('coches-sustitucion.store');
+    Route::get('coches-sustitucion/{cochesSustitucion}/edit', [CochesSustitucionController::class, 'edit'])->name('coches-sustitucion.edit');
+    Route::put('coches-sustitucion/{cochesSustitucion}', [CochesSustitucionController::class, 'update'])->name('coches-sustitucion.update');
+    Route::delete('coches-sustitucion/{cochesSustitucion}', [CochesSustitucionController::class, 'destroy'])->name('coches-sustitucion.destroy');
 
 });
 // Portal Clientes

@@ -12,6 +12,9 @@ class SiniestroTable extends Component
 
     public $search = '';
     protected $paginationTheme = 'bootstrap';
+    public $campo = 'identificador';
+    public $fechaInicio;
+    public $fechaFin;
 
     public function updatingSearch()
     {
@@ -20,10 +23,44 @@ class SiniestroTable extends Component
 
     public function render()
     {
-        $siniestros = Siniestro::where('identificador', 'like', '%' . $this->search . '%')
-            ->orWhere('poliza', 'like', '%' . $this->search . '%')
-            ->paginate(10);
+        $siniestros = Siniestro::query();
 
-        return view('livewire.siniestro-table', compact('siniestros'));
+        if ($this->fechaInicio) {
+            $siniestros->whereDate('fecha', '>=', $this->fechaInicio);
+        }
+        if ($this->fechaFin) {
+            $siniestros->whereDate('fecha', '<=', $this->fechaFin);
+        }
+
+
+        if ($this->search !== '') {
+            switch ($this->campo) {
+                case 'identificador':
+                    $siniestros->where('identificador', 'like', '%' . $this->search . '%');
+                    break;
+                case 'seguro':
+                    $siniestros->whereHas('seguro', function($query) {
+                        $query->where('aseguradora', 'like', '%' . $this->search . '%');
+                    });
+                    break;
+                case 'cliente':
+                    $siniestros->whereHas('cliente', function($query) {
+                        $query->where('name', 'like', '%' . $this->search . '%');
+                    });
+                    break;
+                case 'matricula':
+                    $siniestros->whereHas('coche', function($query) {
+                        $query->where('matricula', 'like', '%' . $this->search . '%');
+                    });
+                    break;
+                case 'prioridad':
+                    $siniestros->where('prioridad', 'like', '%' . $this->search . '%');
+                    break;
+            }
+        }
+
+        return view('livewire.siniestro-table', [
+            'siniestros' => $siniestros->paginate(10)
+        ]);
     }
 } 

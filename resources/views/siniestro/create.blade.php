@@ -19,27 +19,27 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="identificador">Identificador</label>
-                                    <input type="text" class="form-control" id="identificador" name="identificador" required>
+                                    <input type="text" class="form-control" id="identificador" name="identificador">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="coche_id">Coche</label>
-                                    <select class="form-control" id="coche_id" name="coche_id" required>
+                                    <select class="form-control" id="coche_id" name="coche_id">
                                         @foreach($coches as $coche)
-                                            <option value="{{ $coche->id }}">{{ $coche->nombre }}</option>
+                                            <option value="{{ $coche->id }}">{{ $coche->matricula }} - {{$coche->marca}}  {{ $coche->modelo }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="cliente_id">Cliente</label>
-                                    <select class="form-control" id="cliente_id" name="cliente_id" required>
+                                    <select class="form-control" id="cliente_id" name="cliente_id">
                                         @foreach($clientes as $cliente)
-                                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                                            <option value="{{ $cliente->id }}">{{ $cliente->name }} {{ $cliente->surname }} - {{ $cliente->cif }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="seguro_id">Seguro</label>
-                                    <select class="form-control" id="seguro_id" name="seguro_id" required>
+                                    <select class="form-control" id="seguro_id" name="seguro_id">
                                         @foreach($seguros as $seguro)
                                             <option value="{{ $seguro->id }}">{{ $seguro->identificador }}</option>
                                         @endforeach
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="fecha">Fecha</label>
-                                    <input type="date" class="form-control" id="fecha" name="fecha" required>
+                                    <input type="date" class="form-control" id="fecha" name="fecha">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="inicio_reparacion">Inicio de Reparación</label>
@@ -63,17 +63,20 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="tipo_siniestro_id">Tipo de Siniestro</label>
-                                    <select class="form-control" id="tipo_siniestro_id" name="tipo_siniestro_id" required>
+                                    <select class="form-control" id="tipo_siniestro_id" name="tipo_siniestro_id">
                                         @foreach($tiposSiniestro as $tipo)
                                             <option value="{{ $tipo->id }}">{{ $tipo->tipo }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group mb-3">
+                                </div>
+                                
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="poliza">Póliza</label>
-                                    <input type="text" class="form-control" id="poliza" name="poliza" required>
+                                    <input type="text" class="form-control" id="poliza" name="poliza">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="coste_reparacion">Coste de Reparación</label>
@@ -101,10 +104,24 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="estado_siniestro_id">Estado de Siniestro</label>
-                                    <select class="form-control" id="estado_siniestro_id" name="estado_siniestro_id" required>
+                                    <select class="form-control" id="estado_siniestro_id" name="estado_siniestro_id">
                                         @foreach($estadosSiniestro as $estado)
                                             <option value="{{ $estado->id }}">{{ $estado->estado }}</option>
-                                        @endforeach
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="peritaje">Peritaje</label>
+                                        <select class="form-control" id="peritaje" name="peritaje">
+                                            <option value="1">Si</option>
+                                            <option value="0" selected>No</option>
+                                        </select>
+                                    </div>
+                                <div class="form-group mb-3">
+                                    <label for="peritaje_externo">Peritaje Externo</label>
+                                    <select class="form-control" id="peritaje_externo" name="peritaje_externo">
+                                        <option value="1">Si</option>
+                                        <option value="0" selected>No</option>
                                     </select>
                                 </div>
                             </div>
@@ -116,4 +133,4 @@
         </section>
 
     </div>
-@endsection
+@endsection 

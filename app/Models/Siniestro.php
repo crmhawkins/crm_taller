@@ -31,6 +31,8 @@ class Siniestro extends Model
         'tipo_siniestro_id',
         'estado_siniestro_id',
         'seguro_id',
+        'peritaje',
+        'peritaje_externo',
 
     ];
 
@@ -56,7 +58,7 @@ class Siniestro extends Model
 
     public function coche()
     {
-        return $this->belongsTo(Coche::class, 'coche_id');
+        return $this->belongsTo(Coches::class, 'coche_id');
     }   
 
 

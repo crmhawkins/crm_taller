@@ -10,7 +10,6 @@ use App\Models\Coches;
 use App\Models\Clients\Client;
 use Illuminate\Http\Request;
 
-
 class SiniestroController extends Controller
 {
     public function index()
@@ -32,11 +31,11 @@ class SiniestroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'identificador' => 'required|string|max:255',
-            'fecha' => 'required|date',
-            'poliza' => 'required|string|max:255',
-            'coche_id' => 'required|integer',
-            'cliente_id' => 'required|integer',
+            'identificador' => 'nullable|string|max:255',
+            'fecha' => 'nullable|date',
+            'poliza' => 'nullable|string|max:255',
+            'coche_id' => 'nullable|integer',
+            'cliente_id' => 'nullable|integer',
             'descripcion' => 'nullable|string',
             'daños' => 'nullable|string',
             'coste_reparacion' => 'nullable|numeric',
@@ -46,9 +45,11 @@ class SiniestroController extends Controller
             'monto_cliente' => 'nullable|numeric',
             'comentarios' => 'nullable|string',
             'prioridad' => 'nullable|string|max:255',
-            'tipo_siniestro_id' => 'required|integer',
-            'estado_siniestro_id' => 'required|integer',
-            'seguro_id' => 'required|integer',
+            'tipo_siniestro_id' => 'nullable|integer',
+            'estado_siniestro_id' => 'nullable|integer',
+            'seguro_id' => 'nullable|integer',
+            'peritaje' => 'nullable|boolean',
+            'peritaje_externo' => 'nullable|boolean',
         ]);
 
         Siniestro::create($request->all());
@@ -79,11 +80,11 @@ class SiniestroController extends Controller
         $siniestro = Siniestro::findOrFail($id);
 
         $request->validate([
-            'identificador' => 'required|string|max:255',
-            'fecha' => 'required|date',
-            'poliza' => 'required|string|max:255',
-            'coche_id' => 'required|integer',
-            'cliente_id' => 'required|integer',
+            'identificador' => 'nullable|string|max:255',
+            'fecha' => 'nullable|date',
+            'poliza' => 'nullable|string|max:255',
+            'coche_id' => 'nullable|integer',
+            'cliente_id' => 'nullable|integer',
             'descripcion' => 'nullable|string',
             'daños' => 'nullable|string',
             'coste_reparacion' => 'nullable|numeric',
@@ -93,9 +94,11 @@ class SiniestroController extends Controller
             'monto_cliente' => 'nullable|numeric',
             'comentarios' => 'nullable|string',
             'prioridad' => 'nullable|string|max:255',
-            'tipo_siniestro_id' => 'required|integer',
-            'estado_siniestro_id' => 'required|integer',
-            'seguro_id' => 'required|integer',
+            'tipo_siniestro_id' => 'nullable|integer',
+            'estado_siniestro_id' => 'nullable|integer',
+            'seguro_id' => 'nullable|integer',
+            'peritaje' => 'nullable|boolean',
+            'peritaje_externo' => 'nullable|boolean',
         ]);
 
         $siniestro->update($request->all());
