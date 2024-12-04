@@ -10,12 +10,12 @@ class TipoSiniestroController extends Controller
     public function index()
     {
         $tipos = TipoSiniestro::all();
-        return view('tipo_siniestro.index', compact('tipos'));
+        return view('tipo-siniestro.index', compact('tipos'));
     }
 
     public function create()
     {
-        return view('tipo_siniestro.create');
+        return view('tipo-siniestro.create');
     }
 
     public function store(Request $request)
@@ -30,5 +30,39 @@ class TipoSiniestroController extends Controller
                          ->with('success', 'Tipo de Siniestro creado exitosamente.');
     }
 
-    // Implementar los otros métodos: show, edit, update, destroy
+    public function show(TipoSiniestro $tipoSiniestro)
+    {
+        return view('tipo-siniestro.show', compact('tipoSiniestro'));
+    }
+
+    public function edit($id)
+    {
+        $tipoSiniestro = TipoSiniestro::findOrFail($id);
+        return view('tipo-siniestro.edit', compact('tipoSiniestro'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $tipoSiniestro = TipoSiniestro::findOrFail($id);
+
+        $request->validate([
+            'tipo' => 'required|string|max:255',
+        ]);
+
+        $tipoSiniestro->update([
+            'tipo' => $request->tipo,
+        ]);
+
+        return redirect()->route('tipo-siniestro.index')
+                         ->with('success', 'Tipo de Siniestro actualizado exitosamente.');
+    }
+
+    public function destroy($id)
+    {
+        $tipoSiniestro = TipoSiniestro::findOrFail($id);
+        $tipoSiniestro->delete();
+
+        return redirect()->route('tipo-siniestro.index')
+                         ->with('success', 'Tipo de Siniestro eliminado exitosamente.');
+    }
 }

@@ -60,7 +60,8 @@ use App\Http\Controllers\PiezasController;
 use App\Http\Controllers\CategoriasPiezasController;
 use App\Http\Controllers\TipoSiniestroController;
 use App\Http\Controllers\EstadoSiniestroController;
-
+use App\Http\Controllers\SeguroController;
+use App\Http\Controllers\SiniestroController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -663,6 +664,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('estado-siniestro/{estado}/edit', [EstadoSiniestroController::class, 'edit'])->name('estado-siniestro.edit');
     Route::put('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'update'])->name('estado-siniestro.update');
     Route::delete('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'destroy'])->name('estado-siniestro.destroy');
+
+    // Seguros
+    Route::get('seguros', [SeguroController::class, 'index'])->name('seguro.index');
+    Route::get('seguros/create', [SeguroController::class, 'create'])->name('seguro.create');
+    Route::post('seguros', [SeguroController::class, 'store'])->name('seguro.store');
+    Route::get('seguros/{seguro}/edit', [SeguroController::class, 'edit'])->name('seguro.edit');
+    Route::put('seguros/{seguro}', [SeguroController::class, 'update'])->name('seguro.update');
+    Route::delete('seguros/{seguro}', [SeguroController::class, 'destroy'])->name('seguro.destroy');
+
+    // Siniestros
+    Route::get('siniestros', [SiniestroController::class, 'index'])->name('siniestro.index');
+    Route::get('siniestros/create', [SiniestroController::class, 'create'])->name('siniestro.create');
+    Route::post('siniestros', [SiniestroController::class, 'store'])->name('siniestro.store');
+    Route::get('siniestros/{siniestro}/edit', [SiniestroController::class, 'edit'])->name('siniestro.edit');
+    Route::put('siniestros/{siniestro}', [SiniestroController::class, 'update'])->name('siniestro.update');
+    Route::delete('siniestros/{siniestro}', [SiniestroController::class, 'destroy'])->name('siniestro.destroy');
 
 });
 // Portal Clientes
