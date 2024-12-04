@@ -61,5 +61,10 @@ class Siniestro extends Model
         return $this->belongsTo(Coches::class, 'coche_id');
     }   
 
+    public function galeriaSiniestros()
+    {
+        return $this->hasMany(GaleriaSiniestros::class);
+    }
+
 
 }

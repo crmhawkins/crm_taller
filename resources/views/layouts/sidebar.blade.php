@@ -843,6 +843,15 @@
                                 </span>
                             </a>
                         </li>
+
+                        <li class="submenu-item {{ request()->routeIs('reservas-coche.index') ? 'active' : '' }}">
+                            <a href="{{route('reservas-coche.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver Reservas
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sidebar-item has-sub {{ request()->routeIs('piezas.*') || request()->routeIs('categorias-piezas.*') ? 'active' : '' }}">

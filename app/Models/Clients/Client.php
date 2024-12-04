@@ -164,4 +164,14 @@ class Client extends Model
         return $months;
     }
 
+    public function coches()
+    {
+        return $this->hasMany(Coches::class);
+    }
+
+    public function reservasCoche()
+    {
+        return $this->hasMany(ReservasCoche::class);
+    }
+
 }

@@ -63,6 +63,7 @@ use App\Http\Controllers\EstadoSiniestroController;
 use App\Http\Controllers\SeguroController;
 use App\Http\Controllers\SiniestroController;
 use App\Http\Controllers\CochesSustitucionController;
+use App\Http\Controllers\ReservasCocheController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -689,6 +690,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('coches-sustitucion/{cochesSustitucion}/edit', [CochesSustitucionController::class, 'edit'])->name('coches-sustitucion.edit');
     Route::put('coches-sustitucion/{cochesSustitucion}', [CochesSustitucionController::class, 'update'])->name('coches-sustitucion.update');
     Route::delete('coches-sustitucion/{cochesSustitucion}', [CochesSustitucionController::class, 'destroy'])->name('coches-sustitucion.destroy');
+
+    // Reservas de Coches
+    Route::get('reservas-coche', [ReservasCocheController::class, 'index'])->name('reservas-coche.index');
+    Route::get('reservas-coche/create', [ReservasCocheController::class, 'create'])->name('reservas-coche.create');
+    Route::post('reservas-coche', [ReservasCocheController::class, 'store'])->name('reservas-coche.store');
+    Route::get('reservas-coche/{reservaCoche}/edit', [ReservasCocheController::class, 'edit'])->name('reservas-coche.edit');
+    Route::put('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'update'])->name('reservas-coche.update');
+    Route::delete('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'destroy'])->name('reservas-coche.destroy');
 
 });
 // Portal Clientes

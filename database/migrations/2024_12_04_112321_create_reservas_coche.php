@@ -15,11 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('coche_sustitucion_id')->nullable();
             $table->foreign('coche_sustitucion_id')->references('id')->on('coches_sustitucion');
-            $table->unsignedBigInteger('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('clientes');
+            $table->unsignedInteger('cliente_id');
+            $table->foreign('cliente_id')->references('id')->on('clients');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->string('estado')->default('pendiente');
+            $table->string('comentario')->nullable();
+
+            //soft delete
+            $table->softDeletes();
             $table->timestamps();
         });
     }
