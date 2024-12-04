@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Clients\Client;
+
+class Siniestro extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $table = 'siniestro';
+
+    protected $fillable = [
+        'identificador',
+        'fecha',
+        'poliza',
+        'coche_id',
+        'cliente_id',
+        'descripcion',
+        'daños',
+        'coste_reparacion',
+        'inicio_reparacion',
+        'fin_reparacion',
+        'monto_aseguradora',
+        'monto_cliente',
+        'comentarios',
+        'prioridad',
+        'tipo_siniestro_id',
+        'estado_siniestro_id',
+        'seguro_id',
+
+    ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(Client::class, 'cliente_id');
+    }
+
+    public function seguro()
+    {
+        return $this->belongsTo(Seguro::class, 'seguro_id');
+    }
+
+    public function tipoSiniestro()
+    {
+        return $this->belongsTo(TipoSiniestro::class, 'tipo_siniestro_id');
+    }
+
+    public function estadoSiniestro()
+    {
+        return $this->belongsTo(EstadoSiniestro::class, 'estado_siniestro_id');
+    }
+
+    public function coche()
+    {
+        return $this->belongsTo(Coche::class, 'coche_id');
+    }   
+
+
+}

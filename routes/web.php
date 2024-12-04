@@ -55,6 +55,11 @@ use App\Http\Controllers\Tesoreria\IvaController;
 use App\Http\Controllers\Users\DepartamentController;
 use App\Http\Controllers\Users\PositionController;
 use App\Http\Controllers\Whatsapp\WhatsappController;
+use App\Http\Controllers\CocheController;
+use App\Http\Controllers\PiezasController;
+use App\Http\Controllers\CategoriasPiezasController;
+use App\Http\Controllers\TipoSiniestroController;
+use App\Http\Controllers\EstadoSiniestroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -600,8 +605,64 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/acciones/enviar-segmento-3', [AccionesController::class, 'enviarMensajesSegmentos'])->name('acciones.enviarMensajesSegmentos');
 
     Route::post('/actualizar', [AccionesController::class, 'actualizar'])->name('acciones.actualizar');
+    // Listar todos los coches
+    Route::get('/coches', [CocheController::class, 'index'])->name('coches.index');
+
+    // Mostrar el formulario para crear un nuevo coche
+    Route::get('/coches/create', [CocheController::class, 'create'])->name('coches.create');
+
+    // Almacenar un nuevo coche
+    Route::post('/coches', [CocheController::class, 'store'])->name('coches.store');
+
+    // Mostrar un coche específico
+    Route::get('/coches/{coche}', [CocheController::class, 'show'])->name('coches.show');
+
+    // Mostrar el formulario para editar un coche específico
+    Route::get('/coches/{coche}/edit', [CocheController::class, 'edit'])->name('coches.edit');
+
+    // Actualizar un coche específico
+    Route::put('/coches/{coche}', [CocheController::class, 'update'])->name('coches.update');
+
+    // Eliminar un coche específico
+    Route::delete('/coches/{coche}', [CocheController::class, 'destroy'])->name('coches.destroy');
+
+    // Rutas para Piezas
+    Route::get('piezas', [PiezasController::class, 'index'])->name('piezas.index');
+    Route::get('piezas/create', [PiezasController::class, 'create'])->name('piezas.create');
+    Route::post('piezas', [PiezasController::class, 'store'])->name('piezas.store');
+    Route::get('piezas/{pieza}', [PiezasController::class, 'show'])->name('piezas.show');
+    Route::get('piezas/{pieza}/edit', [PiezasController::class, 'edit'])->name('piezas.edit');
+    Route::put('piezas/{pieza}', [PiezasController::class, 'update'])->name('piezas.update');
+    Route::delete('piezas/{pieza}', [PiezasController::class, 'destroy'])->name('piezas.destroy');
+
+    // Rutas para CategoriasPiezas
+    // Rutas para CategoriasPiezas
+    Route::get('categorias-piezas', [CategoriasPiezasController::class, 'index'])->name('categorias-piezas.index');
+    Route::get('categorias-piezas/create', [CategoriasPiezasController::class, 'create'])->name('categorias-piezas.create');
+    Route::post('categorias-piezas', [CategoriasPiezasController::class, 'store'])->name('categorias-piezas.store');
+    Route::get('categorias-piezas/{categoria}', [CategoriasPiezasController::class, 'show'])->name('categorias-piezas.show');
+    Route::get('categorias-piezas/{categoria}/edit', [CategoriasPiezasController::class, 'edit'])->name('categorias-piezas.edit');
+    Route::put('categorias-piezas/{categoria}', [CategoriasPiezasController::class, 'update'])->name('categorias-piezas.update');
+    Route::delete('categorias-piezas/{categoria}', [CategoriasPiezasController::class, 'destroy'])->name('categorias-piezas.destroy');
 
 
+    //Tipo Siniestro
+    Route::get('tipo-siniestro', [TipoSiniestroController::class, 'index'])->name('tipo-siniestro.index');
+    Route::get('tipo-siniestro/create', [TipoSiniestroController::class, 'create'])->name('tipo-siniestro.create');
+    Route::post('tipo-siniestro', [TipoSiniestroController::class, 'store'])->name('tipo-siniestro.store');
+    Route::get('tipo-siniestro/{tipo}', [TipoSiniestroController::class, 'show'])->name('tipo-siniestro.show');
+    Route::get('tipo-siniestro/{tipo}/edit', [TipoSiniestroController::class, 'edit'])->name('tipo-siniestro.edit');
+    Route::put('tipo-siniestro/{tipo}', [TipoSiniestroController::class, 'update'])->name('tipo-siniestro.update');
+    Route::delete('tipo-siniestro/{tipo}', [TipoSiniestroController::class, 'destroy'])->name('tipo-siniestro.destroy');
+
+    //Estado Siniestro
+    Route::get('estado-siniestro', [EstadoSiniestroController::class, 'index'])->name('estado-siniestro.index');
+    Route::get('estado-siniestro/create', [EstadoSiniestroController::class, 'create'])->name('estado-siniestro.create');
+    Route::post('estado-siniestro', [EstadoSiniestroController::class, 'store'])->name('estado-siniestro.store');
+    Route::get('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'show'])->name('estado-siniestro.show');
+    Route::get('estado-siniestro/{estado}/edit', [EstadoSiniestroController::class, 'edit'])->name('estado-siniestro.edit');
+    Route::put('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'update'])->name('estado-siniestro.update');
+    Route::delete('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'destroy'])->name('estado-siniestro.destroy');
 
 });
 // Portal Clientes
