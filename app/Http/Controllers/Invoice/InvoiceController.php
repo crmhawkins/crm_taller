@@ -32,12 +32,48 @@ class InvoiceController extends Controller
     }
     public function edit(string $id)
     {
-        $factura = Invoice::where('id', $id)->get()->first();
+        $factura = Invoice::where('id', $id)->first();
         $invoiceStatuses = InvoiceStatus::all();
         $invoice_concepts = InvoiceConcepts::where('invoice_id', $factura->id)->get();
-
-        return view('invoices.edit', compact( 'factura', 'invoiceStatuses', 'invoice_concepts'));
+        $firma = $factura->firma; // Obtener la firma existente
+    
+        return view('invoices.edit', compact('factura', 'invoiceStatuses', 'invoice_concepts', 'firma'));
     }
+
+    public function deleteSignature(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:invoices,id'
+    ]);
+
+    $invoice = Invoice::find($request->id);
+    $invoice->firma = null; // Eliminar la firma
+    $invoice->save();
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Firma eliminada correctamente.'
+    ]);
+}
+
+    public function saveSignature(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:invoices,id',
+        'signature' => 'required|string'
+    ]);
+
+    $invoice = Invoice::find($request->id);
+
+    // Guardar la firma en el modelo Invoice
+    $invoice->firma = $request->signature;
+    $invoice->save();
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Firma guardada correctamente.'
+    ]);
+}
 
     public function cobrarFactura(Request $request)
     {

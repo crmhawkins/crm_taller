@@ -69,6 +69,24 @@ class BudgetController extends Controller
 
         return view('budgets.status', compact('clientes'));
     }
+    public function saveSignature(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:budgets,id',
+            'signature' => 'required|string'
+        ]);
+
+        $budget = Budget::find($request->id);
+        $budget->firma = $request->signature; // Guardar la firma
+        $budget->save();
+
+        return response()->json([
+            'status' => true,
+            'mensaje' => 'Firma guardada correctamente.'
+        ]);
+    }
+
+
 
     public function saveOrder(Request $request)
     {
@@ -207,6 +225,8 @@ class BudgetController extends Controller
         }
 
         $presupuesto = Budget::find($id);
+        $firma = $presupuesto->firma; // Obtener la firma existente
+
         $clientes = Client::where('is_client',true)->orderBy('id', 'asc')->get();
 
         $gestores = User::all();
@@ -229,8 +249,24 @@ class BudgetController extends Controller
 
         session('projectId') != null ? $projectId = session('projectId') : $projectId = null;
 
-        return view('budgets.edit', compact('projectId','presupuesto', 'campanias', 'gestores', 'formasPago','estadoPresupuesto', 'budgetConcepts','thisBudgetStatus','clientes','porcentaje'));
+        return view('budgets.edit', compact('projectId','presupuesto', 'campanias', 'gestores', 'formasPago','estadoPresupuesto', 'budgetConcepts','thisBudgetStatus','clientes','porcentaje', 'firma'));
     }
+
+    public function deleteSignature(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:budgets,id'
+    ]);
+
+    $budget = Budget::find($request->id);
+    $budget->firma = null; // Eliminar la firma
+    $budget->save();
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Firma eliminada correctamente.'
+    ]);
+}
 
     /**
      * Update the specified resource in storage.

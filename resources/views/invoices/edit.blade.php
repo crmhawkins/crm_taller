@@ -4,6 +4,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/vendors/choices.js/choices.min.css')}}" />
+{{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
 
 @endsection
 
@@ -270,6 +271,7 @@
                             <a href="" id="SendPDF" data-id="{{$factura->id}}" class="btn btn-dark btn-block mb-2">Enviar PDF</a>
                             <a href="" id="electronica" data-id="{{$factura->id}}" class="btn btn-info btn-block mb-2">Electronica</a>
                             <a href="" id="rectificar" class="btn btn-danger btn-block mb-2">Abonado (N)</a>
+                            <a href="#" id="signInvoice" class="btn btn-warning btn-block mb-2" data-toggle="modal" data-target="#signatureModal">Firmar Factura</a>
                         </div>
                     </div>
                 </div>
@@ -279,10 +281,39 @@
 
     @include('partials.toast')
 
+    <!-- Modal para la firma -->
+    <div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signatureModalLabel">Firma de la Factura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <canvas id="signatureCanvas" width="400" height="200" style="border:1px solid #000;"></canvas>
+                    <button id="clearSignature" class="btn btn-secondary mt-2">Limpiar</button>
+                    @if($firma)
+                    <img id="existingSignature" src="{{ $firma }}" alt="Firma existente" style="max-width: 100%; margin-top: 10px;">
+                    <button id="deleteSignature" class="btn btn-danger mt-2">Eliminar Firma</button>
+                @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="saveSignature" class="btn btn-primary">Guardar Firma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
 @section('scripts')
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 <script src="{{asset('assets/vendors/choices.js/choices.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -621,6 +652,122 @@
             });
         }
 
+        // Inicializar el canvas para la firma
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+         // Cargar la firma existente si hay una
+         @if($firma)
+            const img = new Image();
+            img.src = "{{ $firma }}";
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+            };
+        @endif
+
+        canvas.addEventListener('mousedown', function(e) {
+            drawing = true;
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener('mousemove', function(e) {
+            if (drawing) {
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener('mouseup', function() {
+            drawing = false;
+        });
+
+        $('#clearSignature').click(function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        $('#saveSignature').click(function() {
+            const signatureData = canvas.toDataURL('image/png');
+            const idFactura = @json($factura->id);
+
+            $.ajax({
+                url: '{{ route("factura.saveSignature") }}',
+                type: 'POST',
+                data: {
+                    id: idFactura,
+                    signature: signatureData
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Firma guardada correctamente.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    $('#signatureModal').modal('hide');
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al guardar la firma. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#deleteSignature').click(function() {
+            const idFactura = @json($factura->id);
+
+            $.ajax({
+                url: '{{ route("factura.deleteSignature") }}',
+                type: 'POST',
+                data: {
+                    id: idFactura
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Firma eliminada correctamente.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    $('#existingSignature').remove();
+                    $('#deleteSignature').remove();
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al eliminar la firma. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
 
     });
 </script>

@@ -752,6 +752,11 @@
                                                     id="list-agenda-list" data-bs-toggle="list"
                                                     href="#list-agenda" role="tab">Agenda</a>
                                             </div>
+                                            <div class="my-2 ml-4 text-center col-auto" >
+                                                <a class="btn btn-outline-secondary"
+                                                    
+                                                    href="{{route('tarea.all')}}" role="tab">Tareas</a>
+                                            </div>
                                         </div>
 
                                     </div>

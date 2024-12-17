@@ -29,6 +29,7 @@ class BudgetConcept extends Model
         'total',
         'total_no_discount',
         'is_facturado',
+        'pieza_id',
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];

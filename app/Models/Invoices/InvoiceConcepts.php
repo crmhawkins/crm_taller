@@ -36,6 +36,7 @@ class InvoiceConcepts extends Model
         'discount',
         'total',
         'total_no_discount',
+        'pieza_id',
     ];
 
     /**

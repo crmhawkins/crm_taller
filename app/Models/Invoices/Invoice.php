@@ -55,6 +55,7 @@ class Invoice extends Model
         'partial_number',// si es la primera, segunda...
         'rectification',
         'is_ceuta',
+        'firma',
         'created_at',
     ];
 

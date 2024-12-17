@@ -4,6 +4,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/vendors/choices.js/choices.min.css')}}" />
+
 @endsection
 
 @section('content')
@@ -348,8 +349,34 @@
                             </form>
                         </div>
                     </div>
-
+                    <div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="signatureModalLabel">Firma del Presupuesto</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <canvas id="signatureCanvas" width="400" height="200" style="border:1px solid #000;"></canvas>
+                                    <button id="clearSignature" class="btn btn-secondary mt-2">Limpiar</button>
+                                    @if($firma)
+                                        <div class="mt-3">
+                                            <img id="existingSignature" src="{{ $firma }}" alt="Firma existente" class="img-fluid">
+                                            <button id="deleteSignature" class="btn btn-danger mt-2">Eliminar Firma</button>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" id="saveSignature" class="btn btn-primary">Guardar Firma</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="col-3">
                     <div class="card">
                         <div class="card-body">
@@ -370,6 +397,7 @@
                             <a href="" id="generateInvoicePartial" class="btn btn-dark btn-block mb-3">Generar factura parcial</a>
                             <a href="" id="generateTask" class="btn btn-dark btn-block mb-3">Generar tareas</a>
                             <a href="" id="deletePresupuesto" data-id="{{$presupuesto->id}}" class="btn btn-outline-danger btn-block mb-3">Eliminar</a>
+                            <a href="#" id="signInvoice" class="btn btn-warning btn-block mb-2" data-toggle="modal" data-target="#signatureModal">Firmar Factura</a>
                         </div>
                     </div>
                 </div>
@@ -386,11 +414,133 @@
 @section('scripts')
 <script src="{{asset('assets/vendors/choices.js/choices.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<!-- Incluir jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Incluir Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
     var urlTemplate = "{{ route('campania.createFromBudget', ['cliente' => 'CLIENTE_ID']) }}";
     var urlTemplateCliente = "{{ route('cliente.createFromBudget') }}";
 
+</script>
+<script>
+    $(document).ready(function() {
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        // Cargar la firma existente si hay una
+        @if($firma)
+            const img = new Image();
+            img.src = "{{ $firma }}";
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+            };
+        @endif
+
+        canvas.addEventListener('mousedown', function(e) {
+            drawing = true;
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener('mousemove', function(e) {
+            if (drawing) {
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener('mouseup', function() {
+            drawing = false;
+        });
+
+        $('#clearSignature').click(function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        $('#saveSignature').click(function() {
+            const signatureData = canvas.toDataURL('image/png');
+            const idPresupuesto = @json($presupuesto->id);
+
+            $.ajax({
+                url: '{{ route("budget.saveSignature") }}',
+                type: 'POST',
+                data: {
+                    id: idPresupuesto,
+                    signature: signatureData
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Firma guardada correctamente.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    $('#signatureModal').modal('hide');
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al guardar la firma. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#deleteSignature').click(function() {
+            const idPresupuesto = @json($presupuesto->id);
+
+            $.ajax({
+                url: '{{ route("budget.deleteSignature") }}',
+                type: 'POST',
+                data: {
+                    id: idPresupuesto
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Firma eliminada correctamente.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    $('#existingSignature').remove();
+                    $('#deleteSignature').remove();
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al eliminar la firma. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
 </script>
 
 <script>

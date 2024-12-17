@@ -241,8 +241,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/task/show/{id}', [TasksController::class, 'show'])->name('tarea.show');
         Route::post('/task/destroy', [TasksController::class, 'destroy'])->name('tarea.delete');
         Route::get('/task/calendar/{id}', [TasksController::class, 'calendar'])->name('tarea.calendar');
-
-
+        Route::get('/task/all', [TasksController::class, 'all'])->name('tarea.all');
+        Route::post('/tasks/assign/{id}', [TasksController::class, 'assignTask'])->name('tasks.assign');
+        Route::post('/tasks/unassign/{id}', [TasksController::class, 'unassignTask'])->name('tasks.unassign');
+        Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
         // Dominios
         Route::get('/dominios', [DominiosController::class, 'index'])->name('dominios.index');
         Route::get('/dominios/create', [DominiosController::class, 'create'])->name('dominios.create');
@@ -294,6 +296,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/user/show/{id}', [UserController::class, 'show'])->name('users.show');
         Route::post('/user/destroy', [UserController::class, 'destroy'])->name('users.delete');
         Route::post('/user/avatar/{id}', [UserController::class, 'avatar'])->name('users.avatar');
+        Route::get('/task/all', [TasksController::class, 'all'])->name('tarea.all');
+        Route::post('/tasks/assign/{id}', [TasksController::class, 'assignTask'])->name('tasks.assign');
+        Route::post('/tasks/unassign/{id}', [TasksController::class, 'unassignTask'])->name('tasks.unassign');
+        Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
 
         //Bajas
         Route::get('/bajas', [BajaController::class, 'index'])->name('bajas.index');
@@ -480,6 +486,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/alert/update', [AlertController::class, 'updateStatusAlert'])->name('alert.update');
     Route::post('/alert/postpone', [AlertController::class, 'postpone'])->name('alert.postpone');
 
+    Route::get('/task/all', [TasksController::class, 'all'])->name('tarea.all');
+    Route::post('/tasks/assign/{id}', [TasksController::class, 'assignTask'])->name('tasks.assign');
+    Route::post('/tasks/unassign/{id}', [TasksController::class, 'unassignTask'])->name('tasks.unassign');
+    Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
 
     //Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -637,6 +647,11 @@ Route::group(['middleware' => 'auth'], function () {
     // Ruta para actualizar una cita existente
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    Route::post('/invoice/saveSignature', [App\Http\Controllers\Invoice\InvoiceController::class, 'saveSignature'])->name('factura.saveSignature');
+    Route::post('/invoice/deleteSignature', [App\Http\Controllers\Invoice\InvoiceController::class, 'deleteSignature'])->name('factura.deleteSignature');
+
+    Route::post('/budget/saveSignature', [App\Http\Controllers\Budgets\BudgetController::class, 'saveSignature'])->name('budget.saveSignature');
+    Route::post('/budget/deleteSignature', [App\Http\Controllers\Budgets\BudgetController::class, 'deleteSignature'])->name('budget.deleteSignature');
 
     // Rutas para Piezas
     Route::get('piezas', [PiezasController::class, 'index'])->name('piezas.index');

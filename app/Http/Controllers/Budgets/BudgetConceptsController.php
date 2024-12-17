@@ -15,6 +15,7 @@ use App\Models\Company\CompanyDetails;
 use App\Models\PurcharseOrde\PurcharseOrder;
 use App\Models\Services\Service;
 use App\Models\Services\ServiceCategories;
+use App\Models\Piezas;
 use App\Models\Suppliers\Supplier;
 use Illuminate\Support\Facades\File;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -34,7 +35,9 @@ class BudgetConceptsController extends Controller
         $presupuesto = $budget;
         $categorias = ServiceCategories::where('inactive',0)->where('type',2)->get();
 
-        return view('budgets-concepts.creteTypeOwn', compact('categorias', 'presupuesto'));
+        $piezas = Piezas::all();
+
+        return view('budgets-concepts.creteTypeOwn', compact('categorias', 'presupuesto', 'piezas'));
     }
 
     public function storeTypeOwn(Request $request, $budget)
@@ -48,6 +51,7 @@ class BudgetConceptsController extends Controller
             'units' => 'required',
             'sale_price' => 'required',
             'total' => 'required',
+            'pieza_id' => 'nullable',
         ], [
             'services_category_id.required' => 'La categoria del servicio es requerido para continuar',
             'service_id.required' => 'El servicio es requerido para continuar',
@@ -56,6 +60,7 @@ class BudgetConceptsController extends Controller
             'units.required' => 'Las unidades es requerido para continuar',
             'sale_price.required' => 'El precio de la empresa a es requerido para continuar',
             'total.required' => 'El total es requerido para continuar',
+            'pieza_id.nullable' => 'La pieza es requerida para continuar',
         ]);
 
         // Construimos la DATA
@@ -153,6 +158,7 @@ class BudgetConceptsController extends Controller
             'units' => 'required',
             'sale_price' => 'required',
             'total' => 'required',
+            'pieza_id' => 'nullable',
         ], [
             'services_category_id.required' => 'La categoria del servicio es requerido para continuar',
             'service_id.required' => 'El servicio es requerido para continuar',
@@ -161,6 +167,7 @@ class BudgetConceptsController extends Controller
             'units.required' => 'Las unidades es requerido para continuar',
             'sale_price.required' => 'El precio de la empresa a es requerido para continuar',
             'total.required' => 'El total es requerido para continuar',
+            'pieza_id.nullable' => 'La pieza es requerida para continuar',
         ]);
 
         // Construimos la DATA
@@ -258,7 +265,6 @@ class BudgetConceptsController extends Controller
                 'base' => $base,
                 'iva' => $ivaTotal,
                 'total' => $total,
-
             ]);
         }
 
@@ -276,9 +282,10 @@ class BudgetConceptsController extends Controller
         $presupuesto = Budget::where('id', $budgetConcept->budget_id)->get()->first();
         $services = Service::where('inactive',0)->get();
         $serviceCategories = ServiceCategories::where('inactive',0)->where('type',2)->get();
+        $piezas = Piezas::all();
 
 
-        return view('budgets-concepts.editTypeOwn', compact('budgetConcept', 'presupuesto', 'services', 'serviceCategories'));
+        return view('budgets-concepts.editTypeOwn', compact('budgetConcept', 'presupuesto', 'services', 'serviceCategories', 'piezas'));
     }
 
     /**** Concepto Proveedor ****/

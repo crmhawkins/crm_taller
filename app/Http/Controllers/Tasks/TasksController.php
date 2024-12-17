@@ -20,6 +20,65 @@ class TasksController extends Controller
         $tareas = Task::all();
         return view('tasks.index', compact('tareas'));
     }
+
+    public function all()
+{
+    $tareas = Task::with(['usuario', 'estado'])
+    ->whereNotIn('task_status_id', [3, 4])
+    ->get();
+    if (request()->ajax()) {
+        return response()->json($tareas);
+    }
+
+    return view('tasks.all', compact('tareas'));
+}
+
+public function assignTask($id)
+{
+    $task = Task::find($id);
+    if (!$task) {
+        return response()->json(['success' => false, 'message' => 'Tarea no encontrada.']);
+    }
+
+    // Verificar si la tarea ya tiene un responsable
+    if ($task->admin_user_id) {
+        return response()->json(['success' => false, 'message' => 'La tarea ya tiene un responsable.']);
+    }
+
+    // Asignar el usuario actual como responsable de la tarea
+    $task->admin_user_id = auth()->id();
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Tarea asignada correctamente.']);
+}
+
+public function getAllTasksJson()
+   {
+    $tareas = Task::with(['usuario', 'estado'])
+    ->whereNotIn('task_status_id', [3, 4])
+    ->get();
+       return response()->json($tareas);
+   }
+
+public function unassignTask($id)
+{
+    $task = Task::find($id);
+    if (!$task) {
+        return response()->json(['success' => false, 'message' => 'Tarea no encontrada.']);
+    }
+
+    // Verificar si el usuario actual es el responsable de la tarea
+    if ($task->admin_user_id != auth()->id()) {
+        return response()->json(['success' => false, 'message' => 'No tienes permiso para desasignar esta tarea.']);
+    }
+
+    // Desasignar el usuario actual de la tarea
+    $task->admin_user_id = null;
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Tarea desasignada correctamente.']);
+}
+
     public function cola()
     {
         $usuarios = User::where('access_level_id',5)->where('inactive', 0)->get();

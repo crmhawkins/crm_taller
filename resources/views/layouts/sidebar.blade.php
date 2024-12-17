@@ -52,6 +52,22 @@
                     $comercial = (Auth::user()->access_level_id == 6);
                     @endphp
 
+
+                <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
+                    <a href="{{route('appointments.calendar')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-calendar-days fs-5"></i>
+                        <span>Citas</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
+                    <a href="{{route('tarea.all')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-list-check fs-5"></i>
+                        <span>Tareas</span>
+                    </a>
+                </li>
+
+
                 <li class="sidebar-item has-sub {{ $clientesActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-people-group fs-5"></i>

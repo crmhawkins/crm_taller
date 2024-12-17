@@ -63,6 +63,24 @@
                             </select>
                         </div>
 
+                        @if ($piezas->count() > 0)
+                            <div class="form-group mb-3">
+                                <label class="text-uppercase" style="font-weight: bold" for="pieza_id">Pieza:</label>
+                                <select class="js-example-basic-single form-control @error('pieza_id') is-invalid @enderror" name="pieza_id">
+                                    <option value="{{null}}">Seleccione una pieza</option>
+
+                                    @foreach ($piezas as $pieza)
+                                        <option value="{{$pieza->id}}" {{ $pieza->id == $budgetConcept->pieza_id ? 'selected' : '' }}>{{$pieza->nombre}} - {{$pieza->codigo}} - {{$pieza->numero_serie}} - {{$pieza->marca}} - {{$pieza->fabricante}}</option>
+                                    @endforeach
+                                </select>
+                                @error('pieza_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+                        @endif
+
                         {{-- Titulo --}}
                         <div class="form-group mb-3">
                             <label class="text-uppercase" style="font-weight: bold" for="title">Titulo:</label>
