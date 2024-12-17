@@ -105,12 +105,18 @@ class InvoiceController extends Controller
 
         // Obtener los conceptos de esta factura
         $thisInvoiceConcepts = InvoiceConcepts::where('invoice_id', $invoice->id)->get();
+
+        $companyDetails = CompanyDetails::first(); // Asegúrate de que solo haya un registro o ajusta según sea necesario
+        $logoPath = $companyDetails->logo ?? '';
+        $logoFullPath = public_path($logoPath);
+
         // Título del PDF
         $title = "Factura - " . $invoice->reference;
         // Datos básicos para pasar a la vista del PDF
         $data = [
             'title' => $title,
             'invoice_reference' => $invoice->reference,
+            'logo' => $logoPath != '' ? $logoFullPath : null
         ];
         // Formatear los conceptos para usarlos en la vista
         $invoiceConceptsFormated = [];
@@ -349,7 +355,7 @@ class InvoiceController extends Controller
         $filename = $this->savePDF($invoice);
 
         $data = [
-            'file_name' => $filename
+            'file_name' => $filename,
         ];
 
         $mailInvoice = new \stdClass();

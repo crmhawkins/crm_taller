@@ -1717,6 +1717,9 @@ class BudgetController extends Controller
     public function createPdf($budget, $sumatorio){
      // Los conceptos de este presupuesto
      $thisBudgetConcepts = BudgetConcept::where('budget_id', $budget->id)->get();
+     $companyDetails = CompanyDetails::first(); // Asegúrate de que solo haya un registro o ajusta según sea necesario
+     $logoPath = $companyDetails->logo ?? '';
+     $logoFullPath = public_path($logoPath);
      // Condiciones de categoría de los servicios
      $conceptCategoriesID = array();
      foreach($thisBudgetConcepts as $concept){
@@ -1750,6 +1753,7 @@ class BudgetController extends Controller
      $data = [
          'title' => $title,
          'budget_reference' => $budget['reference'],
+         'logo' => $logoPath != '' ? $logoFullPath : null
      ];
      // Array de conceptos para utilizar en la vista, formatea cadenas para que cuadre
      $budgetConceptsFormated = array();

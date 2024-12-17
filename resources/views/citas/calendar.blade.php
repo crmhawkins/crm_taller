@@ -5,6 +5,7 @@
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
@@ -102,6 +103,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
         // Configurar el token CSRF para todas las solicitudes AJAX
@@ -116,7 +118,41 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'es',
-            events: '{{ route('appointments.get') }}',
+            events: function(fetchInfo, successCallback, failureCallback) {
+                $.ajax({
+                    url: '{{ route('appointments.get') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        var events = data.map(function(event) {
+                            var color;
+                            switch (event.extendedProps.estado) {
+                                case 'Pendiente':
+                                    color = 'yellow';
+                                    break;
+                                case 'Completada':
+                                    color = 'green';
+                                    break;
+                                case 'Rechazada':
+                                    color = 'red';
+                                    break;
+                                default:
+                                    color = 'blue'; // Color por defecto
+                            }
+                            return {
+                                id: event.id,
+                                title: event.title,
+                                start: event.start,
+                                color: color,
+                                extendedProps: event.extendedProps
+                            };
+                        });
+                        successCallback(events);
+                    },
+                    error: function() {
+                        failureCallback();
+                    }
+                });
+            },
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
@@ -210,10 +246,22 @@
                 success: function(response) {
                     $('#appointmentModal').modal('hide');
                     calendar.refetchEvents(); // Recargar eventos en el calendario
-                    alert('Cita guardada con éxito.');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'Cita guardada con éxito.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 },
                 error: function(response) {
-                    alert('Error al guardar la cita.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al guardar la cita.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             });
         });
@@ -221,20 +269,38 @@
         // Manejar la eliminación de citas
         $('#deleteAppointment').on('click', function() {
             var appointmentId = $(this).data('id');
-            if (confirm('¿Estás seguro de que deseas eliminar esta cita?')) {
-                $.ajax({
-                    url: '/appointments/' + appointmentId,
-                    method: 'DELETE',
-                    success: function(response) {
-                        $('#appointmentModal').modal('hide');
-                        calendar.refetchEvents(); // Recargar eventos en el calendario
-                        alert('Cita eliminada con éxito.');
-                    },
-                    error: function(response) {
-                        alert('Error al eliminar la cita.');
-                    }
-                });
-            }
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/appointments/' + appointmentId,
+                        method: 'DELETE',
+                        success: function(response) {
+                            $('#appointmentModal').modal('hide');
+                            calendar.refetchEvents(); // Recargar eventos en el calendario
+                            Swal.fire(
+                                'Eliminado!',
+                                'La cita ha sido eliminada.',
+                                'success'
+                            );
+                        },
+                        error: function(response) {
+                            Swal.fire(
+                                'Error!',
+                                'Error al eliminar la cita.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
         });
     });
 </script>
