@@ -61,7 +61,7 @@
                                             <p class="text-muted mb-1">{{$cliente->activity}}</p>
                                             <p class="text-m$clientelist-presupuestos-listuted mb-4">{{$cliente->identifier}}</p>
                                             <div class="d-flex justify-content-center mb-2">
-                                              <button type="button" class="btn btn-outline-primary ms-1">Mensajes</button>
+                                              {{-- <button type="button" class="btn btn-outline-primary ms-1">Mensajes</button> --}}
                                             </div>
                                           </div>
                                         </div>
@@ -72,6 +72,9 @@
                                             <a class="list-group-item list-group-item-action"
                                                 id="list-info-list" data-bs-toggle="list"
                                                 href="#list-info" role="tab">Informacion de Contacto</a>
+                                            <a class="list-group-item list-group-item-action"
+                                                id="list-coches-list" data-bs-toggle="list"
+                                                href="#list-coches" role="tab">Coches</a>
                                             <a class="list-group-item list-group-item-action"
                                                 id="list-presupuestos-list" data-bs-toggle="list"
                                                 href="#list-presupuestos" role="tab">Presupuestos</a>
@@ -341,6 +344,39 @@
                                                     </div>
                                                     <hr>
                                                 </div>
+                                            </div>
+                                            <div class="tab-pane" id="list-coches" role="tabpanel"
+                                                aria-labelledby="list-coches-list">
+                                                <h3 class="mb-2 fs-4 text-uppercase">Coches del Cliente</h3>
+                                                <hr class="border mb-4" >
+                                                @if (count($coches) > 0)
+                                                    <div class="table-responsive">
+                                                         <table class="table table-hover">
+                                                            <thead class="header-table-other">
+                                                                <th class="px-3" style="font-size:0.75rem">MARCA</th>
+                                                                <th class="" style="font-size:0.75rem">MODELO</th>
+                                                                <th class="" style="font-size:0.75rem">COLOR</th>
+                                                                <th class="" style="font-size:0.75rem">MATRICULA</th>
+                                                                <th class="" style="font-size:0.75rem">AÑO</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($coches as $coche)
+                                                                    <tr>
+                                                                        <td>{{ $coche->marca }}</td>
+                                                                        <td>{{ $coche->modelo }}</td>
+                                                                        <td>{{ $coche->color }}</td>
+                                                                        <td>{{ $coche->matricula }}</td>
+                                                                        <td>{{ $coche->anio }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                @else
+                                                    <div class="text-center py-4">
+                                                        <h3 class="text-center fs-4">No se encontraron registros de <strong>Coches</strong></h3>
+                                                    </div>
+                                                @endif
                                             </div>
                                             <div class="tab-pane" id="list-presupuestos" role="tabpanel"
                                                 aria-labelledby="list-presupuestos-list">

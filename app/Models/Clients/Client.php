@@ -8,6 +8,7 @@ use App\Models\Users\ClientUserOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Coches;
 
 
 class Client extends Model
@@ -166,7 +167,7 @@ class Client extends Model
 
     public function coches()
     {
-        return $this->hasMany(Coches::class);
+        return $this->hasMany(Coches::class, 'cliente_id');
     }
 
     public function reservasCoche()

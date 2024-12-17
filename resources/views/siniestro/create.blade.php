@@ -13,7 +13,7 @@
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('siniestro.store') }}" method="POST">
+                    <form action="{{ route('siniestro.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -123,6 +123,10 @@
                                         <option value="1">Si</option>
                                         <option value="0" selected>No</option>
                                     </select>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="imagenes">Imagenes</label>
+                                    <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple>
                                 </div>
                             </div>
                         </div>

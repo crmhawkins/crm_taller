@@ -4,8 +4,77 @@
 
 @section('content')
 
-    <div class="page-heading card" style="box-shadow: none !important">
+    <style>
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .gallery-item {
+            flex: 1 1 calc(50% - 10px);
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .gallery-item img {
+            width: 400px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .gallery-item::after {
+            content: '\f002';
+            font-family: FontAwesome;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+        .delete-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .delete-button:hover {
+            background-color: rgba(255, 0, 0, 1);
+        }
+    </style>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+    <div class="page-heading card" style="box-shadow: none !important">
         <div class="page-title card-body p-3">
             <h3>Editar Siniestro</h3>
         </div>
@@ -13,7 +82,7 @@
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('siniestro.update', $siniestro->id) }}" method="POST">
+                    <form action="{{ route('siniestro.update', $siniestro->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="row">
@@ -123,6 +192,11 @@
                                         <option value="0" {{ $siniestro->peritaje_externo == 0 ? 'selected' : '' }}>No</option>
                                     </select>
                                 </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="imagenes">Imagenes</label>
+                                    <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple>
+                                </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
@@ -130,6 +204,23 @@
                 </div>
             </div>
         </section>
+        <div class="form-group mb-3 mt-3">
+            <label class="mb-3" style="font-weight: bold; font-size: 1.2rem;">Imágenes del siniestro</label>
+            <div class="gallery">
+                @foreach($siniestro->getMedia('imagenes') as $media)
+                    <div class="gallery-item">
+                        <a href="{{ $media->getFullUrl() }}" data-lightbox="siniestro-gallery" data-title="Imagen del siniestro">
+                            <img src="{{ $media->getFullUrl() }}" alt="Imagen del siniestro">
+                        </a>
+                        <form action="{{ route('media.destroy', $media->id) }}" method="POST" style="position: absolute; top: 0; right: 0;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="delete-button">&times;</button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
     </div>
 @endsection 

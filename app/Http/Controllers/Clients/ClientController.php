@@ -20,7 +20,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clientes = Client::where('is_client', 1)->get();
+        $clientes = Client::where('is_client', 1)->with('coches')->get();
         return view('clients.index', compact('clientes'));
     }
 
@@ -328,7 +328,8 @@ class ClientController extends Controller
     public function show(string $id)
     {
         $cliente = Client::find($id);
-        return view('clients.show', compact('cliente'));
+        $coches = $cliente->coches;
+        return view('clients.show', compact('cliente', 'coches'));
 
     }
 
@@ -341,7 +342,8 @@ class ClientController extends Controller
         $clientes = Client::all();
         $cliente = Client::find($id);
         $contactos = Contact::where('client_id', $id)->get();
-        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos'));
+        $coches = $cliente->coches;
+        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches'));
     }
 
     /**

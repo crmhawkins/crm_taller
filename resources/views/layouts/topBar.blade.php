@@ -301,6 +301,7 @@
             28: 'Alerta Encuesta Satisfaccion',
             29: 'Nueva acta pendiente',
             31: 'Aviso Jornada Laboral',
+            32: 'Aviso Siniestro',
             33: 'Dominio a punto de expirar',
             40: 'Aviso de Tarea - Se está sobrepasando las horas estimadas',
             41: 'Tarea en Revision',
@@ -384,7 +385,7 @@
                 if (alertasAgrupadasPorStageId.hasOwnProperty(stage_id) && alertasAgrupadasPorStageId[stage_id].length > 0) {
                     let mensaje = mapeoMensajes[stage_id];
 
-                    if (parseInt(stage_id) === 33) {
+                    if (parseInt(stage_id) === 33 ) {
                         alertasAgrupadasPorStageId[stage_id].forEach(alerta => {
                             if (alerta['dominio'] && alerta['dominio'].dominio != null) {
                                 htmlContent += `<li>${mensaje} - Dominio: ${alerta['dominio'].dominio} - <button onclick="mostrarAlertaEspecifica(${stage_id})">Ver</button></li>`;
@@ -558,8 +559,18 @@
                         botonposponer = false;
                         break;
 
+                    case 30:
+                        mensajeDetalle = "Aviso de Siniestro: " + alerta['description'];
+                        botonposponer = false;
+                        break;
+
                     case 31:
                         mensajeDetalle = "Aviso de Jornada Laboral: " + alerta['description'];
+                        botonposponer = false;
+                        break;
+
+                    case 32:
+                        mensajeDetalle = "Aviso de Siniestro: " + alerta['description'];
                         botonposponer = false;
                         break;
 
@@ -592,7 +603,7 @@
                             <div class="li-mensaje">${mensajeDetalle}</div>
                             <div class="li-boton">
                                 <button class="btn-pop" onclick="posponerAlerta(${alerta['id']},${stage_id},${index})" title="Posponer"><i class="fa-regular fa-clock"></i></button>
-                                <button class="btn-pop" onclick="manejarAlertaEspecifica(${stage_id}, ${index})" title="Ok"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button class="btn-pop" onclick="manejarAlertaEspecifica(${stage_id}, ${index})" title="Ok">Aceptar</button>
                             </div>
                         </li>`;
                 }else{
@@ -600,7 +611,7 @@
                         <li class="li-flex">
                             <div class="li-mensaje">${mensajeDetalle}</div>
                             <div class="li-boton">
-                                <button class="btn-pop" onclick="manejarAlertaEspecifica(${stage_id}, ${index})" title="Ok"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button class="btn-pop" onclick="manejarAlertaEspecifica(${stage_id}, ${index})" >Aceptar</button>
                             </div>
                         </li>`;
                 }
@@ -1196,6 +1207,22 @@
                     });
                     break;
 
+                case 32:
+                var id = alertaSeleccionada['id'];
+                    var status = 2; //Resuelto
+                    $.when(updateStatusAlert(id, status)).then(function(data, textStatus, jqXHR) {
+                        if (jqXHR.responseText != 503) {
+                            eliminarAlertaDOM(stage_id, index);
+                        } else {
+                        swal(
+                            'Error',
+                            'Error al realizar la peticion',
+                            'error'
+                        );
+                        }
+                    });
+                    break;
+
                 case 31:
                 var id = alertaSeleccionada['id'];
                     var status = 2; //Resuelto
@@ -1339,7 +1366,9 @@
                 totalAlertas += alertasAgrupadasPorStageId[stage_id].length;
             }
             alertCountSpan.textContent = totalAlertas;
-            mostrarAlertaEspecifica(stage_id);
+
+            // Cerrar la alerta de SweetAlert2
+            Swal.close();
         }
 
 

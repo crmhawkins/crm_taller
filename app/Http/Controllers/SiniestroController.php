@@ -9,6 +9,9 @@ use App\Models\EstadoSiniestro;
 use App\Models\Coches;
 use App\Models\Clients\Client;
 use Illuminate\Http\Request;
+use App\Models\Alerts\Alert;
+use App\Models\Users\User;
+use Carbon\Carbon;
 
 class SiniestroController extends Controller
 {
@@ -52,8 +55,12 @@ class SiniestroController extends Controller
             'peritaje_externo' => 'nullable|boolean',
         ]);
 
-        Siniestro::create($request->all());
-
+        $siniestro = Siniestro::create($request->all());
+        if ($request->file('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                $siniestro->addMedia($imagen)->toMediaCollection('imagenes');
+            }
+        }
         return redirect()->route('siniestro.index')
                          ->with('success', 'Siniestro creado exitosamente.');
     }
@@ -79,6 +86,8 @@ class SiniestroController extends Controller
     {
         $siniestro = Siniestro::findOrFail($id);
 
+
+
         $request->validate([
             'identificador' => 'nullable|string|max:255',
             'fecha' => 'nullable|date',
@@ -101,7 +110,33 @@ class SiniestroController extends Controller
             'peritaje_externo' => 'nullable|boolean',
         ]);
 
+        // Comprobar si el estado_siniestro_id va a cambiar
+    if ($siniestro->estado_siniestro_id != $request->estado_siniestro_id) {
+        $estado = EstadoSiniestro::find($request->estado_siniestro_id);
+        $mensaje = "El estado del siniestro con ID {$siniestro->id} ha cambiado. Nuevo estado: " . ($estado ? $estado->estado : 'No se encontró el estado');        
+        // Obtener todos los usuarios activos
+        $users = User::where('inactive', 0)->get();
+
+        // Crear una alerta para cada usuario activo
+        foreach ($users as $usuario) {
+            Alert::create([
+                'admin_user_id' => $usuario->id,
+                'stage_id' => 32,
+                'activation_datetime' => Carbon::now(),
+                'status_id' => 1,
+                'reference_id' => $siniestro->id,
+                'description' => $mensaje
+            ]);
+        }
+    }
+
         $siniestro->update($request->all());
+
+        if ($request->file('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                $siniestro->addMedia($imagen)->toMediaCollection('imagenes');
+            }
+        }
 
         return redirect()->route('siniestro.index')
                          ->with('success', 'Siniestro actualizado exitosamente.');

@@ -85,6 +85,14 @@
                                 @endif
                             </a>
                         </th>
+                        <th>
+                            <a href="#" >
+                                COCHES
+                                @if ($sortColumn == 'coches')
+                                    <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
+                                @endif
+                            </a>
+                        </th>
                         <th class="text-center">ACCIONES</th>
                     </tr>
                 </thead>
@@ -97,11 +105,13 @@
                             <td>{{ $client->identifier }}</td>
                             <td>{{ $client->activity }}</td>
                             <td>{{ $client->gestor->name ?? 'Gestor Borrado' }}</td>
+                            <td>{{ $client->coches->count() }}</td>
                             <td class="flex flex-row justify-evenly align-middle" style="min-width: 120px">
                                 <a class="" href="{{ route('clientes.show', $client->id) }}"><img src="{{ asset('assets/icons/eye.svg') }}" alt="Mostrar usuario"></a>
                                 <a class="" href="{{ route('clientes.edit', $client->id) }}"><img src="{{ asset('assets/icons/edit.svg') }}" alt="Mostrar usuario"></a>
                                 <a class="delete" data-id="{{ $client->id }}" href=""><img src="{{ asset('assets/icons/trash.svg') }}" alt="Mostrar usuario"></a>
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>

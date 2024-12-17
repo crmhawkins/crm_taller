@@ -64,6 +64,8 @@ use App\Http\Controllers\SeguroController;
 use App\Http\Controllers\SiniestroController;
 use App\Http\Controllers\CochesSustitucionController;
 use App\Http\Controllers\ReservasCocheController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\AppointmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -87,7 +89,6 @@ Auth::routes();
 //pdf
 Route::post('/invoice/generate-pdf', [InvoiceController::class, 'generatePDF'])->name('factura.generarPDF');
 Route::post('/budget/generate-pdf', [BudgetController::class, 'generatePDF'])->name('presupuesto.generarPDF');
-
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -629,6 +630,14 @@ Route::group(['middleware' => 'auth'], function () {
     // Eliminar un coche específico
     Route::delete('/coches/{coche}', [CocheController::class, 'destroy'])->name('coches.destroy');
 
+    
+    Route::get('/citas/calendario', [AppointmentController::class, 'index'])->name('appointments.calendar');
+    Route::get('/citas', [AppointmentController::class, 'getAppointments'])->name('appointments.get');
+    Route::post('/citas', [AppointmentController::class, 'store'])->name('appointments.store');
+    // Ruta para actualizar una cita existente
+    Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
     // Rutas para Piezas
     Route::get('piezas', [PiezasController::class, 'index'])->name('piezas.index');
     Route::get('piezas/create', [PiezasController::class, 'create'])->name('piezas.create');
@@ -698,7 +707,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reservas-coche/{reservaCoche}/edit', [ReservasCocheController::class, 'edit'])->name('reservas-coche.edit');
     Route::put('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'update'])->name('reservas-coche.update');
     Route::delete('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'destroy'])->name('reservas-coche.destroy');
-
+    Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
 // Portal Clientes
 Route::get('/portal', [PortalClientesController::class, 'login'])->name('portal.login');

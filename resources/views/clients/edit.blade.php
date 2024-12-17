@@ -228,6 +228,33 @@
                                 @enderror
                             </div>
                         </div>
+                        <h3 class="mt-5 mb-2 text-center uppercase">Coches</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Color</th>
+                                    <th>Matricula</th>
+                                    <th>Año</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($coches as $coche)
+                                    <tr>
+                                        <td>{{ $coche->marca }}</td>
+                                        <td>{{ $coche->modelo }}</td>
+                                        <td>{{ $coche->color }}</td>
+                                        <td>{{ $coche->matricula }}</td>
+                                        <td>{{ $coche->anio }}</td>
+                                        <td>
+                                            <a href="{{ route('coches.edit', $coche->id) }}" class="btn btn-primary">Ver</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                         <h3 class="mt-5 mb-2 text-center uppercase">Cliente Asociado</h3>
                         <hr class="mb-4">
                         <div class="form-group">
@@ -242,6 +269,8 @@
                                 @endif
                             </select>
                         </div>
+
+                       
 
                         <h3 class="mt-5 mb-2 text-center uppercase">Contacto Asociado</h3>
                         <hr class="mb-4">
