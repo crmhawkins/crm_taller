@@ -315,19 +315,19 @@ class Kernel extends ConsoleKernel
 
         $email = new MailHorasTrabajadasUsuario($mensajeHorasTrabajadas, $mensajeHorasProducidas);
 
-        Mail::to($usuario)->send($email);
+        // Mail::to($usuario)->send($email);
 
         return 200;
 
     }
     public function sendEmailHorasTrabajadas($arrayHorasTotal){
 
-        $mail = "ivan@hawkins.es";
-        $mail2 = "nacho.moreno@lchawkins.com";
+        // $mail = "ivan@hawkins.es";
+        // $mail2 = "nacho.moreno@lchawkins.com";
 
-        $email = new MailHorasTrabajadas($arrayHorasTotal);
+        // $email = new MailHorasTrabajadas($arrayHorasTotal);
 
-        Mail::to($mail)->cc($mail2)->send($email);
+        // Mail::to($mail)->cc($mail2)->send($email);
 
         return 200;
 

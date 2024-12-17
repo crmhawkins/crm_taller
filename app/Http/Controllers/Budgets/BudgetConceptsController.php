@@ -906,10 +906,10 @@ class BudgetConceptsController extends Controller
         $email = new MailConcept($mailConcept,$data);
 
 
-        Mail::to($mailConcept->gestorMail)
-        ->bcc($mailsBCC)
-        ->cc([])
-        ->send($email);
+        // Mail::to($mailConcept->gestorMail)
+        // ->bcc($mailsBCC)
+        // ->cc([])
+        // ->send($email);
 
     }
 
@@ -1190,15 +1190,15 @@ class BudgetConceptsController extends Controller
             }
         }
 
-        $mailsBCC[] = "emma@lchawkins.com";
-        $mailsBCC[] = "ivan@lchawkins.com";
-        $mailsBCC[] = Auth::user()->email;
-        $supplierMail = BudgetConceptSupplierRequest::where('budget_concept_id',$order->budget_concept_id)->where('selected',1)->first()->mail;
-        $email = new MailConceptSupplier($mailConcept, $pathFiles);
+        // $mailsBCC[] = "emma@lchawkins.com";
+        // $mailsBCC[] = "ivan@lchawkins.com";
+        // $mailsBCC[] = Auth::user()->email;
+        // $supplierMail = BudgetConceptSupplierRequest::where('budget_concept_id',$order->budget_concept_id)->where('selected',1)->first()->mail;
+        // $email = new MailConceptSupplier($mailConcept, $pathFiles);
 
         try {
             // Enviar el correo
-            Mail::to($supplierMail)->bcc($mailsBCC)->send($email);
+            // Mail::to($supplierMail)->bcc($mailsBCC)->send($email);
 
             // Eliminar los archivos temporales después de enviar el correo
             foreach ($pathFiles as $file) {

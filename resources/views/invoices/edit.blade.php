@@ -129,6 +129,7 @@
                                             @enderror
                                         </div>
                                     </div>
+
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group mb-3">
                                             <label class="mb-2 text-left" for="paid_date">Fecha de Cobro:</label>
@@ -138,6 +139,24 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                             @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mb-3">
+                                            <label class="mb-2 text-left" for="km_coche">Km. Coche:</label>
+                                            <input type="number" class="form-control @error('km_coche') is-invalid @enderror" id="km_coche" value="{{ $km_coche }}" name="km_coche" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mb-3">
+                                            <label class="mb-2 text-left" for="coche_id">Coche:</label>
+                                            @if($coche)
+                                                <input type="text" class="form-control @error('coche_id') is-invalid @enderror" id="coche_id" value="{{ $coche->marca }} {{ $coche->modelo }}" name="coche_id" disabled>
+                                            @else
+                                                <input type="text" class="form-control @error('coche_id') is-invalid @enderror" id="coche_id" value="" name="coche_id" disabled>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

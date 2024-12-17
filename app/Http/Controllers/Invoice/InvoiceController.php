@@ -22,7 +22,7 @@ use josemmo\Facturae\Facturae;
 use josemmo\Facturae\FacturaeItem;
 use josemmo\Facturae\FacturaeParty;
 use ZipArchive;
-
+use App\Models\Coches;
 class InvoiceController extends Controller
 {
     public function index()
@@ -33,11 +33,14 @@ class InvoiceController extends Controller
     public function edit(string $id)
     {
         $factura = Invoice::where('id', $id)->first();
+        $budget = Budget::where('id', $factura->budget_id)->first();
+        $coche = Coches::where('id', $budget->coche_id)->first();
+        $km_coche = $budget->km_coche;
         $invoiceStatuses = InvoiceStatus::all();
         $invoice_concepts = InvoiceConcepts::where('invoice_id', $factura->id)->get();
         $firma = $factura->firma; // Obtener la firma existente
     
-        return view('invoices.edit', compact('factura', 'invoiceStatuses', 'invoice_concepts', 'firma'));
+        return view('invoices.edit', compact('factura', 'invoiceStatuses', 'invoice_concepts', 'firma', 'coche' ,'km_coche'));
     }
 
     public function deleteSignature(Request $request)
@@ -237,8 +240,12 @@ class InvoiceController extends Controller
             }
         }
 
+        $budget = Budget::where('id', $invoice->budget_id)->first();
+        $coche = Coches::where('id', $budget->coche_id)->first();
+        $km_coche = $budget->km_coche;
+        $firma = $invoice->firma;
         // Generar el PDF usando la vista 'invoices.previewPDF'
-        $pdf = PDF::loadView('invoices.previewPDF', compact('invoice','data', 'invoiceConceptsFormated'));
+        $pdf = PDF::loadView('invoices.previewPDF', compact('invoice','data', 'invoiceConceptsFormated', 'coche', 'km_coche', 'firma'));
         return $pdf;
     }
 
@@ -402,10 +409,10 @@ class InvoiceController extends Controller
 
         $email = new MailInvoice($mailInvoice, $filename);
 
-        Mail::to($request->email)
-        ->cc('administracion@lchawkins.com')
-        ->bcc('ivan@lchawkins.com')
-        ->send($email);
+        // Mail::to($request->email)
+        // ->cc('administracion@lchawkins.com')
+        // ->bcc('ivan@lchawkins.com')
+        // ->send($email);
 
         // Respuesta
         if(File::delete($filename)){

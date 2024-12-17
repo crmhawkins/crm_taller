@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Coches;
 class BudgetController extends Controller
 {
     /**
@@ -44,6 +44,14 @@ class BudgetController extends Controller
         $budgets = Budget::all();
         return view('budgets.index', compact('budgets'));
     }
+
+    public function CochesByClient(string $clientId)
+    {
+        $coches = Coches::where('cliente_id', $clientId)->get();
+        return response()->json($coches);
+    }
+
+
     public function indexUser()
     {
         $budgets = Budget::where('admin_user_id',auth()->user()->id)->get();
@@ -228,7 +236,7 @@ class BudgetController extends Controller
         $firma = $presupuesto->firma; // Obtener la firma existente
 
         $clientes = Client::where('is_client',true)->orderBy('id', 'asc')->get();
-
+        $coches = Coches::where('cliente_id', $presupuesto->client_id)->get();
         $gestores = User::all();
         if (!$presupuesto) {
             return redirect()->route('presupuestos.index')->with('toast', [
@@ -249,7 +257,7 @@ class BudgetController extends Controller
 
         session('projectId') != null ? $projectId = session('projectId') : $projectId = null;
 
-        return view('budgets.edit', compact('projectId','presupuesto', 'campanias', 'gestores', 'formasPago','estadoPresupuesto', 'budgetConcepts','thisBudgetStatus','clientes','porcentaje', 'firma'));
+        return view('budgets.edit', compact('projectId','presupuesto', 'campanias', 'gestores', 'formasPago','estadoPresupuesto', 'budgetConcepts','thisBudgetStatus','clientes','porcentaje', 'firma', 'coches'));
     }
 
     public function deleteSignature(Request $request)
@@ -1828,7 +1836,12 @@ class BudgetController extends Controller
          $budgetConceptsFormated[$budgetConcept->id]['description'] = $arrayConceptStringsAndBreakLines;
      }
 
-     $pdf = PDF::loadView('budgets.previewPDF', compact('budget','data', 'budgetConceptsFormated','sumatorio'));
+     $coche = Coches::where('id', $budget->coche_id)->first();  
+     $km_coche = $budget->km_coche;
+
+     $firma = $budget->firma;
+
+     $pdf = PDF::loadView('budgets.previewPDF', compact('budget','data', 'budgetConceptsFormated','sumatorio','coche','km_coche' , 'firma'));
 
      return $pdf;
 
@@ -1916,10 +1929,10 @@ class BudgetController extends Controller
         $mailsCC = [];
         $mailsBCC = [];
 
-        $mailsBCC[] = "emma@lchawkins.com";
-        $mailsBCC[] = "ivan@lchawkins.com";
-        $mailsBCC[] = $mailBudget->gestorMail;
-        $mailsBCC[] = $budget->usuario->email ;
+        // $mailsBCC[] = "emma@lchawkins.com";
+        // $mailsBCC[] = "ivan@lchawkins.com";
+        // $mailsBCC[] = $mailBudget->gestorMail;
+        // $mailsBCC[] = $budget->usuario->email ;
 
         if($request->cc){
             $mailsCC[] = $request->cc;
@@ -1951,10 +1964,10 @@ class BudgetController extends Controller
 
         $email = new MailBudget($mailBudget,$data);
 
-        Mail::to($mail)
-        ->bcc($mailsBCC)
-        ->cc($mailsCC)
-        ->send($email);
+        // Mail::to($mail)
+        // ->bcc($mailsBCC)
+        // ->cc($mailsCC)
+        // ->send($email);
 
         $fechaNow = Carbon::now();
 

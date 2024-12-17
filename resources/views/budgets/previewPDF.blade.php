@@ -111,6 +111,10 @@
                         <p style="font-size:12px">Ref.:<span style="padding-left:72px;font-weight: bold;">{{ $budget->reference }}</span></p>
                         <p style="font-size:12px">Versión: <span style="padding-left:46px;"></span></p>
                         <p style="font-size:12px">Fecha Envío: <span style="padding-left:17px;">{{ Carbon\Carbon::parse($budget->creation_date)->format('d/m/Y') }}</span></p>
+                        @if($coche)
+                            <p style="font-size:12px">Vehículo: <span style="padding-left:17px;">{{ $coche->marca }} {{ $coche->modelo }}</span></p>
+                            <p style="font-size:12px">Km. Vehículo: <span style="padding-left:17px;">{{ $km_coche }}</span></p>
+                        @endif
                     </td>
                     <td align="right" style="width: 60%;padding-right:20px;">
                         <div style="border-style: solid;border-width: 1px;padding-left:15px;text-align:left;padding-bottom:15px;">
@@ -151,7 +155,7 @@
             <table width="100%;margin-bottom:5px">
                 <tr>
                     <td align="left" style="width: 50%;">
-                        @if ($budget->is_ceuta)
+                        {{-- @if ($budget->is_ceuta)
                             THWORK 3000 SL B72284631 - Calle Delgado Serrano Nº1, 3ºD, 1ªOficina (Ceuta 51001)
                         @else
                             @if( Carbon\Carbon::parse($budget->created_at) >= Carbon\Carbon::parse("2021/02/01"))
@@ -159,17 +163,17 @@
                             @else
                                 IPOINT COMUNICACION MASIVA SL.CIF: B 72139868 - Urb. Parque del Oeste nº5 11205 Algeciras (Cádiz)
                             @endif
-                        @endif
+                        @endif --}}
                     </td>
                 </tr>
                 <tr>
                     <td align="left" style="width: 50%;">
-                        @if( Carbon\Carbon::parse($budget->created_at) >= Carbon\Carbon::parse("2021/02/01"))
+                        {{-- @if( Carbon\Carbon::parse($budget->created_at) >= Carbon\Carbon::parse("2021/02/01")) --}}
                             {{-- BBVA: ES90 0182 3232 2802 0161 2178 --}}
-                            BANKINTER: ES84 0128 0733 2001 0007 1396
-                        @else
+                            {{-- BANKINTER: ES84 0128 0733 2001 0007 1396 --}}
+                        {{-- @else
                             Santander: ES81 0049 1672 4225 10049483
-                        @endif
+                        @endif --}}
                         </td>
                     </tr>
             </table>
@@ -246,7 +250,7 @@
                         <td style="text-align:center"></td>
                         <td style="text-align:center"></td>
                         <td style="text-align:center"></td>
-                        <td style="text-align:left;font-weight:bold">Conforme Cliente (firma y sello)</td>
+                        <td style="text-align:left;font-weight:bold">Conforme Cliente (firma)</td>
                     </tr>
                     <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td> </tr>
                     <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td> </tr>
@@ -255,7 +259,10 @@
                         <td style="text-align:center"></td>
                         <td style="text-align:center"></td>
                         <td style="text-align:center"></td>
-                        <td style="text-align:left;font-weight:bold;border-bottom: 1px solid #000;">Fdo.</td>
+
+                        <td style="text-align:left;font-weight:bold;border-bottom: 1px solid #000;">
+                            Fdo. <img src="{{ $firma }}" alt="Firma" style="width: 100px; height: auto;">
+                        </td>
                     </tr>
                 </table>
                 @endif
@@ -265,7 +272,7 @@
                 @endif
             </div>
 
-            <div class="information" style="display: block; page-break-before: always; margin-top:110px;">
+            {{-- <div class="information" style="display: block; page-break-before: always; margin-top:110px;">
                     <div style="padding-left:30px; margin: 0;">
                         <div style="text-align: left;font-size:9px;text-align:justify; width: 48%; display:inline-block;">
                             <h3 style="margin-bottom: 0px;">Condiciones Generales</h3>
@@ -358,7 +365,7 @@
 
                                 </div>
                     </div>
-                </div>
+                </div> --}}
         </main>
     </body>
 </html>

@@ -102,6 +102,10 @@
                             <p style="font-size:12px">Fecha de Creación: <span style="padding-left:17px;">{{ Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y') }}</span></p>
                             <p style="font-size:12px">Campaña: <span style="padding-left:17px;">{{ $invoice->project->name }}</span></p>
                             <p style="font-size:12px">Concepto: <span style="padding-left:17px;">{{ $invoice->concept }}</span></p>
+                            @if($coche)
+                                <p style="font-size:12px">Vehículo: <span style="padding-left:17px;">{{ $coche->marca }} {{ $coche->modelo }}</span></p>
+                            @endif
+                            <p style="font-size:12px">Km. Vehículo: <span style="padding-left:17px;">{{ $km_coche }}</span></p>
                             <p style="font-size:12px">Observaciones: <span style="padding-left:17px;">{{ $invoice->observations }}</span></p>
                         </td>
                         <td align="right" style="width: 50%;padding-right:20px;">
@@ -187,6 +191,17 @@
                             <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td> </tr>
                         </table>
                     </div>
+                    <div style="page-break-after: avoid; height: 140px;padding-left:35px">
+                        <br><br><br><br>
+                        <table id="summary" style="border-collapse: collapse;width: 100%;">
+                            <tr>
+                                <td style="text-align:left;font-weight:bold">Conforme Cliente (firma)</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold">Fdo. <img src="{{ $firma }}" alt="Firma" style="width: 100px; height: auto;"></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
@@ -194,7 +209,7 @@
         <footer class="information pagenum" style="position: fixed; bottom:-160px;padding-left:30px;padding-right:30px;height: 140px;" >
             <hr style="margin-bottom: 0.1em;border-style:inset;border-width: 0.5px;color:black">
             <table width="100%;margin-bottom:5px">
-                <tr>
+                {{-- <tr>
                     <td align="left" style="width: 50%;">
                         @if ($invoice->is_ceuta)
                         THWORK 3000 SL B72284631 - Calle Delgado Serrano Nº1, 3ºD, 1ªOficina (Ceuta 51001)
@@ -206,14 +221,14 @@
                         @endif
                         @endif
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td align="left" style="width: 50%;">
-                        @if( Carbon\Carbon::parse($invoice->created_at) >= Carbon\Carbon::parse("2021/02/01"))
+                        {{-- @if( Carbon\Carbon::parse($invoice->created_at) >= Carbon\Carbon::parse("2021/02/01"))
                             BANKINTER: ES84 0128 0733 2001 0007 1396
                         @else
                             Santander: ES81 0049 1672 4225 10049483
-                        @endif
+                        @endif --}}
                         </td>
                     </tr>
             </table>

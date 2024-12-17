@@ -364,15 +364,15 @@ class HolidayController extends Controller
        // Función para enviar email, se solicita los datos a enviar y el usuario, luego serán mostrados en mailHoliday.blade.php
     public function sendEmail($empleado){
 
-        $mail = "ivan@lchawkins.com";
-        // $mailsCC[] = "";
-        $mailsCC[] = "elena@lchawkins.com";
+        // $mail = "ivan@lchawkins.com";
+        // // $mailsCC[] = "";
+        // $mailsCC[] = "elena@lchawkins.com";
 
         // Si el estado es 1, es solicitud de vacaciones, el 2 es aceptada, el 3 es rechazada
         $estado = 1;
-        $email = new MailHoliday($estado, $empleado);
+        // $email = new MailHoliday($estado, $empleado);
 
-        Mail::to($mail)->cc($mailsCC)->send($email);
+        // Mail::to($mail)->cc($mailsCC)->send($email);
          //Mail::to($mail)->send($email);
 
         return 200;

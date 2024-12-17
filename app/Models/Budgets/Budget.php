@@ -7,7 +7,7 @@ use App\Models\Tasks\Task;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Models\Coches;
 class Budget extends Model
 {
     use HasFactory, SoftDeletes;
@@ -47,6 +47,8 @@ class Budget extends Model
         'order_column',
         'is_ceuta',
         'firma',
+        'km_coche',
+        'coche_id',
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
@@ -106,5 +108,10 @@ class Budget extends Model
         ];
 
         return $statusColors[$this->budget_status_id] ?? '#CCCCCC'; // Default to grey if not found
+    }
+
+    public function coche()
+    {
+        return $this->belongsTo(Coches::class, 'coche_id');
     }
 }

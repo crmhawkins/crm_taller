@@ -100,6 +100,16 @@
                                                 </span>
                                             @enderror
                                         </div>
+
+                                        <div class="form-group mb-3">
+                                            <label class="mb-2 text-left" for="coche_id">Coche:</label>
+                                            <select class="form-control @error('coche_id') is-invalid @enderror" id="coche_id" name="coche_id">
+                                                <option value="">Seleccione un coche</option>
+                                                @foreach ($coches as $coche)
+                                                    <option value="{{ $coche->id }}" {{ $presupuesto->coche_id == $coche->id ? 'selected' : '' }}>{{ $coche->marca }} {{ $coche->modelo }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
@@ -165,6 +175,15 @@
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="mb-2 text-left" for="km_coche">Km. Coche:</label>
+                                            <input type="number" class="form-control @error('km_coche') is-invalid @enderror" id="km_coche" value="{{ $presupuesto->km_coche }}" name="km_coche">
+                                            @error('km_coche')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
                                             @enderror
                                         </div>
                                     </div>
