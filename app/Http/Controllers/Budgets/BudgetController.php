@@ -171,7 +171,7 @@ class BudgetController extends Controller
         $data = $this->validate($request, [
             'client_id' => 'required|integer',
             'project_id' => 'required|integer',
-            'admin_user_id' => 'required|integer',
+            'admin_user_id' => 'nullable|integer',
             'concept' => 'required|max:200',
             'commercial_id' => 'nullable|integer',
             'payment_method_id' => 'nullable|integer',
