@@ -35,7 +35,7 @@ class MailNewsletter extends Mailable
      */
     public function build(){
         $mail = $this->from('newsletters@crmhawkins.com')
-        ->subject('Newsletter - HAWKINS')
+        ->subject('Newsletter - Talleres Cardosa')
         ->view('mails.mailNewsletter');
 
         return $mail;

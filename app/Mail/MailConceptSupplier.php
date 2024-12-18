@@ -38,7 +38,7 @@ class MailConceptSupplier extends Mailable
     public function build()
     {
         $mail = $this->from($this->MailConceptSupplier->gestorMail)
-        ->subject("Orden de Compra - Los Creativos de Hawkins")
+        ->subject("Orden de Compra - Talleres Cardosa")
         ->view('mails.mailConceptSupplier');
 
         foreach($this->atta as $filePath){

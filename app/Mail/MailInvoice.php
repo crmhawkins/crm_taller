@@ -38,7 +38,7 @@ class MailInvoice extends Mailable
     public function build()
     {
         $mail = $this->from("info@crmhawkins.com")
-        ->subject("Factura - Los Creativos de Hawkins")
+        ->subject("Factura - Talleres Cardosa")
         ->view('mails.mailInvoice')
         ->attach($this->filename);
 

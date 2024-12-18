@@ -169,7 +169,7 @@
     <div class=contenedorLogo> <!--contenedor botón inicio-->
         <a class="claseInicio" href="https://crmhawkins.com/admin/dashboard">  <!--botón inicio-->
             <i class="fab fa-trello"></i>
-            CRM Hawkins
+            Talleres Cardosa
         </a>
     </div>
     <div class=contenedorInput> <!--contenedor formulario--->

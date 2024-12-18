@@ -39,7 +39,7 @@ class MailDominio extends Mailable
     public function build()
     {
         $mail = $this->from('dominios@crmhawkins.com')
-        ->subject("Dominio - Los Creativos de Hawkins")
+        ->subject("Dominio - Talleres Cardosa")
         ->view('mails.mailDominio');
 
         return $mail;

@@ -40,7 +40,7 @@ class MailJornadaLaboral extends Mailable
     public function build()
     {
         $mail = $this->from('journey@crmhawkins.com')
-        ->subject("Jornada - Los Creativos de Hawkins")
+        ->subject("Jornada - Talleres Cardosa")
         ->view('mails.mailJornadaLaboral');
 
         return $mail;

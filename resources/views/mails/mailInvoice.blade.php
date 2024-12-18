@@ -104,7 +104,7 @@
 </head>
 <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
     <!-- HIDDEN PREHEADER TEXT -->
-    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> Correo electronico enviado desde el CRM & ERP de Los Creativos de Hawkins </div>
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> Correo electronico enviado desde el CRM & ERP de Talleres Cardosa </div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <!-- LOGO -->
         <tr>
@@ -142,17 +142,17 @@
                                 <p>Adjunto remito factura que corresponde al presupuesto aceptado.
                                 El cargo de dicha factura se pasará por remesa bancaria, como venimos haciendo.</p>
                                 <p>Ruego me confirme que lo ha recibido correctamente y adjunte justificante o indique previsión de su abono, no dudes en contactar con nosotros al 956662942</p>
-                                <p>Gracias por confiar en Hawkins, un saludo</p>
+                                <p>Gracias por confiar en Talleres Cardosa, un saludo</p>
                            @elseif($mailInvoice->paymentMethodId == 9)
                                 <p>Estimado cliente.</p>
                                 <p>Adjunto remito factura que corresponde al presupuesto aceptado.</p>
                                 <p>Ruego me confirme que lo ha recibido correctamente. Si tienes cualquier consulta, no dudes en contactar con nosotros al 956662942</p>
-                                <p>Gracias por confiar en Hawkins, un saludo</p>
+                                <p>Gracias por confiar en Talleres Cardosa, un saludo</p>
                            @else
                                 <p>Estimado cliente.</p>
                                 <p>Adjunto remito factura que corresponde al presupuesto aceptado.</p>
                                 <p>Ruego me confirme que lo ha recibido correctamente. Si tienes cualquier consulta, no dudes en contactar con nosotros al 956662942</p>
-                                <p>Gracias por confiar en Hawkins, un saludo</p>
+                                <p>Gracias por confiar en Talleres Cardosa, un saludo</p>
                            @endif
                         </td>
                     </tr>

@@ -36,7 +36,7 @@ class MailTracking extends Mailable
     public function build()
     {
         $mail = $this->from($this->mailTracking->gestorMail)
-        ->subject("Código de seguimiento de tu pedido - Los Creativos de Hawkins")
+        ->subject("Código de seguimiento de tu pedido - Talleres Cardosa")
         ->view('mails.mailTrackingCode');
 
         return $mail;

@@ -35,7 +35,7 @@ class MailMeeting extends Mailable
      */
     public function build(){
         $mail = $this->from('info@crmhawkins.com')
-        ->subject('Acta de Reunion - HAWKINS')
+        ->subject('Acta de Reunion - Talleres Cardosa')
         ->view('mails.mailMeeting');
 
         return $mail;

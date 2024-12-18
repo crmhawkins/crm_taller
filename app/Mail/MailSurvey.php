@@ -35,7 +35,7 @@ class MailSurvey extends Mailable
      */
     public function build(){
         $mail = $this->from('info@crmhawkins.com')
-        ->subject("Encuesta de satisfacción - Los Creativos de Hawkins")
+        ->subject("Encuesta de satisfacción - Talleres Cardosa")
         ->view('mails.mailSurvey');
 
         return $mail;

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Los Creativos de Hawkins - FELICITACION DE NAVIDAD</title>
+    <title>Talleres Cardosa - FELICITACION DE NAVIDAD</title>
     <style>
         body {
             box-sizing: border-box;
@@ -101,7 +101,7 @@
     <div class="flex">
     
     <div class="page">
-        <img class="logo" src="https://i.ibb.co/k1gq0HG/logo.png" alt="Los Creativos de Hawkins">
+        <img class="logo" src="https://i.ibb.co/k1gq0HG/logo.png" alt="Talleres Cardosa">
         <hr/>
         <div class="texto">
             <p>

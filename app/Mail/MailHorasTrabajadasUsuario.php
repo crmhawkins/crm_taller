@@ -40,7 +40,7 @@ class MailHorasTrabajadasUsuario extends Mailable
     public function build()
     {
         $mail = $this->from('info@crmhawkins.com')
-        ->subject("Horas Trabajadas - Los Creativos de Hawkins")
+        ->subject("Horas Trabajadas - Talleres Cardosa")
         ->view('mails.mailHorasTrabajadasUsuario');
 
         return $mail;

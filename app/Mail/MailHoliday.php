@@ -38,7 +38,7 @@ class MailHoliday extends Mailable
     public function build()
     {
         $mail = $this->from('holidays@crmhawkins.com')
-        ->subject("Vacaciones - Los Creativos de Hawkins")
+        ->subject("Vacaciones - Talleres Cardosa")
         ->view('mails.mailHoliday');
 
         return $mail;

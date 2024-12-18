@@ -38,7 +38,7 @@ class MailConcept extends Mailable
     public function build()
     {
         $mail = $this->from($this->MailConcept->gestorMail)
-        ->subject("Solicitud de presupuesto - Los Creativos de Hawkins")
+        ->subject("Solicitud de presupuesto - Talleres Cardosa")
         ->view('mails.mailConcept');
 
         foreach($this->atta as $filePath){

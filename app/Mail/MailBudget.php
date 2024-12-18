@@ -38,7 +38,7 @@ class MailBudget extends Mailable
     public function build()
     {
         $mail = $this->from("info@crmhawkins.com")
-        ->subject("Presupuesto - Los Creativos de Hawkins")
+        ->subject("Presupuesto - Talleres Cardosa")
         ->view('mails.mailBudget');
 
         foreach($this->atta as $filePath){

@@ -103,7 +103,7 @@
 </head>
 <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
     <!-- HIDDEN PREHEADER TEXT -->
-    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> Correo electronico enviado desde el CRM & ERP de Los Creativos de Hawkins </div>
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> Correo electronico enviado desde el CRM & ERP de Talleres Cardosa </div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <!-- LOGO -->
         <tr>
@@ -146,7 +146,7 @@
                     </tr>
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #000; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">Un cordial saludo,<br>Los Creativos de Hawkins</p>
+                            <p style="margin: 0;">Un cordial saludo,<br>Talleres Cardosa</p>
 							<hr style="display: block;border-style: inset;border-width: 1px;border-color: #282828">
 							<p>Responsable Comercial: {{$MailConceptSupplier->gestor}}</p>
 							<p>Correo: {{$MailConceptSupplier->gestorMail}}</p>
