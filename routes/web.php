@@ -66,6 +66,8 @@ use App\Http\Controllers\CochesSustitucionController;
 use App\Http\Controllers\ReservasCocheController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\HojaInspeccionController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -640,6 +642,11 @@ Route::group(['middleware' => 'auth'], function () {
     // Eliminar un coche específico
     Route::delete('/coches/{coche}', [CocheController::class, 'destroy'])->name('coches.destroy');
 
+    Route::get('coches/{coche}/hojas-inspeccion', [HojaInspeccionController::class, 'index'])->name('hojas_inspeccion.index');
+    Route::get('coches/{coche}/hojas-inspeccion/create', [HojaInspeccionController::class, 'create'])->name('hojas_inspeccion.create');
+    Route::post('coches/{coche}/hojas-inspeccion', [HojaInspeccionController::class, 'store'])->name('hojas_inspeccion.store');
+    Route::get('coches/{coche}/hojas-inspeccion/{hoja}/edit', [HojaInspeccionController::class, 'edit'])->name('hojas_inspeccion.edit');
+    Route::put('coches/{coche}/hojas-inspeccion/{hoja}', [HojaInspeccionController::class, 'update'])->name('hojas_inspeccion.update');
     
     Route::get('/citas/calendario', [AppointmentController::class, 'index'])->name('appointments.calendar');
     Route::get('/citas', [AppointmentController::class, 'getAppointments'])->name('appointments.get');
