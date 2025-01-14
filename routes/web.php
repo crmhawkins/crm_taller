@@ -647,10 +647,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('coches/{coche}/hojas-inspeccion', [HojaInspeccionController::class, 'store'])->name('hojas_inspeccion.store');
     Route::get('coches/{coche}/hojas-inspeccion/{hoja}/edit', [HojaInspeccionController::class, 'edit'])->name('hojas_inspeccion.edit');
     Route::put('coches/{coche}/hojas-inspeccion/{hoja}', [HojaInspeccionController::class, 'update'])->name('hojas_inspeccion.update');
-    
+    Route::delete('hojas_inspeccion/{cocheId}/{hojaId}', [HojaInspeccionController::class, 'destroy'])->name('hojas_inspeccion.destroy');
+
+    Route::post('/tasks/start/{id}', [TasksController::class, 'startTask'])->name('tasks.start');
+    Route::post('/tasks/pause/{id}', [TasksController::class, 'pauseTask'])->name('tasks.pause');
+    Route::post('/tasks/finish/{id}', [TasksController::class, 'finishTask'])->name('tasks.finish');
+    Route::post('/tasks/set-status', [TasksController::class, 'setStatusTask'])->name('tasks.setStatus');
+
     Route::get('/citas/calendario', [AppointmentController::class, 'index'])->name('appointments.calendar');
     Route::get('/citas', [AppointmentController::class, 'getAppointments'])->name('appointments.get');
     Route::post('/citas', [AppointmentController::class, 'store'])->name('appointments.store');
+
+
+    Route::get('/users/search', [TasksController::class, 'search'])->name('users.search');
+    Route::post('/tasks/assign/{taskId}/{userId}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
+
+    
     // Ruta para actualizar una cita existente
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');

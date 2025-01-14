@@ -33,7 +33,7 @@
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('hojas_inspeccion.store', $coche->id) }}" method="POST">
+                    <form id="formularioInspeccion" action="{{ route('hojas_inspeccion.store', $coche->id) }}" method="POST">
                         @csrf
                         <style>
                             .container {
@@ -514,6 +514,17 @@ programado del vehículo ni corrige necesariamente posibles averías ya existent
 
             window.addEventListener("resize", resizeCanvas);
             resizeCanvas();
+
+            // Cargar firma guardada si existe
+            const savedSignature = "{{ $hojaInspeccion->firma_cliente ?? '' }}";
+            if (savedSignature) {
+                const image = new Image();
+                image.onload = function() {
+                    signaturePad.clear();
+                    canvas.getContext('2d').drawImage(image, 0, 0);
+                };
+                image.src = savedSignature;
+            }
 
             document.getElementById('formularioInspeccion').addEventListener('submit', function (e) {
                 if (!signaturePad.isEmpty()) {

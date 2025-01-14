@@ -33,14 +33,7 @@ class HojaInspeccionController extends Controller
         $data = $request->all();
         $data['coche_id'] = $cocheId;
 
-        if ($request->has('firma_cliente')) {
-            $image = $request->input('firma_cliente'); // base64 encoded image
-            $image = str_replace('data:image/png;base64,', '', $image);
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'firma_' . time() . '.png';
-            \File::put(public_path('firmas') . '/' . $imageName, base64_decode($image));
-            $data['firma_cliente'] = $imageName;
-        }
+        //return $data;
 
         HojaInspeccion::create($data);
 
@@ -69,5 +62,14 @@ class HojaInspeccionController extends Controller
 
         return redirect()->route('hojas_inspeccion.index', $cocheId)
                          ->with('success', 'Hoja de inspección actualizada con éxito.');
+    }
+
+    public function destroy($cocheId, $hojaId)
+    {
+        $hojaInspeccion = HojaInspeccion::findOrFail($hojaId);
+        $hojaInspeccion->delete();
+
+        return redirect()->route('hojas_inspeccion.index', $cocheId)
+                         ->with('success', 'Hoja de inspección borrada con éxito.');
     }
 }

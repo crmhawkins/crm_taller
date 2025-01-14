@@ -33,6 +33,29 @@ class TasksController extends Controller
     return view('tasks.all', compact('tareas'));
 }
 
+public function search(Request $request)
+{
+    $search = $request->get('q');
+    $users = User::where('name', 'LIKE', "%$search%")->get();
+
+    return response()->json($users);
+}
+
+public function assignTaskToUser($taskId, $userId)
+{
+    $task = Task::find($taskId);
+    $user = User::find($userId);
+
+    if (!$task || !$user) {
+        return response()->json(['success' => false, 'message' => 'Tarea o usuario no encontrado.']);
+    }
+
+    $task->admin_user_id = $userId;
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Usuario asignado correctamente a la tarea.']);
+}
+
 public function assignTask($id)
 {
     $task = Task::find($id);
@@ -78,6 +101,51 @@ public function unassignTask($id)
 
     return response()->json(['success' => true, 'message' => 'Tarea desasignada correctamente.']);
 }
+
+
+public function startTask($id)
+{
+    $task = Task::find($id);
+    if (!$task) {
+        return response()->json(['success' => false, 'message' => 'Tarea no encontrada.']);
+    }
+
+    // Lógica para iniciar la tarea
+    $task->task_status_id = 1; // Suponiendo que 1 es el ID para "En progreso"
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Tarea iniciada correctamente.']);
+}
+
+public function pauseTask($id)
+{
+    $task = Task::find($id);
+    if (!$task) {
+        return response()->json(['success' => false, 'message' => 'Tarea no encontrada.']);
+    }
+
+    // Lógica para pausar la tarea
+    $task->task_status_id = 2; // Suponiendo que 2 es el ID para "Pausada"
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Tarea pausada correctamente.']);
+}
+
+public function finishTask($id)
+{
+    $task = Task::find($id);
+    if (!$task) {
+        return response()->json(['success' => false, 'message' => 'Tarea no encontrada.']);
+    }
+
+    // Lógica para finalizar la tarea
+    $task->task_status_id = 3; // Suponiendo que 3 es el ID para "Finalizada"
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Tarea finalizada correctamente.']);
+}
+
+
 
     public function cola()
     {
@@ -410,4 +478,289 @@ public function unassignTask($id)
             'mensaje' => 'El tarea borrada correctamente'
         ]);
     }
+
+
+    public function setStatusTask(Request $request)
+    {
+
+
+
+        $tarea = Task::find($request->id);
+        $date = Carbon::now();
+
+        $formatEstimated = strtotime($tarea->estimated_time);
+        $formatReal = strtotime($tarea->real_time);
+
+
+        $error = false;
+
+
+        //if($clientIP == "81.45.82.225" || $usuario->access_level_id == 4 || $usuario->access_level_id == 3){
+
+        if ($tarea) {
+            switch ($request->estado) {
+                case "Reanudar":
+                    // $tareaActiva = Task::where("admin_user_id", $usuario->id)->where("task_status_id", 1)->get()->first();
+
+                    // if (!$tareaActiva) {
+                    //     $tarea->task_status_id = 1;
+                    // }
+
+                    $logTaskC = DB::select("SELECT id FROM `log_tasks` WHERE `status` = 'Reanudada' AND `task_id` = $tarea->id");
+                    if (count($logTaskC) == 1) {
+                        $error = true;
+                    } else {
+
+
+                        $createLog = LogTasks::create([
+                            'admin_user_id' => $tarea->admin_user_id,
+                            'task_id' => $tarea->id,
+                            'date_start' => $date,
+                            'date_end' => null,
+                            'status' => 'Reanudada'
+                        ]);
+
+                        // if ($tarea->real_time > $tarea->estimated_time) {
+                        //     // Calcular el porcentaje de exceso
+
+                        //     list($realHours, $realMinutes, $realSeconds) = explode(':', $tarea->real_time);
+                        //     $realTimeInSeconds = ($realHours * 3600) + ($realMinutes * 60) + $realSeconds;
+
+                        //     list($estimatedHours, $estimatedMinutes, $estimatedSeconds) = explode(':', $tarea->estimated_time);
+                        //     $estimatedTimeInSeconds = ($estimatedHours * 3600) + ($estimatedMinutes * 60) + $estimatedSeconds;
+
+                        //     // Calcular el porcentaje de exceso basado en segundos
+                        //     $exceedPercentage = ($realTimeInSeconds / $estimatedTimeInSeconds) * 100;
+
+                        //     // Inicializar datos comunes de la alerta
+                        //     $data = [
+                        //         "admin_user_id" => $tarea->gestor_id,
+                        //         "status_id" => 1,
+                        //         "reference_id" => $tarea->id,
+                        //         "activation_datetime" => Carbon::now()
+                        //     ];
+
+                            // Definir el mensaje y el stage_id según el porcentaje de exceso
+                            // if ($exceedPercentage >= 100) {
+                            //     $data["stage_id"] = 40; // Stage para el 100% de sobrepaso
+                            //     $data["description"] = 'Tarea ' . $tarea->id.' '.$tarea->title .' ha sobrepasado las horas estimadas en un 100% o más (pérdidas)';
+                            // } elseif ($exceedPercentage >= 50) {
+                            //     $data["stage_id"] = 40; // Stage para el 50% de sobrepaso
+                            //     $data["description"] = 'Tarea ' . $tarea->id.' '.$tarea->title .' está sobrepasando las horas estimadas en un 50%';
+                            // } else {
+                            //     $data["stage_id"] = 40; // Stage para sobrepaso menor al 50%
+                            //     $data["description"] = 'Aviso de Tarea - Se está sobrepasando las horas estimadas en la tarea ' . $tarea->title;
+                            // }
+
+                            // $existe = Alert::where('stage_id', $data["stage_id"]) ->where('reference_id', $tarea->id)->where('description', $data["description"])->exists();
+                            // // Crear y guardar la alerta
+                            // if (!$existe) {
+                            //     $alert = Alert::create($data);
+                            //     $alertSaved = $alert->save();
+                            // }
+                        // }
+
+
+                        // $logTask = DB::select("SELECT id FROM `log_tasks` WHERE date_start BETWEEN DATE_SUB(now(), interval 6 hour) AND DATE_ADD(NOW(), INTERVAL 7 hour) AND `task_id` = $tarea->id");
+                        // if (count(value: $logTask) == 1) {
+
+                        //     $activeJornada = $usuario->activeJornada();
+
+                        //     if (!$activeJornada) {
+                        //         $jornada =  Jornada::create([
+                        //             'admin_user_id' => $usuario->id,
+                        //             'start_time' => Carbon::now(),
+                        //             'is_active' => true,
+                        //         ]);
+                        //     }
+
+                        //     $horaLimiteEntrada = Carbon::createFromTime(9, 30, 0, 'Europe/Madrid');
+                        //     $horaLimiteEntradaUTC = $horaLimiteEntrada->setTimezone('UTC');
+                        //     $mesActual = Carbon::now()->month;
+                        //     $añoActual = Carbon::now()->year;
+                        //     $fechaActual = Carbon::now();
+
+                        //     $todayJornada = Jornada::where('admin_user_id', $usuario->id)
+                        //     ->whereDate('start_time', $fechaActual->toDateString())
+                        //     ->whereTime('start_time', '>', $horaLimiteEntradaUTC->format('H:i:s'))
+                        //     ->get();
+
+
+                        //     $hourlyAverage = Jornada::where('admin_user_id', $usuario->id)
+                        //         ->whereMonth('start_time', $mesActual)
+                        //         ->whereYear('start_time', $añoActual)
+                        //         ->whereRaw("TIME(start_time) > ?", [$horaLimiteEntradaUTC->format('H:i:s')])
+                        //         ->get();
+
+
+
+
+                        //     $fechaNow = Carbon::now();
+
+                        //     if(count($todayJornada) > 0){
+
+                        //         if (count($hourlyAverage) > 2) {
+                        //             $alertados = [1,8];
+                        //             foreach($alertados as $alertar){
+                        //                 $data = [
+                        //                     "admin_user_id" =>  $alertar,
+                        //                     "stage_id" => 23,
+                        //                     "description" => $usuario->name . " ha llegado tarde 3 veces o mas este mes",
+                        //                     "status_id" => 1,
+                        //                     "reference_id" => $usuario->id,
+                        //                     "activation_datetime" => Carbon::now()->format('Y-m-d H:i:s')
+                        //                 ];
+
+                        //                 $alert = Alert::create($data);
+                        //                 $alertSaved = $alert->save();
+                        //             }
+                        //         }
+
+                        //         switch (count($hourlyAverage)) {
+                        //             case 1:
+                        //                 $text = 'Hemos notado que hoy llegaste después de la hora límite de entrada (09:30). Entendemos que a veces pueden surgir imprevistos, pero te recordamos la importancia de respetar el horario para mantener la eficiencia en el equipo.';
+                        //                 break;
+                        //             case 2:
+                        //                 $text = 'Nuevamente has llegado después de la hora límite de entrada (09:30). Reforzamos la importancia de cumplir con el horario para asegurar un buen rendimiento y organización en el equipo.';
+                        //                 break;
+                        //             case 3:
+                        //                 $text = 'Se ha registrado tu llegada tarde tres veces. Esta información se compartirá con la Dirección. Es importante respetar los horarios para mantener el rendimiento y la organización del equipo.';
+                        //                 break;
+                        //             default:
+                        //                 $text = 'Se ha registrado tu llegada tarde mas de  tres veces. Esta información se compartirá con la Dirección. Es importante respetar los horarios para mantener el rendimiento y la organización del equipo.';
+                        //                 break;
+                        //         }
+
+                        //         $data = [
+                        //             "admin_user_id" =>  $usuario->id,
+                        //             "stage_id" => 23,
+                        //             "description" => $text,
+                        //             "status_id" => 1,
+                        //             "reference_id" => $usuario->id,
+                        //             "activation_datetime" => $fechaNow->format('Y-m-d H:i:s')
+                        //         ];
+
+                        //         $alert = Alert::create($data);
+                        //         $alertSaved = $alert->save();
+                        //     }
+
+                        // }
+                        $tarea->task_status_id = 1;
+                    }
+                    break;
+                case "Pausada":
+                    if ($tarea->task_status_id == 1) {
+                        if ($tarea->real_time == "00:00:00") {
+                            $start = $tarea->updated_at;
+                            $end   = new \DateTime("NOW");
+                            $interval = $end->diff($start);
+
+                            $time = sprintf(
+                                '%02d:%02d:%02d',
+                                ($interval->d * 24) + $interval->h,
+                                $interval->i,
+                                $interval->s
+                            );
+                        } else {
+                            $start = $tarea->updated_at;
+                            $end   = new \DateTime("NOW");
+                            $interval = $end->diff($start);
+
+                            $time = sprintf(
+                                '%02d:%02d:%02d',
+                                ($interval->d * 24) + $interval->h,
+                                $interval->i,
+                                $interval->s
+                            );
+
+                            $time = $this->sum_the_time($tarea->real_time, $time);
+                        }
+                        $tarea->real_time = $time;
+                    }
+
+                    $last = LogTasks::where("admin_user_id", $tarea->admin_user_id)->get()->last();
+                    if ($last) {
+                        $last->date_end = $date;
+                        $last->status = "Pausada";
+                        $last->save();
+                    }
+
+                    $tarea->task_status_id = 2;
+                    break;
+                case "Finalizada":
+
+                    //Crear Alerta tarea terminada antes de tiempo
+                    // if ($formatEstimated > $formatReal) {
+                    //     $dataAlert = [
+                    //         'admin_user_id' => $usuario->id,
+                    //         'stage_id' => 14,
+                    //         'activation_datetime' => $date->format('Y-m-d H:i:s'),
+                    //         'status_id' => 1,
+                    //         'reference_id' => $tarea->id,
+                    //     ];
+
+                    //     $alert = Alert::create($dataAlert);
+                    //     $alertSaved = $alert->save();
+                    // }
+
+                    //revisar antes que la tarea este pausada
+                    if($tarea->task_status_id == 2){
+                        $tarea->task_status_id = 5;
+                    }
+
+
+                    break;
+            }
+
+            $taskSaved = $tarea->save();
+
+
+            if (($taskSaved || $tareaActiva == null) && !$error) {
+                return response()->json(['estado' => 'OK'], 200);
+
+            } else {
+                $response = json_encode(array(
+                    "estado" => "ERROR; TIENES OTRA TAREA ACTIVA. HABLA CON EL CREADOR .` . $error,"
+                ));
+            }
+        } else {
+            $response = json_encode(array(
+                "estado" => "ERROR"
+            ));
+        }
+        //}
+
+        return $response;
+    }
+
+    function sum_the_time($time1, $time2)
+    {
+        $times = array($time1, $time2);
+        $seconds = 0;
+        foreach ($times as $time) {
+            list($hour, $minute, $second) = explode(':', $time);
+            $seconds += $hour * 3600;
+            $seconds += $minute * 60;
+            $seconds += $second;
+        }
+        $hours = floor($seconds / 3600);
+        $seconds -= $hours * 3600;
+        $minutes  = floor($seconds / 60);
+        $seconds -= $minutes * 60;
+        // return "{$hours}:{$minutes}:{$seconds}";
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
+
+    function convertToNumber($importe) {
+        // Elimina los puntos de separación de miles
+        $importe = str_replace('.', '', $importe);
+        // Reemplaza la coma decimal por un punto decimal
+        $importe = str_replace(',', '.', $importe);
+        // Convierte a número flotante
+        return (float)$importe;
+    }
+
+
+
+
 }

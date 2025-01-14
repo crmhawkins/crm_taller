@@ -143,7 +143,109 @@
                             background-color: #000; /* Color del check */
                         }
 
+                        
+
+                        /* Estilos para impresión */
+                        @media print {
+                            body * {
+                                visibility: hidden;
+                                background-color: #fff !important;
+                            }
+                            .page-title{
+                                display: none;
+                            }
+
+                            .contenedor{
+                                background-color: #fff !important;
+                                padding: 0px !important;
+                                margin: 0px !important;
+                            }
+
+                            #main{
+                                background-color: #fff !important;
+                            }
+
+                            #topbar{
+                                display: none;
+                            }
+
+                            .card{
+                                background-color: #fff !important;
+                                padding: 0px !important;
+                                margin: 0px !important;
+                            }
+
+                            .card-body{
+                                padding: 0px !important;
+                                background-color: #fff !important;
+                                margin: 0px !important;
+                            }
+                            
+                            #formularioInspeccion, #formularioInspeccion * {
+                                visibility: visible;
+                                background-color: #fff !important;
+                            }
+                            #formularioInspeccion {
+                                position: relative;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                margin-bottom: 20px !important;
+                                padding: 0px !important;
+                                margin: 0px !important;
+                                background-color: #fff !important;
+                            }
+                            td{
+                                width: 5% !important;
+                            }
+
+                            .name{
+                                max-width: 200px !important;
+                                width: 200px !important;
+                                font-size: 12px !important;
+                            }
+
+                            .punto{
+                                width: 40px !important;
+                                height: 40px !important;
+                                font-size: 12px !important;
+                            }
+
+                            section{
+                                padding: 0px !important;
+                                margin: 0px !important;
+                                background-color: #fff !important;
+                                width: 100% !important;
+                            }
+
+                            .container{
+                                padding: 15px !important;
+                                margin: 0px !important;
+                                background-color: #fff !important;
+                                width: 100% !important;
+                                max-width: 90% !important;
+                                margin: 0 auto !important;
+                            }
+
+                            .observaciones{
+                                width: 30% !important;
+                            }
+                            
+                            .actualizar{
+                            display: none;
+                        }
+
+                        .borrar{
+                            display: none;
+                        }
+                            .imprimir{
+                                display: none;
+                            }
+                        }
                     </style>
+
+                    <button type="button" onclick="window.print()" class="btn btn-secondary mb-3 imprimir">Imprimir</button>
+
                     <div class="imagen-header">
                         <div>
 
@@ -191,7 +293,7 @@
                                         <td><input type="radio" name="nivel_aceite" value="1" {{ $hojaInspeccion->nivel_aceite == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_aceite" value="2" {{ $hojaInspeccion->nivel_aceite == 2 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_aceite" value="3" {{ $hojaInspeccion->nivel_aceite == 3 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_aceite" value="{{ $hojaInspeccion->observaciones_aceite }}">
                                         </td>
                                     </tr>
@@ -201,7 +303,7 @@
                                         <td><input type="radio" name="nivel_liquido_refrigerante" value="1" {{ $hojaInspeccion->nivel_liquido_refrigerante == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_liquido_refrigerante" value="2" {{ $hojaInspeccion->nivel_liquido_refrigerante == 2 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_liquido_refrigerante" value="3" {{ $hojaInspeccion->nivel_liquido_refrigerante == 3 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_liquido_refrigerante" value="{{ $hojaInspeccion->observaciones_liquido_refrigerante }}">
                                         </td>
                                     </tr>
@@ -211,7 +313,7 @@
                                         <td><input type="radio" name="nivel_liquido_frenos_embrague" value="1" {{ $hojaInspeccion->nivel_liquido_frenos_embrague == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_liquido_frenos_embrague" value="2" {{ $hojaInspeccion->nivel_liquido_frenos_embrague == 2 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_liquido_frenos_embrague" value="3" {{ $hojaInspeccion->nivel_liquido_frenos_embrague == 3 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_liquido_frenos_embrague" value="{{ $hojaInspeccion->observaciones_liquido_frenos_embrague }}">
                                         </td>
                                     </tr>
@@ -221,7 +323,7 @@
                                         <td><input type="radio" name="nivel_limpiaparabrisas" value="1" {{ $hojaInspeccion->nivel_limpiaparabrisas == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_limpiaparabrisas" value="2" {{ $hojaInspeccion->nivel_limpiaparabrisas == 2 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="nivel_limpiaparabrisas" value="3" {{ $hojaInspeccion->nivel_limpiaparabrisas == 3 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_nivel_limpiaparabrisas" value="{{ $hojaInspeccion->observaciones_nivel_limpiaparabrisas }}">
                                         </td>
                                     </tr>
@@ -231,7 +333,7 @@
                                         <td><input type="radio" name="estado_correas" value="1" {{ $hojaInspeccion->estado_correas == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="estado_correas" value="0" {{ $hojaInspeccion->estado_correas == 0 ? 'checked' : '' }}></td>
                                         <td></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_correas" value="{{ $hojaInspeccion->observaciones_correas }}">
                                         </td>
                                     </tr>
@@ -255,7 +357,7 @@
                                         <td class="name">INTERMITENTES/EMERGENCIA -></td>
                                         <td><input type="radio" name="intermitente" value="1" {{ $hojaInspeccion->intermitente == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="intermitente" value="0" {{ $hojaInspeccion->intermitente == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_intermitente" value="{{ $hojaInspeccion->observaciones_intermitente }}">
                                         </td>
                                     </tr>
@@ -264,7 +366,7 @@
                                         <td class="name">FRENADO -></td>
                                         <td><input type="radio" name="frenado" value="1" {{ $hojaInspeccion->frenado == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="frenado" value="0" {{ $hojaInspeccion->frenado == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_frenado" value="{{ $hojaInspeccion->observaciones_frenado }}">
                                         </td>
                                     </tr>
@@ -273,7 +375,7 @@
                                         <td class="name">MARCHA ATRÁS -></td>
                                         <td><input type="radio" name="marcha_atras" value="1" {{ $hojaInspeccion->marcha_atras == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="marcha_atras" value="0" {{ $hojaInspeccion->marcha_atras == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_marcha_atras" value="{{ $hojaInspeccion->observaciones_marcha_atras }}">
                                         </td>
                                     </tr>
@@ -282,7 +384,7 @@
                                         <td class="name">POSICIÓN/CORTA/LARGA -></td>
                                         <td><input type="radio" name="luces" value="1" {{ $hojaInspeccion->luces == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="luces" value="0" {{ $hojaInspeccion->luces == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_luces" value="{{ $hojaInspeccion->observaciones_luces }}">
                                         </td>
                                     </tr>
@@ -291,7 +393,7 @@
                                         <td class="name">REGLAJE FAROS -></td>
                                         <td><input type="radio" name="reglaje_faros" value="1" {{ $hojaInspeccion->reglaje_faros == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="reglaje_faros" value="0" {{ $hojaInspeccion->reglaje_faros == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_reglaje_faros" value="{{ $hojaInspeccion->observaciones_reglaje_faros }}">
                                         </td>
                                     </tr>
@@ -300,7 +402,7 @@
                                         <td class="name">ANTINIEBLAS -></td>
                                         <td><input type="radio" name="antinieblas" value="1" {{ $hojaInspeccion->antinieblas == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="antinieblas" value="0" {{ $hojaInspeccion->antinieblas == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_antinieblas" value="{{ $hojaInspeccion->observaciones_antinieblas }}">
                                         </td>
                                     </tr>
@@ -324,7 +426,7 @@
                                         <td class="name">ESTADO -></td>
                                         <td><input type="radio" name="estado_neumaticos" value="1" {{ $hojaInspeccion->estado_neumaticos == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="estado_neumaticos" value="0" {{ $hojaInspeccion->estado_neumaticos == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_estado_neumaticos" value="{{ $hojaInspeccion->observaciones_estado_neumaticos }}">
                                         </td>
                                     </tr>
@@ -333,7 +435,7 @@
                                         <td class="name">PRESIÓN -></td>
                                         <td><input type="radio" name="presion_neumaticos" value="1" {{ $hojaInspeccion->presion_neumaticos == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="presion_neumaticos" value="0" {{ $hojaInspeccion->presion_neumaticos == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_presion_neumaticos" value="{{ $hojaInspeccion->observaciones_presion_neumaticos }}">
                                         </td>
                                     </tr>
@@ -357,7 +459,7 @@
                                         <td class="name">AMORTIGUADORES -></td>
                                         <td><input type="radio" name="amortiguadores" value="1" {{ $hojaInspeccion->amortiguadores == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="amortiguadores" value="0" {{ $hojaInspeccion->amortiguadores == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_amortiguadores" value="{{ $hojaInspeccion->observaciones_amortiguadores }}">
                                         </td>
                                     </tr>
@@ -366,7 +468,7 @@
                                         <td class="name">(rótulas, silentblocks, junta hom.) HOLGURAS -></td>
                                         <td><input type="radio" name="holguras" value="1" {{ $hojaInspeccion->holguras == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="holguras" value="0" {{ $hojaInspeccion->holguras == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_holguras" value="{{ $hojaInspeccion->observaciones_holguras }}">
                                         </td>
                                     </tr>
@@ -375,7 +477,7 @@
                                         <td class="name">(pastillas, discos, zapatas) DESGASTE FRENOS -></td>
                                         <td><input type="radio" name="desgastes_frenos" value="1" {{ $hojaInspeccion->desgastes_frenos == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="desgastes_frenos" value="0" {{ $hojaInspeccion->desgastes_frenos == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_desgastes_frenos" value="{{ $hojaInspeccion->observaciones_desgastes_frenos }}">
                                         </td>
                                     </tr>
@@ -384,7 +486,7 @@
                                         <td class="name">TENSIÓN FRENO DE MANO -></td>
                                         <td><input type="radio" name="tension_freno_mano" value="1" {{ $hojaInspeccion->tension_freno_mano == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="tension_freno_mano" value="0" {{ $hojaInspeccion->tension_freno_mano == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_tension_freno_mano" value="{{ $hojaInspeccion->observaciones_tension_freno_mano }}">
                                         </td>
                                     </tr>
@@ -393,7 +495,7 @@
                                         <td class="name">(líquidos, gases de escape) FUGAS -></td>
                                         <td><input type="radio" name="fugas" value="1" {{ $hojaInspeccion->fugas == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="fugas" value="0" {{ $hojaInspeccion->fugas == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_fugas" value="{{ $hojaInspeccion->observaciones_fugas }}">
                                         </td>
                                     </tr>
@@ -417,7 +519,7 @@
                                         <td class="name">(accionamiento y escobillas) LIMPIAPARABRISAS -></td>
                                         <td><input type="radio" name="limpiaparabrisas" value="1" {{ $hojaInspeccion->limpiaparabrisas == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="limpiaparabrisas" value="0" {{ $hojaInspeccion->limpiaparabrisas == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_limpiaparabrisas" value="{{ $hojaInspeccion->observaciones_limpiaparabrisas }}">
                                         </td>
                                     </tr>
@@ -426,7 +528,7 @@
                                         <td class="name">(anclaje y recogida) CINTURONES DE SEGURIDAD -></td>
                                         <td><input type="radio" name="cinturones_seguridad" value="1" {{ $hojaInspeccion->cinturones_seguridad == 1 ? 'checked' : '' }}></td>
                                         <td><input type="radio" name="cinturones_seguridad" value="0" {{ $hojaInspeccion->cinturones_seguridad == 0 ? 'checked' : '' }}></td>
-                                        <td>
+                                        <td class="observaciones">
                                             <input type="text" class="form-control" name="observaciones_cinturones_seguridad" value="{{ $hojaInspeccion->observaciones_cinturones_seguridad }}">
                                         </td>
                                     </tr>
@@ -436,11 +538,11 @@
 
                         <div class="grupo">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                                <div style="border: 1px solid #000; width: 50%; height: 100px; text-align: center; padding-top: 40px;">
+                                <div style="border: 1px solid #000; width: 40%; height: 100px; text-align: center; padding-top: 40px;">
                                     Sello del Taller
                                 </div>
-                                <div style="width: 50%; text-align: center;">
-                                    <canvas id="firmaCliente" width="100%" height="100" style="border: 1px solid #000;"></canvas>
+                                <div style="width: 40%; text-align: center;">
+                                    <canvas id="firmaCliente" width="300" height="150" style="border: 1px solid #000; width: 100%; height: 200px;"></canvas>
                                     <p>Firma del Cliente</p>
                                 </div>
                             </div>
@@ -455,8 +557,22 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
+                    <button type="submit" class="btn btn-primary mt-3 actualizar">Actualizar</button>
                 </form>
+
+                <form id="deleteForm" action="{{ route('hojas_inspeccion.destroy', [$coche->id, $hojaInspeccion->id]) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-danger mt-3 borrar" onclick="confirmDelete()">Borrar</button>
+                </form>
+
+                <script>
+                    function confirmDelete() {
+                        if (confirm('¿Estás seguro de que deseas borrar esta hoja de inspección?')) {
+                            document.getElementById('deleteForm').submit();
+                        }
+                    }
+                </script>
             </div>
         </div>
     </section>
@@ -470,7 +586,34 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const canvas = document.getElementById('firmaCliente');
-            const signaturePad = new SignaturePad(canvas);
+            const signaturePad = new SignaturePad(canvas, {
+                minWidth: 1,
+                maxWidth: 3,
+                penColor: "rgb(0, 0, 0)"
+            });
+
+            // Ajustar el tamaño del canvas al tamaño del contenedor
+            function resizeCanvas() {
+                const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext("2d").scale(ratio, ratio);
+                signaturePad.clear(); // Borrar la firma existente
+            }
+
+            window.addEventListener("resize", resizeCanvas);
+            resizeCanvas();
+
+            // Cargar firma guardada si existe
+            const savedSignature = "{{ $hojaInspeccion->firma_cliente ?? '' }}";
+            if (savedSignature) {
+                const image = new Image();
+                image.onload = function() {
+                    signaturePad.clear();
+                    canvas.getContext('2d').drawImage(image, 0, 0);
+                };
+                image.src = savedSignature;
+            }
 
             document.getElementById('formularioInspeccion').addEventListener('submit', function (e) {
                 if (!signaturePad.isEmpty()) {

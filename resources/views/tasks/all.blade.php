@@ -25,12 +25,74 @@
             </div>
         </div>
     </div>
+    <div class="ambas-tablas">
 
-    <section class="section pt-4">
-        <div class="card">
+
+    
+        <section class="section pt-4">
+            <div class="card">
+                <div class="card-body">
+                    <button id="toggleFullscreen" class="btn btn-secondary mb-3">Pantalla Completa</button>
+                    <div id="tableContainer" class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Responsable</th>
+                                    <th>Estado</th>
+                                    <th>Tiempo Estimado</th>
+                                    <th>Tiempo Real</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasksTableBodyEstado1y2">
+                                @foreach($tareas as $tarea)
+                                    @if($tarea->estado->id == 1 || $tarea->estado->id == 2)
+                                        <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
+                                            <td>{{ $tarea->title }}</td>
+                                            <td>{{ $tarea->usuario->name ?? 'No asignado' }} {{$tarea->usuario->surname ?? ''}}</td>
+                                            <td>{{ $tarea->estado->name ?? 'Sin estado' }}</td>
+                                            <td>{{ $tarea->estimated_time }}</td>
+                                            <td class="real-time">{{ $tarea->real_time }}</td>
+                                            <td>
+                                                @if($tarea->usuario)
+                                                    @if($tarea->estado->name != 'Reanudada')
+                                                        <button class="btn btn-success start-task" data-task-id="{{ $tarea->id }}">
+                                                            <i class="bi bi-play-fill"></i>
+                                                        </button>
+                                                    @endif
+                                                    @if($tarea->estado->name != 'En revisión' && $tarea->estado->name != 'Pausada')
+                                                        <button class="btn btn-warning pause-task" data-task-id="{{ $tarea->id }}">
+                                                            <i class="bi bi-pause-fill"></i>
+                                                        </button>
+                                                    @endif
+                                                    @if($tarea->estado->name == 'Pausada')
+                                                        <button class="btn btn-danger finish-task" data-task-id="{{ $tarea->id }}">
+                                                            <i class="bi bi-stop-fill"></i>
+                                                        </button>
+                                                    @endif
+                                                @endif
+                                                @if($tarea->estado->name != 'En revisión')
+                                                    <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
+                                                        Asignar
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nueva tabla para tareas con estados diferentes a 1 y 2 -->
+        <div class="card mt-4">
             <div class="card-body">
-                <button id="toggleFullscreen" class="btn btn-secondary mb-3">Pantalla Completa</button>
-                <div id="tableContainer" class="table-responsive">
+                <h4>Tareas en Revisión</h4>
+                <div class="table-responsive">
                     <table class="custom-table">
                         <thead>
                             <tr>
@@ -42,27 +104,70 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tasksTableBody">
+                        <tbody id="tasksTableBodyOtrosEstados">
                             @foreach($tareas as $tarea)
-                            <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
-                                <td>{{ $tarea->title }}</td>
-                                <td>{{ $tarea->usuario->name ?? 'No asignado' }}</td>
-                                <td>{{ $tarea->estado->name ?? 'Sin estado' }}</td>
-                                <td>{{ $tarea->estimated_time }}</td>
-                                <td>{{ $tarea->real_time }}</td>
-                                <td>
-                                    <button class="btn btn-primary toggle-responsibility" data-task-id="{{ $tarea->id }}">
-                                        {{ $tarea->usuario ? 'Liberar' : 'Tomar' }}
-                                    </button>
-                                </td>
-                            </tr>
+                                @if($tarea->estado->id != 1 && $tarea->estado->id != 2)
+                                    <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
+                                        <td>{{ $tarea->title }}</td>
+                                        <td>{{ $tarea->usuario->name ?? 'No asignado' }} {{$tarea->usuario->surname ?? ''}}</td>
+                                        <td>{{ $tarea->estado->name ?? 'Sin estado' }}</td>
+                                        <td>{{ $tarea->estimated_time }}</td>
+                                        <td>{{ $tarea->real_time }}</td>
+                                        <td>
+                                            @if($tarea->usuario)
+                                                @if($tarea->estado->id != 1)
+                                                    <button class="btn btn-success start-task" data-task-id="{{ $tarea->id }}">
+                                                        <i class="bi bi-play-fill"></i>
+                                                    </button>
+                                                @endif
+                                                @if($tarea->estado->id != 5 && $tarea->estado->id != 2)
+                                                    <button class="btn btn-warning pause-task" data-task-id="{{ $tarea->id }}">
+                                                        <i class="bi bi-pause-fill"></i>
+                                                    </button>
+                                                @endif
+                                                @if($tarea->estado->id == 2)
+                                                    <button class="btn btn-danger finish-task" data-task-id="{{ $tarea->id }}">
+                                                        <i class="bi bi-stop-fill"></i>
+                                                    </button>
+                                                @endif
+                                            @endif
+                                            @if($tarea->estado->id != 5)
+                                                <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
+                                                    Asignar
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </section>
+         <!-- Modal para asignar usuario -->
+    <div class="modal fade" id="assignUserModal" tabindex="-1" aria-labelledby="assignUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignUserModalLabel">Asignar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="userSearchInput" class="form-control" placeholder="Buscar usuario...">
+                    <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button>
+                    <ul id="userResults" class="list-group mt-2"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="assignUserButton">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+   
 
 </div>
 
@@ -71,9 +176,9 @@
 
 <script>
     document.getElementById('toggleFullscreen').addEventListener('click', function() {
-        const tableContainer = document.getElementById('tableContainer');
+        const pageContainer = document.querySelector('.ambas-tablas');
         if (!document.fullscreenElement) {
-            tableContainer.requestFullscreen().catch(err => {
+            pageContainer.requestFullscreen().catch(err => {
                 Swal.fire('Error', `Error al intentar entrar en modo de pantalla completa: ${err.message}`, 'error');
             });
         } else {
@@ -117,44 +222,315 @@
     }, 10000);
 
     function fetchTasks() {
-       fetch('{{ route("tasks.json") }}')
-           .then(response => {
-               if (!response.ok) {
-                   throw new Error('Network response was not ok');
-               }
-               return response.json();
-           })
-           .then(data => {
-               const tbody = document.getElementById('tasksTableBody');
-               tbody.innerHTML = ''; // Limpiar el contenido actual
+        fetch('{{ route("tasks.json") }}')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbodyEstado1y2 = document.getElementById('tasksTableBodyEstado1y2');
+                const tbodyOtrosEstados = document.getElementById('tasksTableBodyOtrosEstados');
+                tbodyEstado1y2.innerHTML = ''; // Limpiar el contenido actual
+                tbodyOtrosEstados.innerHTML = ''; // Limpiar el contenido actual
 
-               data.forEach(tarea => {
-                   const row = document.createElement('tr');
-                   row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
-                   row.innerHTML = `
-                       <td>${tarea.title}</td>
-                       <td>${tarea.usuario ? tarea.usuario.name : 'No asignado'}</td>
-                       <td>${tarea.estado ? tarea.estado.name : 'Sin estado'}</td>
-                       <td>${tarea.estimated_time}</td>
-                       <td>${tarea.real_time}</td>
-                       <td>
-                           <button class="btn btn-primary toggle-responsibility" data-task-id="${tarea.id}">
-                               ${tarea.usuario ? 'Liberar' : 'Tomar'}
-                           </button>
-                       </td>
-                   `;
-                   tbody.appendChild(row);
-               });
+                data.forEach(tarea => {
+                    const row = document.createElement('tr');
+                    row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
+                    
+                    let actionButtons = '';
+                    if (tarea.usuario) {
+                        if (tarea.estado.name !== 'Reanudada') {
+                            actionButtons += `
+                                <button class="btn btn-success start-task" data-task-id="${tarea.id}">
+                                    <i class="bi bi-play-fill"></i>
+                                </button>
+                            `;
+                        }
+                        if (tarea.task_status_id && tarea.task_status_id !== 5) {
+                            actionButtons += `
+                                <button class="btn btn-warning pause-task" data-task-id="${tarea.id}">
+                                    <i class="bi bi-pause-fill"></i>
+                                </button>
+                            `;
+                        }
+                        if (tarea.task_status_id && tarea.task_status_id === 2) {
+                            actionButtons += `
+                                <button class="btn btn-danger finish-task" data-task-id="${tarea.id}">
+                                    <i class="bi bi-stop-fill"></i>
+                                </button>
+                            `;
+                        }
+                    }
+                    if (tarea.task_status_id && tarea.task_status_id !== 5) {
+                        actionButtons += `
+                            <button class="btn btn-secondary assign-user" data-task-id="${tarea.id}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
+                                Asignar
+                            </button>
+                        `;
+                    }
 
-               attachEventListeners(); // Reasignar los event listeners
-           })
-           .catch(error => {
-               console.error('Error al actualizar las tareas:', error);
-           });
-   }
+                    row.innerHTML = `
+                        <td>${tarea.title}</td>
+                        <td>${tarea.usuario ? tarea.usuario.name : 'No asignado'} ${tarea.usuario ? tarea.usuario.surname : ''}</td>
+                        <td>${tarea.estado ? tarea.estado.name : 'Sin estado'}</td>
+                        <td>${tarea.estimated_time}</td>
+                        <td>${tarea.real_time}</td>
+                        <td>${actionButtons}</td>
+                    `;
 
-   // Inicializar los event listeners al cargar la página
-   document.addEventListener('DOMContentLoaded', attachEventListeners);
+                    if (tarea.estado && (tarea.estado.id == 1 || tarea.estado.id == 2)) {
+                        tbodyEstado1y2.appendChild(row);
+                    } else {
+                        tbodyOtrosEstados.appendChild(row);
+                    }
+                });
+
+                attachEventListeners(); // Reasignar los event listeners
+            })
+            .catch(error => {
+                console.error('Error al actualizar las tareas:', error);
+            });
+    }
+
+    function changeTaskStatus(taskId, estado) {
+        fetch(`/tasks/set-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ id: taskId, estado: estado })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.estado == 'OK') {
+                // Swal.fire('Éxito', data.message, 'success');
+                fetchTasks(); // Actualizar la tabla sin recargar
+            } else {
+                // Swal.fire('Error', data.estado, 'error');
+            }
+        })
+        .catch(error => {
+            Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
+            console.error('Error:', error);
+        });
+    }
+
+    // Asegúrate de que esta función esté definida antes de que se llame en attachEventListeners
+    function attachEventListeners() {
+        // Reasignar event listeners para los botones de las tareas
+        document.querySelectorAll('.start-task').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                changeTaskStatus(taskId, 'Reanudar');
+                // startRealTimeCounter(taskId);
+            });
+        });
+
+        document.querySelectorAll('.pause-task').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                changeTaskStatus(taskId, 'Pausada');
+                // stopRealTimeCounter(taskId);
+            });
+        });
+
+        document.querySelectorAll('.finish-task').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                changeTaskStatus(taskId, 'Finalizada');
+                // stopRealTimeCounter(taskId);
+            });
+        });
+
+        document.querySelectorAll('.assign-user').forEach(button => {
+            button.addEventListener('click', function() {
+                selectedTaskId = this.getAttribute('data-task-id');
+            });
+        });
+    }
+
+    // Inicializar los event listeners al cargar la página
+    document.addEventListener('DOMContentLoaded', attachEventListeners);
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const userSearchInput = document.getElementById('userSearchInput');
+        const searchUserButton = document.getElementById('searchUserButton');
+        const userResults = document.getElementById('userResults');
+        let selectedUserId = null;
+        let selectedTaskId = null;
+
+        document.querySelectorAll('.assign-user').forEach(button => {
+            button.addEventListener('click', function() {
+                selectedTaskId = this.getAttribute('data-task-id');
+            });
+        });
+
+        searchUserButton.addEventListener('click', function() {
+            const query = userSearchInput.value;
+            if (query.length >= 1) {
+                fetch(`{{ route("users.search") }}?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        userResults.innerHTML = '';
+                        data.forEach(user => {
+                            const listItem = document.createElement('li');
+                            listItem.className = 'list-group-item';
+                            listItem.textContent = user.name;
+                            listItem.dataset.userId = user.id;
+                            listItem.addEventListener('click', function() {
+                                selectedUserId = this.dataset.userId;
+                                userResults.querySelectorAll('li').forEach(item => item.classList.remove('active'));
+                                this.classList.add('active');
+                            });
+                            userResults.appendChild(listItem);
+                        });
+                    });
+            }
+        });
+
+        document.getElementById('assignUserButton').addEventListener('click', function() {
+            if (selectedUserId && selectedTaskId) {
+                fetch(`/tasks/assign/${selectedTaskId}/${selectedUserId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Éxito', data.message, 'success');
+                        fetchTasks(); // Actualizar la tabla
+                    } else {
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
+                    console.error('Error:', error);
+                });
+            } else {
+                Swal.fire('Error', 'Por favor, selecciona un usuario y una tarea.', 'error');
+            }
+        });
+
+        function changeTaskStatus(taskId, estado) {
+            fetch(`/tasks/set-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id: taskId, estado: estado })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.estado == 'OK') {
+                    // Swal.fire('Éxito', data.message, 'success').then(() => {
+                        fetchTasks(); // Recargar la página
+                    // });
+                } else {
+                    // Swal.fire('Error', data.estado, 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
+                console.error('Error:', error);
+            });
+        }
+
+        // Manejar el botón "Iniciar"
+        document.querySelectorAll('.start-task').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                changeTaskStatus(taskId, 'Reanudar');
+                startRealTimeCounter(taskId);
+            });
+        });
+
+        // Manejar el botón "Pausar"
+        document.querySelectorAll('.pause-task').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                changeTaskStatus(taskId, 'Pausada');
+                stopRealTimeCounter(taskId);
+            });
+        });
+
+        // Manejar el botón "Finalizar"
+        document.querySelectorAll('.finish-task').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                changeTaskStatus(taskId, 'Finalizada');
+                stopRealTimeCounter(taskId);
+            });
+        });
+    });
+
+    // Asegúrate de que el modal se muestre correctamente en pantalla completa
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('assignUserModal');
+        modal.addEventListener('shown.bs.modal', function () {
+            if (document.fullscreenElement) {
+                modal.style.position = 'fixed';
+                modal.style.top = '50%';
+                modal.style.left = '50%';
+                modal.style.transform = 'translate(-50%, -50%)';
+            }
+        });
+    });
+
+    function startRealTimeCounter(taskId) {
+        const row = document.querySelector(`tr[data-task-id="${taskId}"]`);
+        const realTimeCell = row.querySelector('.real-time');
+        let realTime = parseInt(row.getAttribute('data-real-time'), 10);
+
+        const intervalId = setInterval(() => {
+            realTime += 1;
+            realTimeCell.textContent = formatTime(realTime);
+            row.setAttribute('data-real-time', realTime);
+        }, 1000);
+
+        row.setAttribute('data-interval-id', intervalId);
+    }
+
+    function stopRealTimeCounter(taskId) {
+        const row = document.querySelector(`tr[data-task-id="${taskId}"]`);
+        const intervalId = row.getAttribute('data-interval-id');
+        if (intervalId) {
+            clearInterval(intervalId);
+            row.removeAttribute('data-interval-id');
+        }
+    }
+
+    function formatTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    document.querySelectorAll('.start-task').forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            changeTaskStatus(taskId, 'Reanudar');
+            startRealTimeCounter(taskId);
+        });
+    });
+
+    document.querySelectorAll('.pause-task, .finish-task').forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            stopRealTimeCounter(taskId);
+        });
+    });
+
 </script>
 
 <style>
