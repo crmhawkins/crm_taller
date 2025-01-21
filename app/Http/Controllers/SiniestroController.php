@@ -20,7 +20,7 @@ class SiniestroController extends Controller
         return view('siniestro.index');
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $seguros = Seguro::all();
         $tiposSiniestro = TipoSiniestro::all();
@@ -28,7 +28,9 @@ class SiniestroController extends Controller
         $coches = Coches::all();
         $clientes = Client::all();
 
-        return view('siniestro.create', compact('seguros', 'tiposSiniestro', 'estadosSiniestro', 'coches', 'clientes'));
+        $cocheId = $request->query('coche_id');
+        $clienteId = $request->query('cliente_id');
+        return view('siniestro.create', compact('seguros', 'tiposSiniestro', 'estadosSiniestro', 'coches', 'clientes', 'cocheId', 'clienteId'));
     }
 
     public function store(Request $request)

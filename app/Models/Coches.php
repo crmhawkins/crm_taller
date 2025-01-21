@@ -22,6 +22,7 @@ class Coches extends Model
         'color',
         'anio',
         'cliente_id',
+        'foto',
     ];
 
     public function cliente()
@@ -29,5 +30,9 @@ class Coches extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function siniestros()
+    {
+        return $this->hasMany(Siniestro::class, 'coche_id');
+    }
 
 }

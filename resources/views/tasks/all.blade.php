@@ -582,6 +582,11 @@
     .custom-table tbody tr.estado-pausada {
         background-color: #e96d77;
     }
+    td{
+        font-weight: bold;
+        color: white;
+        text-shadow: 1px 1px 1px black;
+    }
 </style>
 
 @endsection

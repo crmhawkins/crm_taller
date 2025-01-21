@@ -21,8 +21,9 @@ class CocheController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
-            'matricula' => 'required|unique:coches',
+            'matricula' => 'required',
             'seguro' => 'nullable|string',
             'marca' => 'nullable|string',
             'vin' => 'nullable|string',
@@ -31,7 +32,15 @@ class CocheController extends Controller
             'color' => 'nullable|string',
             'anio' => 'nullable|integer',
             'cliente_id' => 'nullable|exists:clients,id',
+            'foto' => 'nullable',
         ]);
+        if ($request->hasFile('imagen')) {
+            $foto = $request->file('imagen');
+            $fotoPath = $foto->store('coches', 'public');
+            $request->merge(['foto' => $fotoPath]);
+        }
+
+        //dd($request->hasFile('foto'));
 
         Coches::create($request->all());
 
@@ -61,8 +70,16 @@ class CocheController extends Controller
             'color' => 'nullable|string',
             'anio' => 'nullable|integer',
             'cliente_id' => 'nullable|exists:clients,id',
+            'foto' => 'nullable',
         ]);
+       // dd($request->all());
 
+       if ($request->hasFile('imagen')) {
+            $foto = $request->file('imagen');
+            $fotoPath = $foto->store('coches', 'public');
+            $request->merge(['foto' => $fotoPath]);
+        }
+       // dd($request->all());
         $coche->update($request->all());
 
         return redirect()->route('coches.index')->with('success', 'Coche actualizado exitosamente.');

@@ -22,11 +22,28 @@
             </div>
         </div>
     </div>
+
     <div class="card2 mt-4">
         <div class="card-body2">
+            <div class="mb-3">
+                <a href="{{ route('clientes.create') }}" class="btn btn-primary">Añadir Clientes</a>
+                <a href="{{ route('coches.create') }}" class="btn btn-primary">Añadir Coches</a>
+                <a href="{{ route('coches.index') }}" class="btn btn-primary">Ver Coches</a>
+                <a href="{{ route('clientes.index') }}" class="btn btn-primary">Ver Clientes</a>
+                <a href="{{ route('tareas.index') }}" class="btn btn-primary">Ver Tareas</a>
+                <a href="{{ route('appointments.calendar') }}" class="btn btn-primary">Ver Citas</a>
+                <a href="{{ route('siniestro.index') }}" class="btn btn-primary">Ver Partes de Trabajo</a>
+                <a href="{{ route('coches-sustitucion.index') }}" class="btn btn-primary">Ver Coches Sustitución</a>
+                <a href="{{ route('piezas.index') }}" class="btn btn-primary">Ver Piezas</a>
+            </div>
+        </div>
+    </div>
+
+    {{-- <div class="card2 mt-4">
+        <div class="card-body2">
             <div class="row justify-between">
-                <div class="col-12">
-                    <div class="row row-cols-1 row-cols-xl-2 g-xl-4 g-3 mb-3">
+                {{-- <div class="col-12"> --}}
+                    {{-- <div class="row row-cols-1 row-cols-xl-2 g-xl-4 g-3 mb-3">
                         <div class="card2">
                             <div class="card-body col">
                                 <div class="row justify-content-between">
@@ -197,9 +214,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
+                    </div> --}}
+                {{-- </div> --}}
+                {{-- <div class="col-md-6">
                     <div class="side-column">
                         <div class="card mb-3">
                             <div class="card-body">
@@ -208,13 +225,13 @@
                                         <div class="mx-4 text-center">
                                             <h5 class="my-3">{{$user->name}}&nbsp;{{$user->surname}}</h5>
                                             <p class="text-muted mb-1">{{$user->departamento->name}}</p>
-                                            <p class="text-muted mb-4">{{$user->acceso->name}}</p>
+                                            <p class="text-muted mb-4">{{$user->acceso->name}}</p> --}}
                                            {{-- <div class="d-flex  align-items-center my-2">
                                                 <input type="color" class="form-control form-control-color" style="padding: 0.4rem" id="color">
                                                 <label for="color" class="form-label m-2">Color</label>
                                             </div> --}}
 
-                                        </div>
+                                        {{-- </div>
                                         <div class="mx-4">
                                             @if ($user->image == null)
                                                 <img alt="avatar" class="rounded-circle img-fluid  m-auto" style="width: 150px;" src="{{asset('assets/images/guest.webp')}}" />
@@ -339,8 +356,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane" id="list-agenda" role="tabpanel"
+                                    </div> --}}
+                                    {{-- <div class="tab-pane" id="list-agenda" role="tabpanel"
                                         aria-labelledby="list-agenda-list">
                                         <div class="card2 mt-4">
                                             <div class="card-body2 text-center">
@@ -362,8 +379,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="llamadaModal" tabindex="-1" aria-labelledby="llamadaModalLabel" aria-hidden="true">
+    </div> --}} 
+    {{-- <div class="modal fade" id="llamadaModal" tabindex="-1" aria-labelledby="llamadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- Cambio a modal-lg para mayor ancho -->
             <div class="modal-content">
                 <div class="modal-header">
@@ -532,7 +549,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection
 

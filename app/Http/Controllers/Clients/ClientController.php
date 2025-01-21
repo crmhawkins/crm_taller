@@ -12,6 +12,7 @@ use App\Models\Countries\Country;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Coches;
 
 class ClientController extends Controller
 {
@@ -43,10 +44,11 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         // Validamos los campos
         $this->validate($request, [
             'name' => 'required|max:200',
-            'admin_user_id' => 'required|exists:admin_user,id',
+            'admin_user_id' => 'nullable|exists:admin_user,id',
             'email' => 'required|email:filter',
             'company' => 'nullable|max:200',
             'cif' => 'nullable|max:200',
@@ -80,6 +82,7 @@ class ClientController extends Controller
         $data = $request->all();
         $data['is_client'] = true;
         $data['is_client'] = true;
+        $data['admin_user_id'] = Auth::user()->id;
         $clienteCreado = Client::create($data);
         if($clienteCreado->pin == null){
             $clienteCreado->pin = rand(100000, 999999);
@@ -343,7 +346,12 @@ class ClientController extends Controller
         $cliente = Client::find($id);
         $contactos = Contact::where('client_id', $id)->get();
         $coches = $cliente->coches;
-        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches'));
+        $countries = Country::all();
+        $allCoches = Coches::where(function($query) use ($id) {
+            $query->where('cliente_id', '!=', $id)
+                  ->orWhereNull('cliente_id');
+        })->limit(10)->get();
+        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches', 'countries', 'allCoches'));
     }
 
     /**
@@ -356,17 +364,18 @@ class ClientController extends Controller
             'name' => 'required|max:200',
             'admin_user_id' => 'required|exists:admin_user,id',
             'email' => 'required|email:filter',
-            'company' => 'required|max:200',
-            'cif' => 'required|max:200',
-            'identifier' => 'required|max:200',
-            'activity' => 'required|max:200',
-            'address' => 'required|max:200',
-            'country' => 'required|max:200',
-            'city' => 'required|max:200',
-            'province' => 'required|max:200',
-            'zipcode' => 'required|max:200',
-            'phone' => 'required',
+            'company' => 'nullable|max:200',
+            'cif' => 'nullable|max:200',
+            'identifier' => 'nullable|max:200',
+            'activity' => 'nullable|max:200',
+            'address' => 'nullable|max:200',
+            'country' => 'nullable|max:200',
+            'city' => 'nullable|max:200',
+            'province' => 'nullable|max:200',
+            'zipcode' => 'nullable|max:200',
+            'phone' => 'nullable',
             'pin' => 'nullable',
+            'country' => 'nullable|max:200',
         ], [
             'name.required' => 'El nombre es requerido para continuar',
             'admin_user_id.required' => 'El gestor es requerido para continuar',
@@ -389,7 +398,7 @@ class ClientController extends Controller
         $data = $request->all();
         $data['is_client'] = true;
         $data['privacy_policy_accepted'] = $request->input('privacy_policy_accepted', false); // Valor por defecto
-
+        
         $cliente->update($data);
 
         if($cliente->pin == null){
@@ -479,6 +488,33 @@ class ClientController extends Controller
         return redirect()->route('clientes.show', $cliente->id);
     }
 
+    public function storeCoche(Request $request)
+{
+    $validatedData = $request->validate([
+        'matricula' => 'required|string|max:255',
+        'vin' => 'nullable|string|max:255',
+        'seguro' => 'nullable|string|max:255',
+        'marca' => 'nullable|string|max:255',
+        'modelo' => 'nullable|string|max:255',
+        'anio' => 'nullable|integer',
+        'km' => 'nullable|integer',
+        'color' => 'nullable|string|max:255',
+        'cliente_id' => 'required|exists:clients,id',
+    ]);
+
+    $validatedData['kilometraje'] = $validatedData['km'];
+
+    // Buscar el coche por la matrícula
+    $coche = Coches::where('matricula', $validatedData['matricula'])->first();
+    if ($coche) {
+        return redirect()->route('clientes.edit', $validatedData['cliente_id'])
+            ->withErrors(['matricula' => 'El coche con esta matrícula ya existe.']);
+    }
+
+    Coches::create($validatedData);
+
+    return redirect()->route('clientes.edit', $validatedData['cliente_id'])->with('success', 'Coche añadido correctamente.');
+}
 
     /**
      * Remove the specified resource from storage.
@@ -536,12 +572,53 @@ class ClientController extends Controller
         return response($contactos);
     }
 
-    public function verificarClienteExistente(Request $request)
-{
-    $clienteExistente = Client::where('name', $request->name)
-        ->orWhere('company', $request->company)
-        ->first();
+    public function changeClient(Request $request)
+    {
+        $coche = Coches::find($request->coche_id);
+        if ($coche) {
+            $coche->cliente_id = $request->new_cliente_id;
+            $coche->save();
+            return response()->json(['success' => true, 'message' => 'Cliente cambiado exitosamente.']);
+        }
+        return response()->json(['success' => false, 'message' => 'Coche no encontrado.']);
+    }
 
-    return response()->json($clienteExistente);
+    public function removeCarFromClient(Request $request)
+{
+    $coche = Coches::find($request->coche_id);
+
+    if ($coche) {
+        $coche->cliente_id = null; // Desasociar el coche del cliente
+        $coche->save();
+
+        return response()->json(['success' => true, 'message' => 'Coche quitado del cliente exitosamente.']);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Coche no encontrado.']);
+}
+
+    public function verificarClienteExistente(Request $request)
+    {
+        $clienteExistente = Client::where('phone', $request->phone)
+            ->orWhere('cif', $request->cif) // Comprobación por DNI
+            ->first();
+        if($clienteExistente){
+            return response()->json($clienteExistente );
+        }else{
+            return response()->json(false);
+        }
+        
+    }
+
+    public function searchCars(Request $request)
+{
+    $query = $request->input('query');
+    $coches = Coches::where('matricula', 'LIKE', "%{$query}%")
+    ->where(function($query) use ($request) {
+        $query->where('cliente_id', '!=', $request->input('cliente_id'))
+              ->orWhereNull('cliente_id');
+    })
+    ->get();
+    return response()->json($coches);
 }
 }

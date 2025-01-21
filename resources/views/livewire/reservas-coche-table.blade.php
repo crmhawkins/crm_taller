@@ -46,6 +46,12 @@
                     <td>{{ $reserva->estado }}</td>
                     <td>{{ $reserva->cliente->name }} {{ $reserva->cliente->lastname }}</td>
                     <td>{{ $reserva->cocheSustitucion->matricula }}</td>
+                    <td>
+                        <a href="{{ route('reservas-coche.edit', $reserva->id) }}" 
+                           class="btn btn-sm btn-primary">
+                            Editar
+                        </a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

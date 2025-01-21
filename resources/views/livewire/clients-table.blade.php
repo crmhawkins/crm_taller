@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
+        {{-- <div class="col-md-5">
             <div class="flex flex-row justify-end">
                 <div class="mr-0 w-75">
                     <label for="">Gestores</label>
@@ -29,7 +29,7 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     @if ($clients)
@@ -39,7 +39,7 @@
                     <tr>
                         <th>
                             <a href="#" wire:click.prevent="sortBy('company')">
-                                CLIENTE
+                                EMPRESA
                                 @if ($sortColumn == 'company')
                                     <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
                                 @endif
@@ -61,7 +61,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th>
+                        {{-- <th>
                             <a href="#" wire:click.prevent="sortBy('identifier')">
                                 MARCA
                                 @if ($sortColumn == 'identifier')
@@ -76,15 +76,15 @@
                                     <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
                                 @endif
                             </a>
-                        </th>
-                        <th>
+                        </th> --}}
+                        {{-- <th>
                             <a href="#" wire:click.prevent="sortBy('admin_user_id')">
                                 GESTOR
                                 @if ($sortColumn == 'admin_user_id')
                                     <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
                                 @endif
                             </a>
-                        </th>
+                        </th> --}}
                         <th>
                             <a href="#" >
                                 COCHES
@@ -102,9 +102,9 @@
                             <td class="px-3">{{ $client->company }}</td>
                             <td >{{ $client->name }}</td>
                             <td>{{ $client->cif }}</td>
-                            <td>{{ $client->identifier }}</td>
-                            <td>{{ $client->activity }}</td>
-                            <td>{{ $client->gestor->name ?? 'Gestor Borrado' }}</td>
+                            {{-- <td>{{ $client->identifier }}</td>
+                            <td>{{ $client->activity }}</td> --}}
+                            {{-- <td>{{ $client->gestor->name ?? 'Gestor Borrado' }}</td> --}}
                             <td>{{ $client->coches->count() }}</td>
                             <td class="flex flex-row justify-evenly align-middle" style="min-width: 120px">
                                 <a class="" href="{{ route('clientes.show', $client->id) }}"><img src="{{ asset('assets/icons/eye.svg') }}" alt="Mostrar usuario"></a>

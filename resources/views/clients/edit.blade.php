@@ -10,7 +10,15 @@
 @section('content')
 
     <div class="page-heading card" style="box-shadow: none !important" >
-
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li><i class="fa-solid fa-circle-exclamation"></i> {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
         {{-- Titulos --}}
         <div class="page-title card-body">
             <div class="row">
@@ -38,8 +46,8 @@
                     <form action="{{route('clientes.update', $cliente->id)}}" method="POST" class="form-primary">
                         @csrf
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
                                     <label for="name">Nombre:</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name', $cliente->name) }}" name="name">
                                     @error('name')
@@ -48,6 +56,8 @@
                                             </span>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group mt-2">
                                     <label for="name">Primer apellido</label>
                                     <input placeholder="Primer apellido (obligatorio en caso de particulares)" type="text" class="form-control @error('primerApellido') is-invalid @enderror" id="primerApellido" value="{{ old('primerApellido',$cliente->primerApellido)}}" name="primerApellido">
@@ -57,6 +67,8 @@
                                             </span>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group mt-2">
                                     <label for="name">Segundo apellido</label>
                                     <input placeholder="Segundo apellido (obligatorio en caso de particulares)" type="text" class="form-control @error('segundoApellido') is-invalid @enderror" id="segundoApellido" value="{{ old('segundoApellido',$cliente->segundoApellido) }}" name="segundoApellido">
@@ -66,55 +78,8 @@
                                             </span>
                                     @enderror
                                 </div>
-
-                                <div class="form-group mt-2">
-                                    <label for="company">Nombre de la empresa:</label>
-                                    <input type="text" class="form-control @error('company') is-invalid @enderror" id="company"value="{{ old('company', $cliente->company) }}" name="company">
-                                    @error('company')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mt-2">
-                                    <label for="activity">Actividad:</label>
-                                    <input type="text" class="form-control @error('activity') is-invalid @enderror" id="activity" value="{{ old('activity', $cliente->activity) }}" name="activity">
-                                    @error('activity')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group mt-2">
-                                    <label for="cif">CIF/DNI:</label>
-                                    <input type="text" class="form-control @error('cif') is-invalid @enderror" id="cif" value="{{ old('cif', $cliente->cif) }}" name="cif">
-                                    @error('cif')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mt-2">
-                                    <label for="identifier">Marca:</label>
-                                    <input type="text" class="form-control @error('identifier') is-invalid @enderror" id="identifier" value="{{ old('identifier', $cliente->identifier) }}" name="identifier">
-                                    @error('identifier')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mt-2">
-                                    <label for="birthdate">Fecha de alta:</label>
-                                    <input type="date" class="form-control @error('birthdate') is-invalid @enderror" id="birthdate" value="{{ old('birthdate', $cliente->birthdate) }}" name="birthdate">
-                                    @error('birthdate')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group mt-3 ">
                                     <label for="tipoCliente" class="form-label">Tipo de cliente</label>
                                     <div class="d-flex">
@@ -135,6 +100,43 @@
                                         </span>
                                     @enderror
                                 </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="cif">CIF/DNI:</label>
+                                    <input type="text" class="form-control @error('cif') is-invalid @enderror" id="cif" value="{{ old('cif', $cliente->cif) }}" name="cif">
+                                    @error('cif')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            {{-- <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="identifier">Marca:</label>
+                                    <input type="text" class="form-control @error('identifier') is-invalid @enderror" id="identifier" value="{{ old('identifier', $cliente->identifier) }}" name="identifier">
+                                    @error('identifier')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div> --}}
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="birthdate">Fecha de alta:</label>
+                                    <input type="date" class="form-control @error('birthdate') is-invalid @enderror" id="birthdate" value="{{ old('birthdate', $cliente->birthdate) }}" name="birthdate">
+                                    @error('birthdate')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3" style="display: none;">
                                 <div class="form-group mt-2">
                                     <label for="admin_user_id">Gestor:</label>
                                     <select class="choices form-select @error('admin_user_id') is-invalid @enderror" id="admin_user_id" name="admin_user_id">
@@ -152,6 +154,8 @@
                                         </span>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group mt-2">
                                     <label for="address">Dirección:</label>
                                     <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" value="{{ old('address', $cliente->address) }}" name="address">
@@ -161,34 +165,8 @@
                                             </span>
                                     @enderror
                                 </div>
-                                <div class="form-group mt-2">
-                                    <label for="country">Pais:</label>
-                                    <input type="text" class="form-control @error('country') is-invalid @enderror" id="country" value="{{ old('country', $cliente->country) }}" name="country">
-                                    @error('country')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group mt-2">
-                                    <label for="city">Ciudad:</label>
-                                    <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" value="{{ old('city', $cliente->city) }}" name="city">
-                                    @error('city')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mt-2">
-                                    <label for="province">Provincia:</label>
-                                    <input type="text" class="form-control @error('province') is-invalid @enderror" id="province" value="{{ old('province', $cliente->province) }}" name="province">
-                                    @error('province')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                    @enderror
-                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group mt-2">
                                     <label for="zipcode">Código postal:</label>
                                     <input type="text" class="form-control @error('zipcode') is-invalid @enderror" id="zipcode" value="{{ old('zipcode', $cliente->zipcode) }}" name="zipcode">
@@ -199,21 +177,89 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="city">Ciudad:</label>
+                                    <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" value="{{ old('city', $cliente->city) }}" name="city">
+                                    @error('city')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                           
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="province">Provincia:</label>
+                                    <input type="text" class="form-control @error('province') is-invalid @enderror" id="province" value="{{ old('province', $cliente->province) }}" name="province">
+                                    @error('province')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="country">Pais:</label>
+                                    <select class="choices form-select" name="country">
+                                        @if ($countries->count() > 0)
+                                            <option value="{{null}}">Seleccione un pais </option>
+                                            @foreach ( $countries as $country )
+                                                <option @if ($cliente->country == $country->name) {{'selected'}} @endif value="{{$country->name}}" >{{$country->name}}</option>
+                                            @endforeach
+                                        @else
+                                            <option value="{{null}}">No existen clientes todavia</option>
+                                        @endif
+                                    </select>
+                                    @error('country')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="company">Nombre de la empresa:</label>
+                                    <input type="text" class="form-control @error('company') is-invalid @enderror" id="company"value="{{ old('company', $cliente->company) }}" name="company">
+                                    @error('company')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mt-2">
+                                    <label for="activity">Actividad:</label>
+                                    <input type="text" class="form-control @error('activity') is-invalid @enderror" id="activity" value="{{ old('activity', $cliente->activity) }}" name="activity">
+                                    @error('activity')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                            </div>
 
                         </div>
-                        <div class="form-group mt-3">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Escribe la anotación..."
-                                    id="floatingTextarea" name="notes">{{ old('notes', $cliente->notes) }}</textarea>
-                                <label for="floatingTextarea">Notas</label>
+
+                            <div class="form-group mt-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Escribe la anotación..."
+                                        id="floatingTextarea" name="notes">{{ old('notes', $cliente->notes) }}</textarea>
+                                    <label for="floatingTextarea">Notas</label>
+                                </div>
+                                @error('notes')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
                             </div>
-                            @error('notes')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                            @enderror
-                        </div>
-                        <div class="row mt-3">
+                        {{-- <div class="row mt-3">
                             <div class="form-group col-6">
                                 <label for="Usuario">Usuario portal:</label>
                                 <input type="text" disabled class="form-control @error('Usuario') is-invalid @enderror" id="Usuario" value="{{ 'HK#'.$cliente->id }}" >
@@ -227,7 +273,7 @@
                                         </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                         <h3 class="mt-5 mb-2 text-center uppercase">Coches</h3>
                         <table class="table">
                             <thead>
@@ -250,12 +296,31 @@
                                         <td>{{ $coche->anio }}</td>
                                         <td>
                                             <a href="{{ route('coches.edit', $coche->id) }}" class="btn btn-primary">Ver</a>
+                                            <button type="button" class="btn btn-danger remove-car" data-id="{{ $coche->id }}">Quitar</button>
+                                            <a href="{{ route('hojas_inspeccion.index', $coche->id) }}" class="btn btn-secondary ">Hojas Inspección</a>
+                                            @if($coche->siniestros->count() > 0)
+                                                <a href="{{ route('siniestro.index', ['coche_id' => $coche->id]) }}" class="btn btn-info">Partes de Trabajo</a> <!-- Nuevo botón -->
+                                            @endif
+                                            <a href="{{ route('siniestro.create', ['coche_id' => $coche->id, 'cliente_id' => $cliente->id]) }}" class="btn btn-warning">Añadir Parte de Trabajo</a> <!-- Nuevo botón -->
+
+
+
                                         </td>
                                     </tr>
                                 @endforeach
+                                <tr>
+                                    <td colspan="6" class="text-center">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCarModal">
+                                            <i class="fas fa-plus"></i> Añadir Coche
+                                        </button>
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#selectCarModal">
+                                            <i class="fas fa-search"></i> Seleccionar Coche
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                        <h3 class="mt-5 mb-2 text-center uppercase">Cliente Asociado</h3>
+                        {{-- <h3 class="mt-5 mb-2 text-center uppercase">Cliente Asociado</h3>
                         <hr class="mb-4">
                         <div class="form-group">
                             <select class="choices form-select" name="client_id">
@@ -268,11 +333,11 @@
                                     <option value="{{null}}">No existen clientes todavia</option>
                                 @endif
                             </select>
-                        </div>
+                        </div> --}}
 
                        
 
-                        <h3 class="mt-5 mb-2 text-center uppercase">Contacto Asociado</h3>
+                        {{-- <h3 class="mt-5 mb-2 text-center uppercase">Contacto Asociado</h3>
                         <hr class="mb-4">
 
                         <div class="form-group">
@@ -280,7 +345,7 @@
                             <h5 hidden id="labelAssociateNew" for="associated_contact_new" class="mb-2">Creación de nuevo/s contacto/s:</h5>
                             <div class="col-12 form-group" id="dynamic_field_associated_contact_new">
                             </div>
-                        </div>
+                        </div> --}}
 
                         <h3 class="mt-5 mb-2 text-center uppercase">Informacion de Contacto de la Empresa</h3>
                         <hr class="mb-4">
@@ -309,7 +374,7 @@
                         <button type="button" name="addExtraPhone" id="addExtraPhone" class="btn btn-secondary mt-3"><i class="fas fa-plus"></i> Añadir teléfono/s extra</button>
                         <div class="col-12 form-group mt-4" id="dynamic_field_phones">
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="fax">Fax:</label>
                             <input type="text" class="form-control @error('fax') is-invalid @enderror" id="fax" value="{{ old('fax', $cliente->fax) }}" name="fax">
                             @error('fax')
@@ -317,9 +382,9 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
-                        <h3 class="mt-5 mb-2 text-center uppercase">Redes Sociales - webs</h3>
+                        {{-- <h3 class="mt-5 mb-2 text-center uppercase">Redes Sociales - webs</h3>
                         <hr class="mb-4">
 
                         <div class="form-group">
@@ -333,9 +398,9 @@
                         </div>
                         <button type="button" name="addWebs" id="addExtraWeb" class="btn btn-secondary mt-3"><i class="fas fa-plus"></i> Añadir web/s extra</button>
                         <div class="col-12 form-group mt-4" id="dynamic_field_webs">
-                        </div>
+                        </div> --}}
 
-                        <h4 class="mt-5 mb-2 text-left uppercase">Redes Sociales</h4>
+                        {{-- <h4 class="mt-5 mb-2 text-left uppercase">Redes Sociales</h4>
                         <div class="row form-group">
                             <div class="col-md-4 mb-3">
                                 <label for="facebook"><i class="fa-brands fa-facebook"></i> Facebook:</label>
@@ -382,7 +447,7 @@
                                         </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
 
 
@@ -395,6 +460,123 @@
                 </div>
             </div>
         </section>
+        <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCarModalLabel">Añadir Coche</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCarForm" action="{{ route('cliente.addCar') }}" method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="matricula" class="form-label">Matricula</label>
+                                    <input type="text" class="form-control" id="matricula" name="matricula" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="vin" class="form-label">VIN</label>
+                                    <input type="text" class="form-control" id="vin" name="vin" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="seguro" class="form-label">Seguro</label>
+                                    <input type="text" class="form-control" id="seguro" name="seguro" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="marca" class="form-label">Marca</label>
+                                    <input type="text" class="form-control" id="marca" name="marca" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="modelo" class="form-label">Modelo</label>
+                                    <input type="text" class="form-control" id="modelo" name="modelo" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="anio" class="form-label">Año</label>
+                                    <input type="number" class="form-control" id="anio" name="anio" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="km" class="form-label">Km</label>
+                                    <input type="number" class="form-control" id="km" name="km" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="color" class="form-label">Color</label>
+                                    <input type="text" class="form-control" id="color" name="color" required>
+                                </div>
+                                <input type="hidden" name="cliente_id" value="{{ $cliente->id }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="selectCarModal" tabindex="-1" aria-labelledby="selectCarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="selectCarModalLabel">Seleccionar Coche</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="searchCar" class="form-control" placeholder="Buscar por matrícula">
+                        <ul id="carList" class="list-group mt-3">
+                            @if ($allCoches->count() > 0)
+                                @foreach ($allCoches as $coche)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ $coche->matricula }} - {{ $coche->marca }} {{ $coche->modelo }}
+                                        <div>
+                                            <a href="{{ route('coches.edit', $coche->id) }}" target="_blank" class="btn btn-primary btn-sm">Ver</a>
+                                            @if ($coche->cliente_id)
+                                                <a href="{{ route('clientes.edit', $coche->cliente_id) }}" target="_blank" class="btn btn-secondary btn-sm">Ver Cliente</a>
+                                            @endif
+                                            <button type="button" class="btn btn-primary btn-sm select-car" data-id="{{ $coche->id }}">Seleccionar</button>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="list-group-item">No se encontraron coches.</li>
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmChangeClientModal" tabindex="-1" aria-labelledby="confirmChangeClientModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmChangeClientModalLabel">Confirmación de Cambio de Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        El coche va a cambiar de cliente, ¿está seguro?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="confirmChangeClient">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmRemoveCarModal" tabindex="-1" aria-labelledby="confirmRemoveCarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmRemoveCarModalLabel">Confirmación de Quitar Coche</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas quitar este coche del cliente?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="confirmRemoveCar">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="alert-container" class="mt-3"></div>
     </div>
 
 @endsection
@@ -417,6 +599,142 @@
             if($('.new-associate-contact').length === 0){
                 $('#labelAssociateNew').attr('hidden', true);
             }
+        });
+
+        // Función para mostrar/ocultar campos
+        function toggleFields() {
+            if ($('#particular').is(':checked')) {
+                $('#activity').closest('.form-group').hide();
+                $('#identifier').closest('.form-group').hide();
+                $('#company').closest('.form-group').hide();
+            } else {
+                $('#activity').closest('.form-group').show();
+                $('#identifier').closest('.form-group').show();
+                $('#company').closest('.form-group').show();
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        toggleFields();
+
+        // Llamar a la función cuando se cambia el tipo de cliente
+        $('input[name="tipoCliente"]').change(function() {
+            toggleFields();
+        });
+
+        $('#searchCar').on('keyup', function() {
+            var query = $(this).val();
+            $.ajax({
+                url: '{{ route("search.cars") }}',
+                type: 'GET',
+                data: { query: query , cliente_id: {{ $cliente->id }} },
+                success: function(data) {
+                    $('#carList').empty();
+                    if(data.length > 0){
+                    data.forEach(function(coche) {
+                        $('#carList').append(
+                            `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${coche.matricula} - ${coche.marca} ${coche.modelo}
+                                <div>
+                                    <a href="{{ route('coches.edit', $coche->id) }}" target="_blank" class="btn btn-primary btn-sm">Ver</a>
+                                    @if ($coche->cliente_id)
+                                        <a href="{{ route('clientes.edit', $coche->cliente_id) }}" target="_blank" class="btn btn-secondary btn-sm">Ver Cliente</a>
+                                    @endif
+                                    <button type="button" class="btn btn-primary btn-sm select-car" data-id="${coche.id}">Seleccionar</button>
+                                </div>
+                            </li>`
+                        );
+                    });
+                    }else{
+                        $('#carList').append(
+                            `<li class="list-group-item">No se encontraron coches.</li>`
+                        );
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.select-car', function() {
+            var carId = $(this).data('id');
+            var hasClient = $(this).siblings('a.btn-secondary').length > 0;
+
+            if (hasClient) {
+                $('#confirmChangeClientModal').modal('show');
+                $('#confirmChangeClient').off('click').on('click', function() {
+                    changeClient(carId);
+                });
+            } else {
+                // Directly assign the car to the client if it has no client
+                changeClient(carId);
+            }
+        });
+
+        function changeClient(carId) {
+            $.ajax({
+                url: '{{ route("coches.changeClient") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    coche_id: carId,
+                    new_cliente_id: {{ $cliente->id }}
+                },
+                success: function(response) {
+                    console.log(response); // Verificar la respuesta del servidor
+                    if (response.success) {
+                        $('#alert-container').html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                ${response.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `);
+                        setTimeout(function() {
+                            location.reload(); // Recargar la página después de un breve retraso
+                        }, 300);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error en la solicitud AJAX:', error);
+                }
+            });
+        }
+
+        // Evento para quitar coche
+        var carIdToRemove;
+        $(document).on('click', '.remove-car', function() {
+            carIdToRemove = $(this).data('id');
+            $('#confirmRemoveCarModal').modal('show');
+        });
+
+        $('#confirmRemoveCar').click(function() {
+            $.ajax({
+                url: '{{ route("coches.removeClient") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    coche_id: carIdToRemove
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#alert-container').html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                ${response.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `);
+                        setTimeout(function() {
+                            location.reload(); // Recargar la página después de un breve retraso
+                        }, 300);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error en la solicitud AJAX:', error);
+                }
+            });
+            $('#confirmRemoveCarModal').modal('hide');
         });
     });
         // Mails extra

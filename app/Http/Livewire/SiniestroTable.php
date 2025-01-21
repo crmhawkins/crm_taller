@@ -15,6 +15,14 @@ class SiniestroTable extends Component
     public $campo = 'identificador';
     public $fechaInicio;
     public $fechaFin;
+    public $coche_id;
+    public $cliente_id;
+
+    public function mount($coche_id = null, $cliente_id = null)
+    {
+        $this->coche_id = $coche_id;
+        $this->cliente_id = $cliente_id;
+    }
 
     public function updatingSearch()
     {
@@ -32,6 +40,13 @@ class SiniestroTable extends Component
             $siniestros->whereDate('fecha', '<=', $this->fechaFin);
         }
 
+        if ($this->coche_id) {
+            $siniestros->where('coche_id', $this->coche_id);
+        }
+
+        if ($this->cliente_id) {
+            $siniestros->where('cliente_id', $this->cliente_id);
+        }
 
         if ($this->search !== '') {
             switch ($this->campo) {

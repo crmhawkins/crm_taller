@@ -772,7 +772,7 @@
                 <li class="sidebar-item has-sub {{ request()->routeIs('siniestro.*') ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-car-burst fs-5"></i>
-                        <span>Siniestros</span>
+                        <span>Partes de Trabajo</span>
                     </a>
                     <ul class="submenu" style="{{ request()->routeIs('siniestro.*') ? 'display:block;' : 'display:none;' }}">
                         <li class="submenu-item {{ request()->routeIs('siniestro.index') ? 'active' : '' }}">

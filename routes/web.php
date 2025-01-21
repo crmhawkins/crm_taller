@@ -67,6 +67,7 @@ use App\Http\Controllers\ReservasCocheController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\HojaInspeccionController;
+use App\Http\Controllers\VisitaCocheController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/client/get-gestor', [ClientController::class, 'getGestorFromClient'])->name('cliente.getGestor');
         Route::post('/client/get-contacts', [ClientController::class, 'getContactsFromClient'])->name('cliente.getContacts');
         Route::post('/client/verificar-existente', [ClientController::class, 'verificarClienteExistente'])->name('cliente.verificarExistente');
+        Route::post('/client/add-car', [ClientController::class, 'storeCoche'])->name('cliente.addCar');
+        Route::get('/search-cars', [ClientController::class, 'searchCars'])->name('search.cars');
+        Route::post('/coches/change-client', [ClientController::class, 'changeClient'])->name('coches.changeClient');
+        Route::post('/coches/removeClient', [ClientController::class, 'removeCarFromClient'])->name('coches.removeClient');
 
         //Proveedores
         Route::get('/supplier', [SuppliersController::class, 'index'])->name('proveedores.index');
@@ -719,10 +724,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('seguros/{seguro}', [SeguroController::class, 'destroy'])->name('seguro.destroy');
 
     // Siniestros
-    Route::get('siniestros', [SiniestroController::class, 'index'])->name('siniestro.index');
-    Route::get('siniestros/create', [SiniestroController::class, 'create'])->name('siniestro.create');
+    Route::get('partes-trabajo', [SiniestroController::class, 'index'])->name('siniestro.index');
+    Route::get('partes-trabajo/create', [SiniestroController::class, 'create'])->name('siniestro.create');
     Route::post('siniestros', [SiniestroController::class, 'store'])->name('siniestro.store');
-    Route::get('siniestros/{siniestro}/edit', [SiniestroController::class, 'edit'])->name('siniestro.edit');
+    Route::get('partes-trabajo/{siniestro}/edit', [SiniestroController::class, 'edit'])->name('siniestro.edit');
     Route::put('siniestros/{siniestro}', [SiniestroController::class, 'update'])->name('siniestro.update');
     Route::delete('siniestros/{siniestro}', [SiniestroController::class, 'destroy'])->name('siniestro.destroy');
 
@@ -742,6 +747,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'update'])->name('reservas-coche.update');
     Route::delete('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'destroy'])->name('reservas-coche.destroy');
     Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+
+
+    Route::resource('visitas', VisitaCocheController::class);
 });
 // Portal Clientes
 Route::get('/portal', [PortalClientesController::class, 'login'])->name('portal.login');

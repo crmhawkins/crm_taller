@@ -81,18 +81,18 @@
                                             <a class="list-group-item list-group-item-action"
                                                 id="list-presupuestos-list" data-bs-toggle="list"
                                                 href="#list-facturas" role="tab">Facturas</a>
-                                            <a class="list-group-item list-group-item-action"
+                                            {{-- <a class="list-group-item list-group-item-action"
                                                 id="list-dominios-list" data-bs-toggle="list"
-                                                href="#list-dominios" role="tab">Dominios</a>
+                                                href="#list-dominios" role="tab">Dominios</a> --}}
                                             <a class="list-group-item list-group-item-action"
                                                 id="list-contactos-list" data-bs-toggle="list"
                                                 href="#list-contactos" role="tab">Contactos</a>
-                                            <a class="list-group-item list-group-item-action"
+                                            {{-- <a class="list-group-item list-group-item-action"
                                                 id="list-estadisticas-list" data-bs-toggle="list"
                                                 href="#list-estadisticas" role="tab">Estadisticas</a>
                                             <a class="list-group-item list-group-item-action"
                                                 id="list-newsletter-list" data-bs-toggle="list"
-                                                href="#list-newsletter" role="tab">Newsletter</a>
+                                                href="#list-newsletter" role="tab">Newsletter</a> --}}
 
                                         </div>
                                         <div class="card mb-4 mb-lg-0">
@@ -169,14 +169,14 @@
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <div class="row p-2">
+                                                    {{-- <div class="row p-2">
                                                         <div class="col-sm-4">
                                                           <p class="mb-0">Marca:</p>
                                                         </div>
                                                         <div class="col-sm-8">
                                                           <p class="text-muted mb-0">{{$cliente->identifier}}</p>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     <hr>
                                                     <div class="row p-2">
                                                         <div class="col-sm-4">
@@ -277,15 +277,15 @@
                                                       </div>
                                                     </div>
                                                     <hr>
-                                                    <div class="row p-2">
+                                                    {{-- <div class="row p-2">
                                                       <div class="col-sm-4">
                                                         <p class="mb-0">Fax:</p>
                                                       </div>
                                                       <div class="col-sm-8">
                                                         <p class="text-muted mb-0">{{$cliente->fax}}</p>
                                                       </div>
-                                                    </div>
-                                                    <hr>
+                                                    </div> --}}
+                                                    {{-- <hr> --}}
                                                     <div class="row p-2">
                                                         <div class="col-sm-4">
                                                           <p class="mb-0">Email:</p>
@@ -327,7 +327,7 @@
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <div class="row p-2">
+                                                    {{-- <div class="row p-2">
                                                         <div class="col-sm-4">
                                                           <p class="mb-0">Otras Webs:</p>
                                                         </div>
@@ -341,8 +341,8 @@
 
                                                             </ul>
                                                         </div>
-                                                    </div>
-                                                    <hr>
+                                                    </div> --}}
+                                                    {{-- <hr> --}}
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="list-coches" role="tabpanel"
@@ -448,7 +448,7 @@
                                                 </div>
                                                 @endif
                                             </div>
-                                            <div class="tab-pane" id="list-dominios" role="tabpanel"
+                                            {{-- <div class="tab-pane" id="list-dominios" role="tabpanel"
                                                 aria-labelledby="list-dominios-list">
                                                 <h3 class="mb-2 fs-4 text-uppercase">Dominios del Cliente</h3>
                                                 <hr class="border mb-4" >
@@ -482,7 +482,7 @@
                                                     <h3 class="text-center fs-4">No se encontraron registros de <strong>Facturas</strong></h3>
                                                 </div>
                                                 @endif
-                                            </div>
+                                            </div> --}}
                                             <div class="tab-pane" id="list-contactos" role="tabpanel"
                                                 aria-labelledby="list-contactos-list">
                                                 <h3 class="fs-5">Contactos Asociados</h3>
@@ -532,14 +532,14 @@
 
                                                 @endif
                                             </div>
-                                            <div class="tab-pane" id="list-newsletter" role="tabpanel"
+                                            {{-- <div class="tab-pane" id="list-newsletter" role="tabpanel"
                                                 aria-labelledby="list-newsletter-list">
                                                 <h5>No tienes newsletter</h5>
-                                            </div>
-                                            <div class="tab-pane" id="list-estadisticas" role="tabpanel"
+                                            </div> --}}
+                                            {{-- <div class="tab-pane" id="list-estadisticas" role="tabpanel"
                                                 aria-labelledby="list-estadisticas-list">
                                                 <h5>No tienes estadisticas</h5>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>

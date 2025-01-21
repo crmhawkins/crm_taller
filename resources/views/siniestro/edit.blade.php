@@ -86,7 +86,7 @@
                         @csrf
                         @method('PUT')
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="identificador">Identificador</label>
                                     <input type="text" class="form-control" id="identificador" name="identificador" value="{{ old('identificador', $siniestro->identificador) }}">
@@ -140,7 +140,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="poliza">Póliza</label>
                                     <input type="text" class="form-control" id="poliza" name="poliza" value="{{ old('poliza', $siniestro->poliza) }}">
@@ -197,6 +197,9 @@
                                     <label for="imagenes">Imagenes</label>
                                     <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple>
                                 </div>
+                            </div>
+                            <div class="col-md-3">
+                                
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
