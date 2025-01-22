@@ -12,10 +12,22 @@ class VisitasTable extends Component
 
     public $search = '';
     public $cocheId;
+    public $fechaInicio;
+    public $fechaFin;
 
     protected $paginationTheme = 'bootstrap';
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFechaInicio()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFechaFin()
     {
         $this->resetPage();
     }
@@ -34,10 +46,13 @@ class VisitasTable extends Component
         }
 
         if ($this->search) {
-            $query->where(function($q) {
-                $q->where('coche_id', 'like', '%' . $this->search . '%')
-                  ->orWhere('fecha_ingreso', 'like', '%' . $this->search . '%');
+            $query->whereHas('coche', function($q) {
+                $q->where('matricula', 'like', '%' . $this->search . '%');
             });
+        }
+
+        if ($this->fechaInicio && $this->fechaFin) {
+            $query->whereBetween('fecha_ingreso', [$this->fechaInicio, $this->fechaFin]);
         }
 
         $visitas = $query->paginate(10);

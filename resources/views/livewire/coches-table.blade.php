@@ -45,6 +45,7 @@
                     <td>
                         <a href="{{ route('coches.edit', $coche) }}" class="btn btn-warning btn-sm">Editar</a>
                         <a href="{{ route('hojas_inspeccion.index', $coche) }}" class="btn btn-secondary btn-sm">Hojas Inspección</a>
+                        <a href="{{ route('visitas.index', ['coche_id' => $coche->id]) }}" class="btn btn-info btn-sm">Visitas</a>
 
                         <form action="{{ route('coches.destroy', $coche) }}" method="POST" style="display:inline;">
                             @csrf

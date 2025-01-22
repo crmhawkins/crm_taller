@@ -1,7 +1,19 @@
 <div>
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Buscar por coche ID o fecha de ingreso" wire:model="search">
+    <div class="row">
+        <div class="mb-3 col-md-4">
+            <label for="search">Buscar por matrícula</label>
+            <input type="text" class="form-control" placeholder="Buscar por matrícula" wire:model="search">
+        </div>
+        <div class="mb-3 col-md-4">
+            <label for="fechaInicio">Fecha de inicio</label>
+            <input type="date" class="form-control" placeholder="Fecha de inicio" wire:model="fechaInicio">
+        </div>
+        <div class="mb-3 col-md-4">
+            <label for="fechaFin">Fecha de fin</label>
+            <input type="date" class="form-control" placeholder="Fecha de fin" wire:model="fechaFin">
+        </div>
     </div>
+    
 
     <table class="table table-striped">
         <thead>

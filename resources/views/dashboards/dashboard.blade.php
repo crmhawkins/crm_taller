@@ -27,9 +27,10 @@
         <div class="card-body2">
             <div class="mb-3">
                 <a href="{{ route('clientes.create') }}" class="btn btn-primary">Añadir Clientes</a>
+                <a href="{{ route('clientes.index') }}" class="btn btn-primary">Ver Clientes</a>
+
                 <a href="{{ route('coches.create') }}" class="btn btn-primary">Añadir Coches</a>
                 <a href="{{ route('coches.index') }}" class="btn btn-primary">Ver Coches</a>
-                <a href="{{ route('clientes.index') }}" class="btn btn-primary">Ver Clientes</a>
                 <a href="{{ route('tareas.index') }}" class="btn btn-primary">Ver Tareas</a>
                 <a href="{{ route('appointments.calendar') }}" class="btn btn-primary">Ver Citas</a>
                 <a href="{{ route('siniestro.index') }}" class="btn btn-primary">Ver Partes de Trabajo</a>
