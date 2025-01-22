@@ -98,9 +98,9 @@
                     <tr>
                         <td align="left" style="width: 40%;padding-left:20px;vertical-align:top;">
                             <p style="font-size:12px">Ref.:<span style="padding-left:72px;font-weight: bold;">{{ $invoice->reference }}</span></p>
-                            <p style="font-size:12px">Versión: <span style="padding-left:46px;"></span></p>
+                            {{-- <p style="font-size:12px">Versión: <span style="padding-left:46px;"></span></p> --}}
                             <p style="font-size:12px">Fecha de Creación: <span style="padding-left:17px;">{{ Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y') }}</span></p>
-                            <p style="font-size:12px">Campaña: <span style="padding-left:17px;">{{ $invoice->project->name }}</span></p>
+                            {{-- <p style="font-size:12px">Campaña: <span style="padding-left:17px;">{{ $invoice->project->name }}</span></p> --}}
                             <p style="font-size:12px">Concepto: <span style="padding-left:17px;">{{ $invoice->concept }}</span></p>
                             @if($coche)
                                 <p style="font-size:12px">Vehículo: <span style="padding-left:17px;">{{ $coche->marca }} {{ $coche->modelo }}</span></p>

@@ -59,35 +59,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
-                                    {{-- Campaña model:Project --}}
-                                    <div class="form-group">
-                                        <label class="mb-2 text-left">Campañas</label>
-                                        <div class="flex flex-row align-items-start mb-0">
-
-                                            <select class=" form-select w-100 @error('project_id') is-invalid @enderror" name="project_id" disabled id="proyecto">
-                                                @if ($campanias != null)
-                                                    @if ($campanias->count() > 0)
-                                                        @foreach ( $campanias as $campania )
-                                                            <option value="{{$campania->id}}">{{$campania->name}}</option>
-                                                        @endforeach
-                                                    @else
-                                                        <option value="{{null}}">No existen campañas todavia</option>
-                                                    @endif
-                                                @else
-                                                    <option value="{{null}}">No existen campañas todavia</option>
-                                                @endif
-
-                                            </select>
-                                            <button id="newCampania" type="button" class="btn btn-color-1 ml-3" style="height: fit-content"><i class="fa-solid fa-plus"></i></button>
-                                        </div>
-                                        @error('project_id')
-                                            <p class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </p>
-                                        @enderror
-                                    </div>
-                                </div>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">

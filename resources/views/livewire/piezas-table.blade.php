@@ -29,7 +29,11 @@
             @foreach($piezas as $pieza)
                 <tr>
                     <td>
-                        <img src="{{ asset('storage/' . $pieza->foto) }}" alt="Imagen de {{ $pieza->nombre }}" style="width: 50px; height: auto;">
+                        @if($pieza->foto)
+                            <img src="{{ asset('storage/' . $pieza->foto) }}" alt="Imagen de {{ $pieza->nombre }}" style="width: 50px; height: auto;">
+                        @else
+                            Sin imagen
+                        @endif
                     </td>
                     <td>{{ $pieza->nombre }}</td>
                     <td>{{ $pieza->codigo }}</td>

@@ -109,7 +109,7 @@
                 <tr>
                     <td align="left" style="width: 40%;padding-left:20px;vertical-align:top">
                         <p style="font-size:12px">Ref.:<span style="padding-left:72px;font-weight: bold;">{{ $budget->reference }}</span></p>
-                        <p style="font-size:12px">Versión: <span style="padding-left:46px;"></span></p>
+                        {{-- <p style="font-size:12px">Versión: <span style="padding-left:46px;"></span></p> --}}
                         <p style="font-size:12px">Fecha Envío: <span style="padding-left:17px;">{{ Carbon\Carbon::parse($budget->creation_date)->format('d/m/Y') }}</span></p>
                         @if($coche)
                             <p style="font-size:12px">Vehículo: <span style="padding-left:17px;">{{ $coche->marca }} {{ $coche->modelo }}</span></p>
@@ -132,10 +132,10 @@
                 </tr>
             </table>
             <table class="projectConceptRow" style="width:100%;padding-left:30px;padding-right:30px">
-                <tr >
+                {{-- <tr >
                 <td style="width:20%;padding-left:10px;">Campaña</td>
                     <td style="width:80%;padding-left:10px;">{{ $budget->proyecto->name }}</td>
-                </tr>
+                </tr> --}}
                 <tr >
                     <td style="width:20%;padding-left:10px;">Concepto</td>
                     <td style="width:80%;padding-left:10px;">
