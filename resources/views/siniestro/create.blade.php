@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('titulo', 'Crear Parte de Trabajo')
+@section('css')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+@endsection
 
 @section('content')
 
@@ -31,7 +34,7 @@
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="coche_id">Coche</label>
-                                    <select class="form-control" id="coche_id" name="coche_id">
+                                    <select class="form-control select2" id="coche_id" name="coche_id" >
                                         <option value="">Selecciona un coche</option>
                                         @foreach($coches as $coche)
                                             <option @if($coche->id == $cocheId) selected @endif value="{{ $coche->id }}">{{ $coche->matricula }} - {{$coche->marca}}  {{ $coche->modelo }}</option>
@@ -42,7 +45,7 @@
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="cliente_id">Cliente</label>
-                                    <select class="form-control" id="cliente_id" name="cliente_id">
+                                    <select class="form-control select2" id="cliente_id" name="cliente_id" >
                                         <option value="">Selecciona un cliente</option>
                                         @foreach($clientes as $cliente)
                                             <option @if($cliente->id == $clienteId) selected @endif value="{{ $cliente->id }}">{{ $cliente->name }} {{ $cliente->surname }} - {{ $cliente->cif }}</option>
@@ -53,9 +56,10 @@
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="seguro_id">Seguro</label>
-                                    <select class="form-control" id="seguro_id" name="seguro_id">
+                                    <select class="form-control select2" id="seguro_id" name="seguro_id">
+                                        <option value="">Selecciona un seguro</option>
                                         @foreach($seguros as $seguro)
-                                            <option value="{{ $seguro->id }}">{{ $seguro->identificador }}</option>
+                                            <option value="{{ $seguro->id }}">{{ $seguro->identificador }} - {{ $seguro->aseguradora }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -189,3 +193,13 @@
 
     </div>
 @endsection 
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+</script>
+@include('partials.toast')
+@endsection

@@ -351,6 +351,36 @@
                             </tbody>
                         </table>
 
+                        <h3 class="mt-5 mb-2 text-center uppercase">Partes de Trabajo</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Identificador</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($cliente->siniestros as $siniestro)
+            <tr>
+                <td>{{ $siniestro->identificador }}</td>
+                <td>{{ $siniestro->fecha }}</td>
+                <td>{{ $siniestro->descripcion }}</td>
+                <td>{{ $siniestro->estadoSiniestro->estado   }}</td>
+                <td>
+                    <a href="{{ route('siniestro.edit', $siniestro->id) }}" class="btn btn-primary">Editar</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteSiniestroModal" data-id="{{ $siniestro->id }}">Eliminar</button>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+<a href="{{ route('siniestro.create', ['cliente_id' => $cliente->id]) }}" class="btn btn-success mt-3">
+    <i class="fas fa-plus"></i> Añadir Parte de Trabajo
+</a>
+
                         
 
                         <h3 class="mt-5 mb-2 text-center uppercase">Coches de sustitución asignados</h3>

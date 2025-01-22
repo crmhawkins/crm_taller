@@ -16,30 +16,33 @@
                     <form action="{{ route('seguro.update', $seguro->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="form-group">
-                            <label for="identificador">Identificador</label>
-                            <input type="text" class="form-control" id="identificador" name="identificador" value="{{ old('identificador', $seguro->identificador) }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="aseguradora">Aseguradora</label>
-                            <input type="text" class="form-control" id="aseguradora" name="aseguradora" value="{{ old('aseguradora', $seguro->aseguradora) }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="responsable">Responsable</label>
-                            <input type="text" class="form-control" id="responsable" name="responsable" value="{{ old('responsable', $seguro->responsable) }}" required>
-                        </div>
-                        <div class="form-group">
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-2">
+                                <label for="identificador">Identificador</label>
+                                <input type="text" class="form-control" id="identificador" name="identificador" value="{{ old('identificador', $seguro->identificador) }}" required>
+                            </div>
+                            <div class="form-group col-md-4 mb-2">
+                                <label for="aseguradora">Aseguradora</label>
+                                <input type="text" class="form-control" id="aseguradora" name="aseguradora" value="{{ old('aseguradora', $seguro->aseguradora) }}" required>
+                            </div>
+                            <div class="form-group col-md-4 mb-2">
+                                <label for="precio">Precio</label>
+                                <input type="number" class="form-control" id="precio" name="precio" value="{{ old('precio', $seguro->precio) }}" required>
+                            </div>
+                            <div class="form-group col-md-4 mb-2">
+                                <label for="responsable">Responsable</label>
+                                <input type="text" class="form-control" id="responsable" name="responsable" value="{{ old('responsable', $seguro->responsable) }}" >
+                            </div>
+                            <div class="form-group col-md-4 mb-2">
                             <label for="telefono">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ old('telefono', $seguro->telefono) }}" required>
+                            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ old('telefono', $seguro->telefono) }}" >
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-4 mb-2">
                             <label for="notas">Notas</label>
                             <textarea class="form-control" id="notas" name="notas">{{ old('notas', $seguro->notas) }}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="precio">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="precio" value="{{ old('precio', $seguro->precio) }}" required>
-                        </div>
+                        
+                    </div>
                         <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
                     </form>
                 </div>

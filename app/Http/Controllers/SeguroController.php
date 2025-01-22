@@ -23,8 +23,8 @@ class SeguroController extends Controller
         $request->validate([
             'identificador' => 'required|string|max:255',
             'aseguradora' => 'required|string|max:255',
-            'responsable' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
+            'responsable' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:20',
             'notas' => 'nullable|string',
             'precio' => 'required|numeric',
         ]);
@@ -53,8 +53,8 @@ class SeguroController extends Controller
         $request->validate([
             'identificador' => 'required|string|max:255',
             'aseguradora' => 'required|string|max:255',
-            'responsable' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
+            'responsable' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:20',
             'notas' => 'nullable|string',
             'precio' => 'required|numeric',
         ]);
