@@ -33,6 +33,8 @@
             <div class="card">
                 <div class="card-body">
                     <button id="toggleFullscreen" class="btn btn-secondary mb-3">Pantalla Completa</button>
+                    <button id="userPinButton" class="btn btn-primary mb-3">Ingresar PIN</button>
+
                     <div id="tableContainer" class="table-responsive">
                         <table class="custom-table">
                             <thead>
@@ -165,6 +167,37 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="userPinModal" tabindex="-1" aria-labelledby="userPinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userPinModalLabel">Ingresar PIN de Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="userPinInput" class="form-control" placeholder="Ingrese su PIN">
+                    <button type="button" id="validatePinButton" class="btn btn-primary mt-2">Validar PIN</button>
+                    <div id="userMessage" class="mt-3"></div>
+                    <div id="jornadaButtons" class="mt-3" style="display: none;">
+                        <button type="button" id="startJornadaButton" class="btn btn-success">Iniciar Jornada</button>
+                        <button type="button" id="endJornadaButton" class="btn btn-danger">Finalizar Jornada</button>
+                    </div>
+                    <table id="jornadasTable" class="table mt-3" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Fin</th>
+                                <th>Estado</th>
+                                <th>Horas Trabajadas</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 
    
@@ -529,6 +562,117 @@
             const taskId = this.getAttribute('data-task-id');
             stopRealTimeCounter(taskId);
         });
+    });
+
+    document.getElementById('userPinButton').addEventListener('click', function() {
+        const userPinModal = new bootstrap.Modal(document.getElementById('userPinModal'));
+        userPinModal.show();
+    });
+
+    document.getElementById('validatePinButton').addEventListener('click', function() {
+        const pin = document.getElementById('userPinInput').value;
+        fetch(`/users/validate-pin/${pin}`)
+            .then(response => response.json())
+            .then(data => {
+                const userMessage = document.getElementById('userMessage');
+                const jornadasTable = document.getElementById('jornadasTable');
+                const tbody = jornadasTable.querySelector('tbody');
+                tbody.innerHTML = ''; // Limpiar la tabla
+
+                if (data.valid) {
+                    data.jornadas.forEach(jornada => {
+                        const row = document.createElement('tr');
+                        const startTime = new Date(jornada.start_time).toLocaleString();
+                        const endTime = jornada.end_time ? new Date(jornada.end_time).toLocaleString() : 'En progreso';
+                        const estado = jornada.is_active ? 'Activa' : 'Finalizada';
+
+                        row.innerHTML = `
+                            <td>${startTime}</td>
+                            <td>${endTime}</td>
+                            <td>${estado}</td>
+                            <td>${jornada.worked_hours}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+
+                    // Agregar fila para el total
+                    const totalRow = document.createElement('tr');
+                    totalRow.innerHTML = `
+                        <td colspan="3"><strong>Total</strong></td>
+                        <td><strong>${data.totalWorkedHours}</strong></td>
+                    `;
+                    tbody.appendChild(totalRow);
+
+                    jornadasTable.style.display = 'table';
+                    userMessage.textContent = `¡Hola ${data.userName}! Aquí están tus jornadas:`;
+                    document.getElementById('jornadaButtons').style.display = 'block';
+                } else {
+                    userMessage.textContent = 'PIN inválido.';
+                    jornadasTable.style.display = 'none';
+                    document.getElementById('jornadaButtons').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('userMessage').textContent = 'Error al validar el PIN.';
+            });
+    });
+
+    document.getElementById('startJornadaButton').addEventListener('click', function() {
+        const pin = document.getElementById('userPinInput').value;
+        fetch('/jornada/start', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ pin: pin })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('userMessage').textContent = data.message;
+            if (data.success) {
+                document.getElementById('jornadaButtons').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('userMessage').textContent = 'Error al iniciar la jornada.';
+        });
+    });
+
+    document.getElementById('endJornadaButton').addEventListener('click', function() {
+        const pin = document.getElementById('userPinInput').value;
+        fetch('/jornada/end', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ pin: pin })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('userMessage').textContent = data.message;
+            if (data.success) {
+                document.getElementById('jornadaButtons').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('userMessage').textContent = 'Error al finalizar la jornada.';
+        });
+    });
+
+    // Restablecer el estado del modal al cerrarlo
+    document.getElementById('userPinModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('jornadaButtons').style.display = 'none';
+        document.getElementById('userPinInput').value = ''; // Limpiar el campo de entrada del PIN
+        document.getElementById('userMessage').textContent = ''; // Limpiar el mensaje
+        const jornadasTable = document.getElementById('jornadasTable');
+        jornadasTable.style.display = 'none'; // Ocultar la tabla
+        const tbody = jornadasTable.querySelector('tbody');
+        tbody.innerHTML = ''; // Limpiar el contenido de la tabla
     });
 
 </script>

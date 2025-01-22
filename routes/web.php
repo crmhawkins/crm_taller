@@ -735,7 +735,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('partes-trabajo/{siniestro}/edit', [SiniestroController::class, 'edit'])->name('siniestro.edit');
     Route::put('siniestros/{siniestro}', [SiniestroController::class, 'update'])->name('siniestro.update');
     Route::delete('siniestros/{siniestro}', [SiniestroController::class, 'destroy'])->name('siniestro.destroy');
-
+    Route::get('/users/validate-pin/{pin}', [UserController::class, 'validatePin']);
+    Route::post('/jornada/start', [App\Http\Controllers\Users\UserController::class, 'startJornada']);
+    Route::post('/jornada/end', [App\Http\Controllers\Users\UserController::class, 'endJornada']);
     // Coches de Sustitución
     Route::get('coches-sustitucion', [CochesSustitucionController::class, 'index'])->name('coches-sustitucion.index');
     Route::get('coches-sustitucion/create', [CochesSustitucionController::class, 'create'])->name('coches-sustitucion.create');

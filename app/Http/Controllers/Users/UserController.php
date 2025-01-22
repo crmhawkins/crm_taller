@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use App\Models\Jornada\Jornada;
 
 
 class UserController extends Controller
@@ -49,6 +51,84 @@ class UserController extends Controller
         // session()->flash('toast','Esto es una prueba');
         $usuarios = User::where('inactive', 0)->get();
         return view('users.index', compact('usuarios'));
+    }
+
+    public function startJornada(Request $request)
+    {
+        $pin = $request->input('pin');
+        $user = User::where('pin', $pin)->first();
+        $today = Carbon::today();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Usuario no encontrado.']);
+        }
+
+        // Verificar si ya existe una jornada activa para hoy
+        $jornada = Jornada::where('admin_user_id', $user->id)
+                          ->whereDate('start_time', $today)
+                          ->where('is_active', true)
+                          ->first();
+
+    
+
+        if ($jornada) {
+            return response()->json(['success' => false, 'message' => 'Ya tienes una jornada activa.']);
+        }
+
+        //busca alguna jornada de este usuario de dias anteriores que este activa y la finaliza
+        $jornadasAnteriores = Jornada::where('admin_user_id', $user->id)
+                          ->whereDate('start_time', '<', $today)
+                          ->where('is_active', true)
+                          ->get();
+
+        foreach ($jornadasAnteriores as $jornada) {
+
+            //endtime debe ser la fecha de inicio de la jornada a las 23:59
+            $endTime = Carbon::parse($jornada->start_time)->addDay()->subSecond();
+
+            $jornada->update(['is_active' => false , 'end_time' => $endTime]);
+
+        }
+
+        
+
+        // Crear una nueva jornada
+        Jornada::create([
+            'admin_user_id' => $user->id,
+            'start_time' => now(),
+            'is_active' => true
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Jornada iniciada con éxito.']);
+    }
+
+    public function endJornada(Request $request)
+    {
+        $pin = $request->input('pin');
+        $user = User::where('pin', $pin)->first();
+        $today = Carbon::today();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Usuario no encontrado.']);
+        }
+
+        // Buscar la jornada activa de hoy
+        $jornada = Jornada::where('admin_user_id', $user->id)
+                          ->whereDate('start_time', $today)
+                          ->where('is_active', true)
+                          ->first();
+
+        if (!$jornada) {
+            return response()->json(['success' => false, 'message' => 'No tienes una jornada activa para finalizar.']);
+        }
+
+        // Finalizar la jornada
+        $jornada->update([
+            'end_time' => now(),
+            'is_active' => false
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Jornada finalizada con éxito.']);
     }
 
     /**
@@ -94,6 +174,7 @@ class UserController extends Controller
             'access_level_id' => 'required|exists:admin_user_access_level,id',
             'admin_user_department_id' => 'required|exists:admin_user_department,id',
             'admin_user_position_id' => 'required|exists:admin_user_position,id',
+            'pin' => 'nullable|min:4|max:4|unique:admin_user,pin',
         ], [
             'name.required' => 'El nombre es requerido para continuar',
             'surname.required' => 'Los apellidos son requeridos para continuar',
@@ -106,6 +187,9 @@ class UserController extends Controller
             'access_level_id.exists' => 'El rol debe ser valido y es requerido para continuar',
             'admin_user_department_id.exists' => 'El departamento debe ser valido y es requerido para continuar',
             'admin_user_position_id.exists' => 'La posicion debe ser valido y es requerido para continuar',
+            'pin.min' => 'El pin debe contener al menos 4 caracteres para continuar',
+            'pin.max' => 'El pin debe contener al menos 4 caracteres para continuar',
+            'pin.unique' => 'El pin ya existe',
         ]);
 
           $data = $request->all();
@@ -136,6 +220,41 @@ class UserController extends Controller
         }
 
         return view('users.show', compact('usuario'));
+    }
+
+    public function validatePin($pin)
+    {
+        $user = User::where('pin', $pin)->first();
+
+        if ($user) {
+            $jornadas = Jornada::where('admin_user_id', $user->id)->where('start_time', '>=', Carbon::now()->subDay())->get();
+            $totalWorkedSeconds = 0;
+
+            $jornadasData = $jornadas->map(function ($jornada) use (&$totalWorkedSeconds) {
+                $startTime = Carbon::parse($jornada->start_time);
+                $endTime = $jornada->end_time ? Carbon::parse($jornada->end_time) : now();
+                $workedSeconds = $endTime->diffInSeconds($startTime);
+                $totalWorkedSeconds += $workedSeconds;
+
+                return [
+                    'start_time' => $jornada->start_time,
+                    'end_time' => $jornada->end_time,
+                    'is_active' => $jornada->is_active,
+                    'worked_hours' => gmdate('H:i:s', $workedSeconds)
+                ];
+            });
+
+            $totalWorkedHours = gmdate('H:i:s', $totalWorkedSeconds);
+
+            return response()->json([
+                'valid' => true,
+                'jornadas' => $jornadasData,
+                'userName' => $user->name,
+                'totalWorkedHours' => $totalWorkedHours
+            ]);
+        } else {
+            return response()->json(['valid' => false]);
+        }
     }
 
     /**
@@ -173,6 +292,7 @@ class UserController extends Controller
             'access_level_id' => 'required|exists:admin_user_access_level,id',
             'admin_user_department_id' => 'required|exists:admin_user_department,id',
             'admin_user_position_id' => 'required|exists:admin_user_position,id',
+            'pin' => 'nullable|min:4|max:4|unique:admin_user,pin,' . $id,
         ], [
             'name.required' => 'El nombre es requerido para continuar',
             'surname.required' => 'Los apellidos son requeridos para continuar',
@@ -185,6 +305,9 @@ class UserController extends Controller
             'access_level_id.exists' => 'El rol debe ser valido y es requerido para continuar',
             'admin_user_department_id.exists' => 'El departamento debe ser valido y es requerido para continuar',
             'admin_user_position_id.exists' => 'La posicion debe ser valido y es requerido para continuar',
+            'pin.min' => 'El pin debe contener al menos 4 caracteres para continuar',
+            'pin.max' => 'El pin debe contener maximo 4 caracteres para continuar',
+            'pin.unique' => 'El pin ya existe',
         ]);
 
         $user = User::findOrFail($id); // Buscar el usuario existente

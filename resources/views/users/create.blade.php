@@ -33,7 +33,10 @@
                 <div class="card-body">
                     <form action="{{route('user.store')}}" method="POST">
                         @csrf
-                        <div class="form-group">
+                        <div class="row">
+
+                        
+                        <div class="form-group col-md-6 mb-3">
                             <label for="name">Nombre:</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" value="{{ old('name') }}" name="name">
                             @error('name')
@@ -42,7 +45,7 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                             <label for="surname">Apellidos:</label>
                             <input type="text" class="form-control @error('surname') is-invalid @enderror" id="surname" value="{{ old('surname') }}" name="surname">
                             @error('surname')
@@ -51,7 +54,7 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                             <label for="username">Nombre de Usuario:</label>
                             <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" value="{{ old('username') }}" name="username">
                             @error('username')
@@ -60,7 +63,7 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                             <label for="email">Email:</label>
                             <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email') }}" name="email">
                             @error('email')
@@ -69,7 +72,7 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                             <label for="password">Password:</label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" autocomplete="new-password" value="{{ old('password') }}" name="password">
                             @error('password')
@@ -78,12 +81,12 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                             <label for="password-confirm">{{ __('Confirmar Password') }}</label>
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                         </div>
-                        <div class="form-group">
-                                <label for="access_level_id">{{ __('Rol de la App') }}</label>
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="access_level_id">{{ __('Rol') }}</label>
                                 <select class="form-select @error('access_level_id') is-invalid @enderror" id="access_level_id" name="access_level_id">
                                     <option>Seleccione el rol del usuario</option>
                                     @foreach ( $role as $rol )
@@ -96,7 +99,7 @@
                                     </span>
                                 @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                                 <label for="admin_user_department_id">{{ __('Departamento del Empleado') }}</label>
                                 <select class="form-select @error('admin_user_department_id') is-invalid @enderror" id="admin_user_department_id" name="admin_user_department_id">
                                     <option>Seleccione el departamento del usuario</option>
@@ -110,7 +113,7 @@
                                     </span>
                                 @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6 mb-3">
                                 <label for="admin_user_position_id">{{ __('Posicion del Usuario') }}</label>
                                 <select class="form-select @error('admin_user_position_id') is-invalid @enderror" id="admin_user_position_id" name="admin_user_position_id">
                                     <option>Seleccione la posicion del usuario</option>
@@ -124,6 +127,16 @@
                                     </span>
                                 @enderror
                         </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="pin">PIN:</label>
+                            <input type="text" class="form-control @error('pin') is-invalid @enderror" id="pin" value="{{ old('pin') }}" name="pin">
+                            @error('pin')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                    </div>
                         <div class="form-group mt-5">
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Registrar') }}
