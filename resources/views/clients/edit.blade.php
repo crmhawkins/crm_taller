@@ -274,6 +274,7 @@
                                 @enderror
                             </div>
                         </div> --}}
+                        
                         <h3 class="mt-5 mb-2 text-center uppercase">Coches</h3>
                         <table class="table">
                             <thead>
@@ -320,6 +321,60 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <h3 class="mt-5 mb-2 text-center uppercase">Coches de sustitución asignados</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Coche de Sustitución</th>
+                                        <th>Fecha de Inicio</th>
+                                        <th>Fecha de Fin</th>
+                                        <th>Estado</th>
+                                        <th>Km Entregado</th>
+                                        <th>Km Devuelto</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($reservasCoche as $reserva)
+                                        <tr>
+                                            <td>{{ $reserva->cocheSustitucion->marca }} {{ $reserva->cocheSustitucion->modelo }}</td>
+                                            <td>{{ $reserva->fecha_inicio }}</td>
+                                            <td>
+                                                <input type="date" class="form-control fecha-fin" data-id="{{ $reserva->id }}" value="{{ $reserva->fecha_fin }}">
+                                            </td>
+                                            <td style="cursor: pointer;">
+                                                <select class="form-select estado-reserva" data-id="{{ $reserva->id }}">
+                                                    <option value="pendiente" {{ $reserva->estado == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                                    <option value="entregado" {{ $reserva->estado == 'entregado' ? 'selected' : '' }}>Entregado</option>
+                                                    <option value="devuelto" {{ $reserva->estado == 'devuelto' ? 'selected' : '' }}>Devuelto</option>
+                                                </select>
+                                            </td>   
+                                            <td>
+                                                <input type="number" class="form-control km-actual" data-id="{{ $reserva->id }}" value="{{ $reserva->km_actual }}">
+                                            </td>  
+                                            <td>
+                                                <input type="number" class="form-control km-entregado" data-id="{{ $reserva->id }}" value="{{ $reserva->km_entregado }}">
+                                            </td>  
+                                            <td>
+                                                <a href="{{ route('reservas-coche.edit', $reserva->id) }}" class="btn btn-primary">Editar</a>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="{{ $reserva->id }}">Eliminar</button>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <div class="form-group mt-3">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCocheSustitucionModal">
+                                    <i class="fas fa-plus"></i> Añadir Coche de Sustitución
+                                </button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReservaCocheModal">
+                                    <i class="fas fa-plus"></i> Añadir Reserva de Coche de Sustitución
+                                </button>
+                            </div>
+                        
                         {{-- <h3 class="mt-5 mb-2 text-center uppercase">Cliente Asociado</h3>
                         <hr class="mb-4">
                         <div class="form-group">
@@ -576,6 +631,150 @@
                 </div>
             </div>
         </div>
+        <!-- Modal para añadir coche de sustitución -->
+<div class="modal fade" id="addCocheSustitucionModal" tabindex="-1" aria-labelledby="addCocheSustitucionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCocheSustitucionModalLabel">Añadir Coche de Sustitución</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCocheSustitucionForm" action="{{ route('clientes.coche-sustitucion.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="matricula" class="form-label">Matrícula</label>
+                            <input type="text" class="form-control" id="matricula" name="matricula" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="vin" class="form-label">VIN</label>
+                            <input type="text" class="form-control" id="vin" name="vin" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="seguro" class="form-label">Seguro</label>
+                            <input type="text" class="form-control" id="seguro" name="seguro" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" >
+                        </div>
+                       
+                        <div class="col-md-6 mb-3">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="kilometraje" class="form-label">Kilometraje</label>
+                            <input type="number" class="form-control" id="kilometraje" name="kilometraje" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="color" class="form-label">Color</label>
+                            <input type="text" class="form-control" id="color" name="color" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="anio" class="form-label">Año</label>
+                            <input type="number" class="form-control" id="anio" name="anio" >
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para añadir reserva de coche de sustitución -->
+<div class="modal fade" id="addReservaCocheModal" tabindex="-1" aria-labelledby="addReservaCocheModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReservaCocheModalLabel">Añadir Reserva de Coche de Sustitución</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addReservaCocheForm" action="{{ route('clientes.reserva-coche.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="coche_sustitucion_id" class="form-label">Coche de Sustitución</label>
+                            <select class="form-select" id="coche_sustitucion_id" name="coche_sustitucion_id" required>
+                                @foreach($cochesSustitucion as $coche)
+                                    <option value="{{ $coche->id }}">{{ $coche->marca }} - {{ $coche->modelo }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select class="form-select" id="estado" name="estado" required>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="entregado">Entregado</option>
+                                <option value="devuelto">Devuelto</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="fecha_fin" class="form-label">Fecha de Fin</label>
+                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" >
+                        </div>
+                        
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="km_actual" class="form-label">Kilometraje Actual</label>
+                            <input type="number" class="form-control" id="km_actual" name="km_actual" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="km_entregado" class="form-label">Kilometraje Entregado</label>
+                            <input type="number" class="form-control" id="km_entregado" name="km_entregado" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="comentario" class="form-label">Comentario</label>
+                            <textarea class="form-control" id="comentario" name="comentario"></textarea>
+                        </div>
+                        <input type="hidden" name="cliente_id" value="{{ $cliente->id }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmación de Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar esta reserva de coche de sustitución?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Reserva actualizada con éxito.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
         <div id="alert-container" class="mt-3"></div>
     </div>
 
@@ -777,5 +976,82 @@
     });
 
 </script>
-@endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha_inicio').value = today;
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteForm;
+        var confirmDeleteButton = document.getElementById('confirmDeleteButton');
 
+        $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Botón que activó el modal
+            var reservaId = button.data('id'); // Extraer información de los atributos data-*
+            deleteForm = document.getElementById('delete-form-' + reservaId);
+        });
+
+        confirmDeleteButton.addEventListener('click', function() {
+            if (deleteForm) {
+                deleteForm.submit();
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cambiar estado de la reserva
+        $('.estado-reserva').change(function() {
+            var reservaId = $(this).data('id');
+            var nuevoEstado = $(this).val();
+            actualizarReserva(reservaId, { estado: nuevoEstado });
+        });
+
+        // Cambiar fecha de fin de la reserva
+        $('.fecha-fin').change(function() {
+            var reservaId = $(this).data('id');
+            var nuevaFechaFin = $(this).val();
+            actualizarReserva(reservaId, { fecha_fin: nuevaFechaFin });
+        });
+        // Cambiar kilometraje actual de la reserva
+        $('.km-actual').change(function() {
+            var reservaId = $(this).data('id');
+            var nuevoKmActual = $(this).val();
+            actualizarReserva(reservaId, { km_actual: nuevoKmActual });
+        });
+
+        // Cambiar kilometraje entregado de la reserva
+        $('.km-entregado').change(function() {
+            var reservaId = $(this).data('id');
+            var nuevoKmEntregado = $(this).val();
+            actualizarReserva(reservaId, { km_entregado: nuevoKmEntregado });
+        });
+        function actualizarReserva(reservaId, data) {
+            $.ajax({
+                url: '{{ url("/clientes/reserva-coche") }}/' + reservaId,
+                type: 'PUT',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ...data
+                },
+                success: function(response) {
+                    $('#successModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al actualizar la reserva:', error);
+                    alert('Hubo un error al actualizar la reserva.');
+                }
+            });
+        }
+    });
+</script>
+
+@endsection
+@foreach ($reservasCoche as $reserva)
+    <form id="delete-form-{{ $reserva->id }}" action="{{ route('clientes.reserva-coche.destroy', $reserva->id) }}" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+@endforeach

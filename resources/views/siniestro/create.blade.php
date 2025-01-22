@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Crear Siniestro')
+@section('titulo', 'Crear Parte de Trabajo')
 
 @section('content')
 
@@ -68,13 +68,13 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
-                                    <label for="monto_cliente">Monto Cliente</label>
+                                    <label for="monto_cliente">Coste Cliente</label>
                                     <input type="number" class="form-control" id="monto_cliente" name="monto_cliente">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
-                                    <label for="monto_aseguradora">Monto Aseguradora</label>
+                                    <label for="monto_aseguradora">Coste Aseguradora</label>
                                     <input type="number" class="form-control" id="monto_aseguradora" name="monto_aseguradora">
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
-                                    <label for="tipo_siniestro_id">Tipo de Siniestro</label>
+                                    <label for="tipo_siniestro_id">Tipo de trabajo</label>
                                     <select class="form-control" id="tipo_siniestro_id" name="tipo_siniestro_id">
                                         @foreach($tiposSiniestro as $tipo)
                                             <option value="{{ $tipo->id }}">{{ $tipo->tipo }}</option>
@@ -114,7 +114,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
-                                    <label for="estado_siniestro_id">Estado de Siniestro</label>
+                                    <label for="estado_siniestro_id">Estado de trabajo</label>
                                     <select class="form-control" id="estado_siniestro_id" name="estado_siniestro_id">
                                         @foreach($estadosSiniestro as $estado)
                                             <option value="{{ $estado->id }}">{{ $estado->estado }}</option>

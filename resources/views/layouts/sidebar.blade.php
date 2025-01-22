@@ -20,6 +20,187 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+
+                @php
+                    $clientesActive = request()->routeIs('clientes.index') || request()->routeIs('clientes.create') || request()->routeIs('clientes.show') || request()->routeIs('cliente.createFromBudget') || request()->routeIs('clientes.edit');
+                @endphp
+                <li class="sidebar-title">Taller</li>
+                <li class="sidebar-item has-sub {{ $clientesActive ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="fa-solid fa-people-group fs-5"></i>
+                        <span>Clientes</span>
+                    </a>
+                    <ul class="submenu" style="{{ $clientesActive ? 'display:block;' : 'display:none' }}">
+                        <li class="submenu-item {{ request()->routeIs('clientes.index') ? 'active' : '' }} ">
+                            <a href="{{route('clientes.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver todos
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('clientes.create') ? 'active' : '' }} {{ request()->routeIs('cliente.createFromBudget') ? 'active' : ''}}">
+                            <a href="{{route('clientes.create')}}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>
+                                    Crear cliente
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item has-sub {{ request()->routeIs('siniestro.*') ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="fa-solid fa-car-burst fs-5"></i>
+                        <span>Partes de Trabajo</span>
+                    </a>
+                    <ul class="submenu" style="{{ request()->routeIs('siniestro.*') ? 'display:block;' : 'display:none;' }}">
+                        <li class="submenu-item {{ request()->routeIs('siniestro.index') ? 'active' : '' }}">
+                            <a href="{{route('siniestro.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver todos
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('siniestro.create') ? 'active' : '' }}">
+                            <a href="{{route('siniestro.create')}}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>
+                                    Crear Parte de trabajo
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('estado-siniestro.index') ? 'active' : '' }}">
+                            <a href="{{route('estado-siniestro.index')}}">
+                                <i class="fa-solid fa-tags"></i>
+                                <span>
+                                    Ver Estados
+                                </span>
+                            </a>
+                        </li>
+                
+                        <!-- Tipos de Siniestro -->
+                        <li class="submenu-item {{ request()->routeIs('tipo-siniestro.index') ? 'active' : '' }}">
+                            <a href="{{route('tipo-siniestro.index')}}">
+                                <i class="fa-solid fa-tags"></i>
+                                <span>
+                                    Ver Tipos
+                                </span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
+                    <a href="{{route('tarea.all')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-list-check fs-5"></i>
+                        <span>Tareas</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
+                    <a href="{{route('appointments.calendar')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-calendar-days fs-5"></i>
+                        <span>Citas</span>
+                    </a>
+                </li>
+                <li class="sidebar-item has-sub {{ request()->routeIs('coches.*') ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="fa-solid fa-car fs-5"></i>
+                        <span>Coches</span>
+                    </a>
+                    <ul class="submenu" style="{{ request()->routeIs('coches.*') ? 'display:block;' : 'display:none;' }}">
+                        <li class="submenu-item {{ request()->routeIs('coches.index') ? 'active' : '' }}">
+                            <a href="{{route('coches.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver todos
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('coches.create') ? 'active' : '' }}">
+                            <a href="{{route('coches.create')}}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>
+                                    Crear coche
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item has-sub {{ request()->routeIs('coches-sustitucion.*') ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="fa-solid fa-car-side fs-5"></i>
+                        <span>Coches de Sustitución</span>
+                    </a>
+                    <ul class="submenu" style="{{ request()->routeIs('coches-sustitucion.*') ? 'display:block;' : 'display:none;' }}">
+                        <li class="submenu-item {{ request()->routeIs('coches-sustitucion.index') ? 'active' : '' }}">
+                            <a href="{{route('coches-sustitucion.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver Coches de Sustitución
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('coches-sustitucion.create') ? 'active' : '' }}">
+                            <a href="{{route('coches-sustitucion.create')}}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>
+                                    Crear Coche de Sustitución
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="submenu-item {{ request()->routeIs('reservas-coche.index') ? 'active' : '' }}">
+                            <a href="{{route('reservas-coche.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver Reservas
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item has-sub {{ request()->routeIs('piezas.*') || request()->routeIs('categorias-piezas.*') ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="fa-solid fa-gear fs-5"></i>
+                        <span>Piezas</span>
+                    </a>
+                    <ul class="submenu" style="{{ request()->routeIs('piezas.*') || request()->routeIs('categorias-piezas.*') ? 'display:block;' : 'display:none;' }}">
+                        <li class="submenu-item {{ request()->routeIs('piezas.index') ? 'active' : '' }}">
+                            <a href="{{route('piezas.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver Piezas
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('piezas.create') ? 'active' : '' }}">
+                            <a href="{{route('piezas.create')}}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>
+                                    Crear Pieza
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('categorias-piezas.index') ? 'active' : '' }}">
+                            <a href="{{route('categorias-piezas.index')}}">
+                                <i class="fa-solid fa-tags"></i>
+                                <span>
+                                    Categorías
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{route('seguro.index')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-list-check fs-5"></i>
+                        <span>Seguros</span>
+                    </a>
+                </li>
+                
+
                 <li class="sidebar-title">Empresa</li>
 
                 @php
@@ -53,45 +234,12 @@
                     @endphp
 
 
-                <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
-                    <a href="{{route('appointments.calendar')}}" class='sidebar-link'>
-                        <i class="fa-solid fa-calendar-days fs-5"></i>
-                        <span>Citas</span>
-                    </a>
-                </li>
+                
 
-                <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
-                    <a href="{{route('tarea.all')}}" class='sidebar-link'>
-                        <i class="fa-solid fa-list-check fs-5"></i>
-                        <span>Tareas</span>
-                    </a>
-                </li>
+                
 
 
-                <li class="sidebar-item has-sub {{ $clientesActive ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="fa-solid fa-people-group fs-5"></i>
-                        <span>Clientes</span>
-                    </a>
-                    <ul class="submenu" style="{{ $clientesActive ? 'display:block;' : 'display:none' }}">
-                        <li class="submenu-item {{ request()->routeIs('clientes.index') ? 'active' : '' }} ">
-                            <a href="{{route('clientes.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver todos
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('clientes.create') ? 'active' : '' }} {{ request()->routeIs('cliente.createFromBudget') ? 'active' : ''}}">
-                            <a href="{{route('clientes.create')}}">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>
-                                    Crear cliente
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                
                 <li class="sidebar-item has-sub {{ $presupuestoActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-file-invoice-dollar fs-5"></i>
@@ -769,139 +917,9 @@
                         </li>
                     @endif
                 @endif
-                <li class="sidebar-item has-sub {{ request()->routeIs('siniestro.*') ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="fa-solid fa-car-burst fs-5"></i>
-                        <span>Partes de Trabajo</span>
-                    </a>
-                    <ul class="submenu" style="{{ request()->routeIs('siniestro.*') ? 'display:block;' : 'display:none;' }}">
-                        <li class="submenu-item {{ request()->routeIs('siniestro.index') ? 'active' : '' }}">
-                            <a href="{{route('siniestro.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver todos
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('siniestro.create') ? 'active' : '' }}">
-                            <a href="{{route('siniestro.create')}}">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>
-                                    Crear siniestro
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('estado-siniestro.index') ? 'active' : '' }}">
-                            <a href="{{route('estado-siniestro.index')}}">
-                                <i class="fa-solid fa-tags"></i>
-                                <span>
-                                    Ver Estados
-                                </span>
-                            </a>
-                        </li>
+               
                 
-                        <!-- Tipos de Siniestro -->
-                        <li class="submenu-item {{ request()->routeIs('tipo-siniestro.index') ? 'active' : '' }}">
-                            <a href="{{route('tipo-siniestro.index')}}">
-                                <i class="fa-solid fa-tags"></i>
-                                <span>
-                                    Ver Tipos
-                                </span>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </li>
                 
-                <li class="sidebar-item has-sub {{ request()->routeIs('coches.*') ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="fa-solid fa-car fs-5"></i>
-                        <span>Coches</span>
-                    </a>
-                    <ul class="submenu" style="{{ request()->routeIs('coches.*') ? 'display:block;' : 'display:none;' }}">
-                        <li class="submenu-item {{ request()->routeIs('coches.index') ? 'active' : '' }}">
-                            <a href="{{route('coches.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver todos
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('coches.create') ? 'active' : '' }}">
-                            <a href="{{route('coches.create')}}">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>
-                                    Crear coche
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ request()->routeIs('coches-sustitucion.*') ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="fa-solid fa-car-side fs-5"></i>
-                        <span>Coches de Sustitución</span>
-                    </a>
-                    <ul class="submenu" style="{{ request()->routeIs('coches-sustitucion.*') ? 'display:block;' : 'display:none;' }}">
-                        <li class="submenu-item {{ request()->routeIs('coches-sustitucion.index') ? 'active' : '' }}">
-                            <a href="{{route('coches-sustitucion.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver Coches de Sustitución
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('coches-sustitucion.create') ? 'active' : '' }}">
-                            <a href="{{route('coches-sustitucion.create')}}">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>
-                                    Crear Coche de Sustitución
-                                </span>
-                            </a>
-                        </li>
-
-                        <li class="submenu-item {{ request()->routeIs('reservas-coche.index') ? 'active' : '' }}">
-                            <a href="{{route('reservas-coche.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver Reservas
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ request()->routeIs('piezas.*') || request()->routeIs('categorias-piezas.*') ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="fa-solid fa-gear fs-5"></i>
-                        <span>Piezas</span>
-                    </a>
-                    <ul class="submenu" style="{{ request()->routeIs('piezas.*') || request()->routeIs('categorias-piezas.*') ? 'display:block;' : 'display:none;' }}">
-                        <li class="submenu-item {{ request()->routeIs('piezas.index') ? 'active' : '' }}">
-                            <a href="{{route('piezas.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver Piezas
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('piezas.create') ? 'active' : '' }}">
-                            <a href="{{route('piezas.create')}}">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>
-                                    Crear Pieza
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('categorias-piezas.index') ? 'active' : '' }}">
-                            <a href="{{route('categorias-piezas.index')}}">
-                                <i class="fa-solid fa-tags"></i>
-                                <span>
-                                    Categorías
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
             </ul>
         </div>

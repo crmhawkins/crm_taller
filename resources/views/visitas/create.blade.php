@@ -47,8 +47,10 @@
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('visitas.store') }}" method="POST" style="">
+                    <form action="{{ route('visitas.store') }}" method="POST" style="" onsubmit="return saveCanvasToInput()">
                         @csrf
+                        <input type="hidden" id="foto_danos" name="foto_daños" value="">
+
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
@@ -76,19 +78,7 @@
                                     <input type="number" name="kilometraje" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group mb-3">
-                                    <label for="fecha_ingreso">Fecha Ingreso</label>
-                                    <input type="date" name="fecha_ingreso" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group mb-3">
-                                    <label for="fecha_salida">Fecha Salida</label>
-                                    <input type="date" name="fecha_salida" class="form-control">
-                                </div>
-                            </div>
-                            <!-- ingreso en grua booleano -->
+
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="ingreso_grua">Ingreso en Grua</label>
@@ -108,6 +98,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-3">
+                                    <label for="fecha_ingreso">Fecha Ingreso</label>
+                                    <input type="date" name="fecha_ingreso" class="form-control" id="fecha_ingreso">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-3">
+                                    <label for="fecha_salida">Fecha Salida</label>
+                                    <input type="date" name="fecha_salida" class="form-control">
+                                </div>
+                            </div>
+                            <!-- ingreso en grua booleano -->
+                            
                             <!-- Trabajo a realizar textarea -->
                             <div class="col-md-12">
                                 <div class="form-group mb-3">
@@ -377,119 +381,131 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="gato" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="gato" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Gato
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="antena" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="antena" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Antena
                                     </label>
+
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="herramientas" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="herramientas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Herramientas
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="emblemas" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="emblemas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Emblemas
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="triangulos" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="triangulos" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Triángulos
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="tapones" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="tapones" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Tapones de rueda
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="tapas" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="tapas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Tapas
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="cables" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="cables" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Cables
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="llantas" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="llantas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Llanta
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="radio" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="radio" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Radio
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="extintor" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="extintor" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Extintor
                                     </label>
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="encendedor" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input name="encendedor" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Encendedor
                                     </label>
+
                                 </div>
                             </div>
                             <style>
@@ -517,6 +533,8 @@
                             <!-- Añade más campos según sea necesario -->
                         </div>
                         <button type="submit" class="btn btn-primary mt-3" style="margin-top: 300px !important;">Guardar</button>
+                        <button type="button" class="btn btn-secondary mt-2" style="margin-top: 300px !important;" onclick="clearCanvas()">Borrar dibujo</button>
+
                     </form>
                 </div>
             </div>
@@ -533,62 +551,75 @@
     });
 </script>
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('drawing-canvas');
-    const ctx = canvas.getContext('2d');
-    const image = document.getElementById('car-image');
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvas = document.getElementById('drawing-canvas');
+        const ctx = canvas.getContext('2d');
+        const image = document.getElementById('car-image');
 
-    // Redimensiona el canvas para coincidir con el tamaño de la imagen
-    function resizeCanvas() {
-        canvas.width = image.offsetWidth;
-        canvas.height = image.offsetHeight;
-        canvas.style.width = `${image.offsetWidth}px`;
-        canvas.style.height = `${image.offsetHeight}px`;
-    }
+        // Redimensiona el canvas para coincidir con el tamaño de la imagen
+        function resizeCanvas() {
+            canvas.width = image.offsetWidth;
+            canvas.height = image.offsetHeight;
+            canvas.style.width = `${image.offsetWidth}px`;
+            canvas.style.height = `${image.offsetHeight}px`;
+        }
 
-    // Redimensionar el canvas cuando la imagen haya cargado
-    image.onload = resizeCanvas;
+        // Redimensionar el canvas cuando la imagen haya cargado
+        image.onload = resizeCanvas;
 
-    // Redimensionar también si la ventana cambia de tamaño
-    window.addEventListener('resize', resizeCanvas);
+        // Redimensionar también si la ventana cambia de tamaño
+        window.addEventListener('resize', resizeCanvas);
 
-    // Variables para el dibujo
-    let drawing = false;
+        // Variables para el dibujo
+        let drawing = false;
 
-    // Obtener coordenadas del mouse ajustadas al tamaño del canvas
-    function getMousePos(event) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width; // Relación horizontal
-        const scaleY = canvas.height / rect.height; // Relación vertical
-        return {
-            x: (event.clientX - rect.left) * scaleX,
-            y: (event.clientY - rect.top) * scaleY,
+        // Obtener coordenadas del mouse ajustadas al tamaño del canvas
+        function getMousePos(event) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width; // Relación horizontal
+            const scaleY = canvas.height / rect.height; // Relación vertical
+            return {
+                x: (event.clientX - rect.left) * scaleX,
+                y: (event.clientY - rect.top) * scaleY,
+            };
+        }
+
+        // Eventos de dibujo
+        canvas.addEventListener('mousedown', (event) => {
+            drawing = true;
+            const pos = getMousePos(event);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('mouseup', () => (drawing = false));
+        canvas.addEventListener('mouseout', () => (drawing = false));
+
+        canvas.addEventListener('mousemove', (event) => {
+            if (!drawing) return;
+            const pos = getMousePos(event);
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'red';
+
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        });
+
+        window.clearCanvas = function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         };
-    }
 
-    // Eventos de dibujo
-    canvas.addEventListener('mousedown', (event) => {
-        drawing = true;
-        const pos = getMousePos(event);
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-    });
-
-    canvas.addEventListener('mouseup', () => (drawing = false));
-    canvas.addEventListener('mouseout', () => (drawing = false));
-
-    canvas.addEventListener('mousemove', (event) => {
-        if (!drawing) return;
-        const pos = getMousePos(event);
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = 'red';
-
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
-    });
+     // Función para guardar el canvas en base64
+     window.saveCanvasToInput = function() {
+            const fotoDanosInput = document.getElementById('foto_danos');
+            const dataURL = canvas.toDataURL('image/png');
+            console.log('Canvas Data URL:', dataURL); // Verifica el contenido del canvas
+            fotoDanosInput.value = dataURL;
+            return true; // Asegura que el formulario se envíe
+        };
 });
 </script>
 <script>
@@ -602,6 +633,19 @@
                 input.value = this.classList.contains('selected') ? '1' : '0';
             });
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Establecer la fecha actual por defecto en el campo de fecha de ingreso
+        const fechaIngresoInput = document.getElementById('fecha_ingreso');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11
+        const day = String(today.getDate()).padStart(2, '0');
+        fechaIngresoInput.value = `${year}-${month}-${day}`;
+
+        // ... existing code ...
     });
 </script>
 @include('partials.toast')

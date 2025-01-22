@@ -118,7 +118,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/search-cars', [ClientController::class, 'searchCars'])->name('search.cars');
         Route::post('/coches/change-client', [ClientController::class, 'changeClient'])->name('coches.changeClient');
         Route::post('/coches/removeClient', [ClientController::class, 'removeCarFromClient'])->name('coches.removeClient');
-
+        Route::post('/clientes/coche-sustitucion/store', [ClientController::class, 'storeCocheSustitucion'])->name('clientes.coche-sustitucion.store');
+        Route::post('/clientes/reserva-coche/store', [ClientController::class, 'storeReservaCoche'])->name('clientes.reserva-coche.store');
+        Route::delete('/clientes/reserva-coche/{id}', [ClientController::class, 'destroyReservaCoche'])->name('clientes.reserva-coche.destroy');
+        Route::put('/clientes/reserva-coche/{id}', [ClientController::class, 'updateReservaCoche'])->name('clientes.reserva-coche.update');
         //Proveedores
         Route::get('/supplier', [SuppliersController::class, 'index'])->name('proveedores.index');
         Route::get('/supplier/create', [SuppliersController::class, 'create'])->name('proveedores.create');
@@ -747,7 +750,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'update'])->name('reservas-coche.update');
     Route::delete('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'destroy'])->name('reservas-coche.destroy');
     Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
-
+   
 
     Route::resource('visitas', VisitaCocheController::class);
 });

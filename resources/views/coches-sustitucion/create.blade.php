@@ -17,37 +17,39 @@
                 <div class="card-body">
                     <form action="{{ route('coches-sustitucion.store') }}" method="POST">
                         @csrf
-                        <div class="form-group mb-3">
-                            <label for="matricula">Matrícula:</label>
-                            <input type="text" name="matricula" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="seguro">Seguro:</label>
-                            <input type="text" name="seguro" class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="marca">Marca:</label>
-                            <input type="text" name="marca" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="vin">VIN:</label>
-                            <input type="text" name="vin" class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="modelo">Modelo:</label>
-                            <input type="text" name="modelo" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="kilometraje">Kilometraje:</label>
-                            <input type="number" name="kilometraje" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="color">Color:</label>
-                            <input type="text" name="color" class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="anio">Año:</label>
-                            <input type="number" name="anio" class="form-control">
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="matricula">Matrícula:</label>
+                                <input type="text" name="matricula" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="seguro">Seguro:</label>
+                                <input type="text" name="seguro" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="marca">Marca:</label>
+                                <input type="text" name="marca" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="vin">VIN:</label>
+                                <input type="text" name="vin" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="modelo">Modelo:</label>
+                                <input type="text" name="modelo" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="kilometraje">Kilometraje:</label>
+                                <input type="number" name="kilometraje" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="color">Color:</label>
+                                <input type="text" name="color" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="anio">Año:</label>
+                                <input type="number" name="anio" class="form-control">
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>

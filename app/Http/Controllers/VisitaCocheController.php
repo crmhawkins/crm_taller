@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\VisitaCoche;
 use App\Models\Coches;
-use Illuminate\Http\Request;
 
 class VisitaCocheController extends Controller
 {
@@ -37,8 +37,36 @@ class VisitaCocheController extends Controller
             'fecha_salida' => 'nullable|date',
             'kilometraje' => 'nullable|integer',
             'color' => 'nullable|string',
-            // Añade validaciones para los demás campos según sea necesario
+            'ingreso_grua' => 'nullable|boolean',
+            'trabajo_a_realizar' => 'nullable|string',
+            'observaciones' => 'nullable|string',
+            'airbag' => 'nullable|boolean',
+            'motor' => 'nullable|boolean',
+            'abs' => 'nullable|boolean',
+            'aceite' => 'nullable|boolean',
+            'bateria' => 'nullable|boolean',
+            'cinturon' => 'nullable|boolean',
+            'parking' => 'nullable|boolean',
+            'luces' => 'nullable|boolean',
+            'neumaticos' => 'nullable|boolean',
+            'temperatura' => 'nullable|boolean',
+            'gato' => 'nullable|boolean',
+            'herramientas' => 'nullable|boolean',
+            'triangulos' => 'nullable|boolean',
+            'tapas' => 'nullable|boolean',
+            'llanta' => 'nullable|boolean',
+            'extintor' => 'nullable|boolean',
+            'antena' => 'nullable|boolean',
+            'emblemas' => 'nullable|boolean',
+            'tapones' => 'nullable|boolean',
+            'cables' => 'nullable|boolean',
+            'radio' => 'nullable|boolean',
+            'encendedor' => 'nullable|boolean',
+            'nivel_gasolina' => 'nullable|integer|min:0|max:100',
+            'foto_daños' => 'nullable|string',
         ]);
+
+        //dd($validatedData);
 
         VisitaCoche::create($validatedData);
 
@@ -48,45 +76,38 @@ class VisitaCocheController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VisitaCoche $visitaCoche)
+    public function show(string $id)
     {
-        return view('visitas.show', compact('visitaCoche'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VisitaCoche $visitaCoche)
+    public function edit(string $id)
     {
-        return view('visitas.edit', compact('visitaCoche'));
+        $visita = VisitaCoche::find($id);
+        $coches = Coches::all();
+        return view('visitas.edit', compact('visita', 'coches'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VisitaCoche $visitaCoche)
+    public function update(Request $request, string $id)
     {
-        $validatedData = $request->validate([
-            'coche_id' => 'required|exists:coches,id',
-            'fecha_ingreso' => 'nullable|date',
-            'fecha_salida' => 'nullable|date',
-            'kilometraje' => 'nullable|integer',
-            'color' => 'nullable|string',
-            // Añade validaciones para los demás campos según sea necesario
-        ]);
-
-        $visitaCoche->update($validatedData);
-
+        $visita = VisitaCoche::find($id);
+        $visita->update($request->all());
         return redirect()->route('visitas.index')->with('success', 'Visita actualizada con éxito.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VisitaCoche $visitaCoche)
+    public function destroy(string $id)
     {
-        $visitaCoche->delete();
-
+        $visita = VisitaCoche::find($id);
+        $visita->delete();
         return redirect()->route('visitas.index')->with('success', 'Visita eliminada con éxito.');
     }
 }

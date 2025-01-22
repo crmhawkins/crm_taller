@@ -13,7 +13,8 @@ use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Coches;
-
+use App\Models\ReservasCoche;
+use App\Models\CochesSustitucion;
 class ClientController extends Controller
 {
     /**
@@ -351,7 +352,17 @@ class ClientController extends Controller
             $query->where('cliente_id', '!=', $id)
                   ->orWhereNull('cliente_id');
         })->limit(10)->get();
-        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches', 'countries', 'allCoches'));
+
+        $cochesSustitucion  = CochesSustitucion::all()->filter(function ($coche) {
+            return $coche->isDisponible();
+        });
+        
+
+        $reservasCoche = ReservasCoche::where('cliente_id', $id)
+        ->orderBy('created_at', 'desc') // Ordenar por la fecha de creación en orden descendente
+        ->take(5) // Limitar a las últimas 5 reservas
+        ->get();
+        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches', 'countries', 'allCoches', 'reservasCoche', 'cochesSustitucion'));
     }
 
     /**
@@ -621,4 +632,67 @@ class ClientController extends Controller
     ->get();
     return response()->json($coches);
 }
+
+
+public function storeCocheSustitucion(Request $request)
+{
+    $validatedData = $request->validate([
+        'matricula' => 'required|string|max:255',
+        'seguro' => 'nullable|string|max:255',
+        'marca' => 'nullable|string|max:255',
+        'vin' => 'nullable|string|max:255',
+        'modelo' => 'nullable|string|max:255',
+        'kilometraje' => 'nullable|integer',
+        'color' => 'nullable|string|max:255',
+        'anio' => 'nullable|integer',
+    ]);
+
+    CochesSustitucion::create($validatedData);
+
+    return redirect()->back()->with('success', 'Coche de sustitución añadido con éxito.');
+}
+
+public function storeReservaCoche(Request $request)
+{
+    $validatedData = $request->validate([
+        'coche_sustitucion_id' => 'required|exists:coches_sustitucion,id',
+        'fecha_inicio' => 'required|date',
+        'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+        'estado' => 'required|string',
+        'comentario' => 'nullable|string',
+        'km_actual' => 'nullable|integer',
+        'km_entregado' => 'nullable|integer',
+    ]);
+
+    $validatedData['cliente_id'] = $request->input('cliente_id');
+    ReservasCoche::create($validatedData);
+
+    return redirect()->back()->with('success', 'Reserva de coche de sustitución añadida con éxito.');
+}
+
+
+public function destroyReservaCoche($id)
+{
+    $reserva = ReservasCoche::findOrFail($id);
+    $reserva->delete();
+
+    return redirect()->back()->with('success', 'Reserva de coche de sustitución eliminada con éxito.');
+}
+
+public function updateReservaCoche(Request $request, $id)
+{
+    $reserva = ReservasCoche::findOrFail($id);
+
+    $validatedData = $request->validate([
+        'estado' => 'sometimes|required|string|in:pendiente,entregado,devuelto',
+        'fecha_fin' => 'sometimes|required|date|after_or_equal:fecha_inicio',
+        'km_actual' => 'sometimes|required|integer',
+        'km_entregado' => 'sometimes|required|integer',
+    ]);
+
+    $reserva->update($validatedData);
+
+    return response()->json(['success' => true, 'message' => 'Reserva actualizada con éxito.']);
+}
+
 }

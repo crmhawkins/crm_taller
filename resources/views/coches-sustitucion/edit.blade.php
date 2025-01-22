@@ -18,37 +18,39 @@
                     <form action="{{ route('coches-sustitucion.update', $cochesSustitucion->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="form-group mb-3">
-                            <label for="matricula">Matrícula:</label>
-                            <input type="text" name="matricula" class="form-control" value="{{ $cochesSustitucion->matricula }}" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="seguro">Seguro:</label>
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="matricula">Matrícula:</label>
+                                <input type="text" name="matricula" class="form-control" value="{{ $cochesSustitucion->matricula }}" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="seguro">Seguro:</label>
                             <input type="text" name="seguro" class="form-control" value="{{ $cochesSustitucion->seguro }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="marca">Marca:</label>
-                            <input type="text" name="marca" class="form-control" value="{{ $cochesSustitucion->marca }}" required>
-                        </div>
-                        <div class="form-group mb-3">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="marca">Marca:</label>
+                                <input type="text" name="marca" class="form-control" value="{{ $cochesSustitucion->marca }}" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
                             <label for="vin">VIN:</label>
                             <input type="text" name="vin" class="form-control" value="{{ $cochesSustitucion->vin }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="modelo">Modelo:</label>
-                            <input type="text" name="modelo" class="form-control" value="{{ $cochesSustitucion->modelo }}" required>
-                        </div>
-                        <div class="form-group mb-3">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="modelo">Modelo:</label>
+                                <input type="text" name="modelo" class="form-control" value="{{ $cochesSustitucion->modelo }}" required>
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
                             <label for="kilometraje">Kilometraje:</label>
                             <input type="number" name="kilometraje" class="form-control" value="{{ $cochesSustitucion->kilometraje }}" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="color">Color:</label>
-                            <input type="text" name="color" class="form-control" value="{{ $cochesSustitucion->color }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="anio">Año:</label>
-                            <input type="number" name="anio" class="form-control" value="{{ $cochesSustitucion->anio }}">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="color">Color:</label>
+                                <input type="text" name="color" class="form-control" value="{{ $cochesSustitucion->color }}">
+                            </div>
+                            <div class="form-group mb-3 col-md-3">
+                                <label for="anio">Año:</label>
+                                <input type="number" name="anio" class="form-control" value="{{ $cochesSustitucion->anio }}">
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Actualizar</button>
                     </form>
