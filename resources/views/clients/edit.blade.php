@@ -274,6 +274,35 @@
                                 @enderror
                             </div>
                         </div> --}}
+
+                        <h3 class="mt-5 mb-2 text-center uppercase">Presupuestos</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Referencia</th>
+                                    <th>Fecha</th>
+                                    <th>Concepto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($presupuestos as $presupuesto)
+                                    <tr>
+                                        <td>{{ $presupuesto->reference }}</td>
+                                        <td>{{  date('d/m/Y', strtotime($presupuesto->created_at)) }}</td>
+                                        <td>{{ $presupuesto->concept }}</td>
+                                        <td>
+                                            <a href="{{ route('presupuesto.edit', $presupuesto->id) }}" class="btn btn-secondary">Editar</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <div class="form-group mt-3">
+                            <a href="{{ route('presupuesto.create', ['cliente_id' => $cliente->id]) }}" class="btn btn-primary">
+                                <i class="fas fa-file-invoice-dollar"></i> Crear Presupuesto
+                            </a>
+                        </div>
                         
                         <h3 class="mt-5 mb-2 text-center uppercase">Coches</h3>
                         <table class="table">
@@ -321,6 +350,8 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        
 
                         <h3 class="mt-5 mb-2 text-center uppercase">Coches de sustitución asignados</h3>
                             <table class="table">

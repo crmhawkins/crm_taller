@@ -5,6 +5,12 @@
 @section('css')
 {{-- <link rel="stylesheet" href="{{asset('assets/vendors/choices.js/choices.min.css')}}" /> --}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .modal-backdrop.fade.show{
+        display: none !important;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -36,7 +42,7 @@
                         @csrf
 
                         {{-- Observaciones --}}
-                        <div class="form-group mb-3">
+                        {{-- <div class="form-group mb-3">
                             <label class="text-uppercase" style="font-weight: bold" for="services_category_id">Categoría:</label>
                             <select class="choices js-example-basic-single form-control @error('services_category_id') is-invalid @enderror" name="services_category_id" >
                                 <option value="">Seleccione una categoria</option>
@@ -50,10 +56,10 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         {{-- Servicios --}}
-                        <div class="form-group mb-3">
+                        {{-- <div class="form-group mb-3">
                             <label class="text-uppercase" style="font-weight: bold" for="service_id">Servicio:</label>
                             <select class="js-example-basic-single form-control @error('service_id') is-invalid @enderror" name="service_id" >
                                 <option value="">Seleccione una categoria</option>
@@ -63,7 +69,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         {{-- Titulo --}}
                         <div class="form-group mb-3">
@@ -89,6 +95,40 @@
 
                         {{-- Unidades --}}
                         <div class="form-group row align-items-end" id="filaAgregar">
+                            <div class="form-group mb-3 col-md-5 mt-3">
+                                <label class="text-uppercase" style="font-weight: bold" for="concept">Piezas:</label>
+                                <select class="form-control @error('piezas') is-invalid @enderror select2" name="pieza_id" id="piezas">
+                                    <option value="">Seleccione una pieza</option>
+                                    @foreach ($piezas as $pieza)
+                                        <option value="{{ $pieza->id }}">{{ $pieza->nombre }}</option>
+                                    @endforeach
+                                </select>
+                                
+                                @error('piezas')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPiezaModal">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="form-group mt-3 col-md-6">
+                                <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
+                                <input type="file" class="form-control" id="file" name="file[]" multiple>
+                                @error('file')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+                            {{-- <div class="col-6">
+                                <button id="añadirFilaUnidades" class="btn btn-secondary">Añadir más unidades</button>
+                            </div> --}}
+                        </div>
+                        <div class="row">
                             <div class="col-6">
                                 <label class="text-uppercase" style="font-weight: bold" for="units0">Unidades:</label>
                                 <input type="text" class="form-control @error('units.0') is-invalid @enderror" id="units0" value="{{ old('units.0') }}" name="units[]">
@@ -98,23 +138,47 @@
                                         </span>
                                 @enderror
                             </div>
-                            <div class="col-6">
-                                <button id="añadirFilaUnidades" class="btn btn-secondary">Añadir más unidades</button>
+                            <div class="form-group mb-3 col-md-6 mt-3">
+                                {{-- Precio --}}
+                                <div class="form-group">
+                                    <label class="text-uppercase" style="font-weight: bold" for="purchase_price">Precio:</label>
+                                    <input type="double" class="form-control @error('purchase_price') is-invalid @enderror" id="purchase_price" value="{{ old('purchase_price', $budgetConcept->purchase_price ?? 0) }}" name="purchase_price">
+                                    @error('purchase_price')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
+                        <div class="row">
+                            {{-- Margen --}}
+                            <div class="form-group col-md-6">
+                                <label class="text-uppercase" style="font-weight: bold" for="total">Margen %:</label>
+                                <input type="double" class="form-control @error('benefit_margin') is-invalid @enderror" id="benefit_margin" value="{{ old('benefit_margin', $budgetConcept->benefit_margin  ?? 50) }}" name="benefit_margin">
+                                @error('benefit_margin')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+                            {{-- Total --}}
+                            <div class="form-group col-md-6">
+                                <label class="text-uppercase" style="font-weight: bold" for="sale_price">Total (Precio + Margen):</label>
+                                <input type="double" class="form-control @error('sale_price') is-invalid @enderror" id="sale_price" value="{{ old('sale_price', $budgetConcept->sale_price ?? 0) }}" name="sale_price" readonly >
+                                @error('sale_price')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+                        </div>
+                        
 
                         {{-- Adjunto --}}
-                        <div class="form-group mt-3">
-                            <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
-                            <input type="file" class="form-control" id="file" name="file[]" multiple>
-                            @error('file')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                            @enderror
-                        </div>
+                        
                         {{-- Enviar Email --}}
-                        <div class="row my-5">
+                        {{-- <div class="row my-5">
                             <div class="col-md-6">
                                 <label class="text-uppercase mb-2" style="font-weight: bold; display:block" for="em">Enviar email a todos los proveedores:</label>
                                 <div class="form-check">
@@ -130,17 +194,17 @@
                                         </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
                         {{-- Proveedores --}}
-                        <div class="col-12 form-group ">
+                        <div class="col-12 form-group  mt-3">
                             <div class="col-12 form-group">
                                 <div class="row">
                                     <label class="text-uppercase" style="font-weight: bold" for="total">Proveedores:</label>
                                     <input id="selectedSupplierId" name="selectedSupplierId" type="hidden">
                                     <div class="col-12 flex flex-row justify-between mb-3">
                                         <div class="input-group list-row-supplier mr-3">
-                                            <select id="supplierId1" name="supplierId1" class="@error('supplierId1') is-invalid @enderror choices form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="1" data-show-subtext="true" data-live-search="true">
+                                            <select id="supplierId1" name="supplierId1" class="@error('supplierId1') is-invalid @enderror choices form-control supplier-list-row-select selectSupplier select2" width="auto" data-supplier-number="1" data-show-subtext="true" data-live-search="true">
                                                 <option value="">-- Seleccione proveedor--</option>
                                                 @if($suppliers)
                                                     @foreach ($suppliers as $supplier)
@@ -155,9 +219,9 @@
                                             @enderror
                                         </div>
                                         <input class="form-control mr-3" id="supplierEmail1" name="supplierEmail1" type="text" placeholder="Email" value="{{ old('supplierEmail1') }}">
-                                        <input class="form-control " id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" value="{{ old('supplierPrice1') }}">
+                                        <input class="form-control " id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" value="{{ old('supplierPrice1') }}" hidden>
                                     </div>
-                                    <div class="col-12 flex flex-row justify-between mb-3">
+                                    {{-- <div class="col-12 flex flex-row justify-between mb-3">
                                         <div class="input-group list-row-supplier mr-3" >
                                             <select id="supplierId2" name="supplierId2" class="@error('supplierId2') is-invalid @enderror  choices selectpicker select2 form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="2" data-show-subtext="true" data-live-search="true">
                                                 <option value="">-- Seleccione proveedor--</option>
@@ -174,11 +238,11 @@
                                             @enderror
                                         </div>
                                         <input  id="supplierEmail2" name="supplierEmail2" type="text" placeholder="Email" class="form-control mr-3" value="{{ old('supplierEmail2') }}">
-                                        <input class="form-control"  id="supplierPrice2" placeholder="Formato: 0.00" name="supplierPrice2" value="{{ old('supplierPrice2') }}">
+                                        <input class="form-control"  id="supplierPrice2" placeholder="Formato: 0.00" name="supplierPrice2" value="{{ old('supplierPrice2') }}" hidden>
 
                                         <br>
-                                    </div>
-                                    <div class="col-12 flex flex-row justify-between mb-3">
+                                    </div> --}}
+                                    {{-- <div class="col-12 flex flex-row justify-between mb-3">
                                         <div class="input-group list-row-supplier mr-3" >
                                             <select id="supplierId3" name="supplierId3" class="@error('supplierId3') is-invalid @enderror  choices selectpicker select2 form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="3" data-show-subtext="true" data-live-search="true">
                                                 <option value="">-- Seleccione proveedor--</option>
@@ -195,10 +259,10 @@
                                             @enderror
                                         </div>
                                         <input id="supplierEmail3"  name="supplierEmail3" type="text" placeholder="Email" class="form-control mr-3" value="{{ old('supplierEmail3') }}">
-                                        <input class="form-control" id="supplierPrice3" placeholder="Formato: 0.00" name="supplierPrice3" value="{{ old('supplierPrice3') }}">
+                                        <input class="form-control" id="supplierPrice3" placeholder="Formato: 0.00" name="supplierPrice3" value="{{ old('supplierPrice3') }}" hidden>
 
                                         <br>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -212,6 +276,89 @@
                 </div>
             </div>
         </section>
+       <!-- Modal para crear una nueva pieza -->
+<div class="modal fade" id="createPiezaModal" tabindex="-1" aria-labelledby="createPiezaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="createPiezaForm" method="POST">
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPiezaModalLabel">Crear Nueva Pieza</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Nombre -->
+                        <div class="form-group col-md-6">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <!-- Código -->
+                        <div class="form-group col-md-6">
+                            <label for="codigo">Código</label>
+                            <input type="text" class="form-control" id="codigo" name="codigo">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Fabricante -->
+                        <div class="form-group col-md-6">
+                            <label for="fabricante">Fabricante</label>
+                            <input type="text" class="form-control" id="fabricante" name="fabricante">
+                        </div>
+                        <!-- Marca -->
+                        <div class="form-group col-md-6">
+                            <label for="marca">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Modelo -->
+                        <div class="form-group col-md-6">
+                            <label for="modelo">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo">
+                        </div>
+                        <!-- Descripción -->
+                        <div class="form-group col-md-6">
+                            <label for="proveedor_id">Proveedor</label>
+                            <select class="form-control" id="proveedor_id" name="proveedor_id">
+                                <option value="">Seleccione un proveedor</option>
+                                @foreach ($suppliers as $supplier)
+                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                @endforeach
+                                <!-- Aquí puedes cargar los proveedores desde el backend -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Nota -->
+                        <div class="form-group col-md-6">
+                            <label for="nota">Nota</label>
+                            <textarea type="text" class="form-control" id="nota" name="nota" ></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="descripcion">Descripción</label>
+                            <textarea type="text" class="form-control" id="descripcion" name="descripcion" ></textarea>
+                        </div>
+                        <!-- Proveedor -->
+                        
+                    </div>
+                    <div class="row">
+                        <!-- Número de Serie -->
+                        <div class="form-group col-md-6">
+                            <label for="numero_serie">Número de Serie</label>
+                            <input type="text" class="form-control" id="numero_serie" name="numero_serie">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     </div>
 <style>
     .select2-container--default .select2-selection--single {
@@ -227,6 +374,7 @@
 @section('scripts')
 {{-- <script src="{{asset('assets/vendors/choices.js/choices.min.js')}}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 
@@ -452,6 +600,51 @@
         $('#filaAgregar' + index).remove();
     }
 
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+$(document).ready(function() {
+        $('.js-example-basic-single').select2();
+        $('.choices').select2();
+        // Calcula el total automáticamente
+        $('#units, #purchase_price, #benefit_margin').on('input', function() {
+            var units = parseFloat($('#units').val()) || 0;
+            var price = parseFloat($('#purchase_price').val()) || 0;
+            var margin = parseFloat($('#benefit_margin').val()) || 0;
+            var preciodeunidades = units * price;
+            var total = price *(1 + margin/100)
+            $('#sale_price').val(total.toFixed(2)); // Asumiendo dos decimales
+        });
+    });
+
+    $(document).ready(function() {
+    $('#createPiezaForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/ruta-para-crear-pieza', // Cambia esto por la ruta correcta
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(data) {
+                // Cierra el modal
+                $('#createPiezaModal').modal('hide');
+
+                // Añade la nueva pieza al select
+                $('#piezas').append(new Option(data.nombre, data.id, true, true)).trigger('change');
+            },
+            error: function(xhr) {
+                // Maneja los errores
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+
+
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
 </script>
 @endsection
 

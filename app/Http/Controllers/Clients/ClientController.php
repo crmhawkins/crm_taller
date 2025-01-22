@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Coches;
 use App\Models\ReservasCoche;
 use App\Models\CochesSustitucion;
+use App\Models\Budgets\Budget;
 class ClientController extends Controller
 {
     /**
@@ -353,6 +354,10 @@ class ClientController extends Controller
                   ->orWhereNull('cliente_id');
         })->limit(10)->get();
 
+        $presupuestos = Budget::where('client_id', $id) ->orderBy('created_at', 'desc') // Ordenar por la fecha de creación en orden descendente
+        ->take(5) // Limitar a las últimas 5 reservas
+        ->get();
+
         $cochesSustitucion  = CochesSustitucion::all()->filter(function ($coche) {
             return $coche->isDisponible();
         });
@@ -362,7 +367,7 @@ class ClientController extends Controller
         ->orderBy('created_at', 'desc') // Ordenar por la fecha de creación en orden descendente
         ->take(5) // Limitar a las últimas 5 reservas
         ->get();
-        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches', 'countries', 'allCoches', 'reservasCoche', 'cochesSustitucion'));
+        return view('clients.edit', compact('clientes', 'cliente', 'gestores', 'contactos', 'coches', 'countries', 'allCoches', 'reservasCoche', 'cochesSustitucion', 'presupuestos'));
     }
 
     /**

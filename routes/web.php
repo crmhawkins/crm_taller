@@ -122,6 +122,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/clientes/reserva-coche/store', [ClientController::class, 'storeReservaCoche'])->name('clientes.reserva-coche.store');
         Route::delete('/clientes/reserva-coche/{id}', [ClientController::class, 'destroyReservaCoche'])->name('clientes.reserva-coche.destroy');
         Route::put('/clientes/reserva-coche/{id}', [ClientController::class, 'updateReservaCoche'])->name('clientes.reserva-coche.update');
+       
+        Route::post('/ruta-para-crear-pieza', [BudgetConceptsController::class, 'storePieza'])->name('piezas-budget.store');
         //Proveedores
         Route::get('/supplier', [SuppliersController::class, 'index'])->name('proveedores.index');
         Route::get('/supplier/create', [SuppliersController::class, 'create'])->name('proveedores.create');

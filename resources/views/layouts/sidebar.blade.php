@@ -23,6 +23,8 @@
 
                 @php
                     $clientesActive = request()->routeIs('clientes.index') || request()->routeIs('clientes.create') || request()->routeIs('clientes.show') || request()->routeIs('cliente.createFromBudget') || request()->routeIs('clientes.edit');
+                    $presupuestoActive = request()->routeIs('presupuestos.index') || request()->routeIs('presupuesto.create') || request()->routeIs('presupuesto.show');
+
                 @endphp
                 <li class="sidebar-title">Taller</li>
                 <li class="sidebar-item has-sub {{ $clientesActive ? 'active' : '' }}">
@@ -48,6 +50,37 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="sidebar-item has-sub {{ $presupuestoActive ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="fa-solid fa-file-invoice-dollar fs-5"></i>
+
+                        <span>Presupuestos</span>
+                    </a>
+                    <ul class="submenu" style="{{ $presupuestoActive ? 'display:block;' : 'display:none;' }}">
+                        <li class="submenu-item {{ request()->routeIs('presupuestos.index') ? 'active' : '' }}">
+                            <a href="{{route('presupuestos.index')}}">
+                                <i class="fa-solid fa-list"></i>
+                                <span>
+                                    Ver todos
+                                </span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->routeIs('presupuesto.create') ? 'active' : '' }}">
+                            <a href="{{route('presupuesto.create')}}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>
+                                    Crear presupuesto
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item {{ request()->routeIs('facturas.index') ? 'active' : '' }}">
+                    <a href="{{route('facturas.index')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-file-invoice-dollar fs-5"></i>
+                        <span>Facturas</span>
+                    </a>
                 </li>
                 <li class="sidebar-item has-sub {{ request()->routeIs('siniestro.*') ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
@@ -240,32 +273,8 @@
 
 
                 
-                <li class="sidebar-item has-sub {{ $presupuestoActive ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="fa-solid fa-file-invoice-dollar fs-5"></i>
-
-                        <span>Presupuestos</span>
-                    </a>
-                    <ul class="submenu" style="{{ $presupuestoActive ? 'display:block;' : 'display:none;' }}">
-                        <li class="submenu-item {{ request()->routeIs('presupuestos.index') ? 'active' : '' }}">
-                            <a href="{{route('presupuestos.index')}}">
-                                <i class="fa-solid fa-list"></i>
-                                <span>
-                                    Ver todos
-                                </span>
-                            </a>
-                        </li>
-                        <li class="submenu-item {{ request()->routeIs('presupuesto.create') ? 'active' : '' }}">
-                            <a href="{{route('presupuesto.create')}}">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>
-                                    Crear presupuesto
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ $peticionesActive ? 'active' : '' }}">
+                
+                {{-- <li class="sidebar-item has-sub {{ $peticionesActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-clipboard fs-5"></i>
                         <span>Peticiones</span>
@@ -288,8 +297,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ $projectActive ? 'active' : '' }}">
+                </li> --}}
+                {{-- <li class="sidebar-item has-sub {{ $projectActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-diagram-project fs-5"></i>
                         <span>Campañas</span>
@@ -312,7 +321,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="sidebar-item has-sub {{ $tareaActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-list-check fs-5"></i>
@@ -353,7 +362,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item has-sub {{ $dominiosActive ? 'active' : '' }}">
+                {{-- <li class="sidebar-item has-sub {{ $dominiosActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-globe fs-5"></i>
                         <span>Dominios</span>
@@ -376,7 +385,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="sidebar-item has-sub {{ $poveedoresActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-user-tie fs-5"></i>
@@ -401,7 +410,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item has-sub {{ $actasActive ? 'active' : '' }}">
+                {{-- <li class="sidebar-item has-sub {{ $actasActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-address-book fs-5"></i>
                         <span>Actas de reunion</span>
@@ -424,8 +433,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ $IncidenciasActive ? 'active' : '' }}">
+                </li> --}}
+                {{-- <li class="sidebar-item has-sub {{ $IncidenciasActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-address-book fs-5"></i>
                         <span>Incidencias</span>
@@ -448,14 +457,9 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 @if ($admin || $gerente || $contable)
-                    <li class="sidebar-item {{ request()->routeIs('facturas.index') ? 'active' : '' }}">
-                        <a href="{{route('facturas.index')}}" class='sidebar-link'>
-                            <i class="fa-solid fa-file-invoice-dollar fs-5"></i>
-                            <span>Facturas</span>
-                        </a>
-                    </li>
+                    
                     <li class="sidebar-item {{ request()->routeIs('order.indexAll') ? 'active' : '' }}">
                         <a href="{{route('order.indexAll')}}" class='sidebar-link'>
                             <i class="fa-solid fa-receipt"></i>
@@ -745,7 +749,7 @@
                         </ul>
                     </li>
                     @if ($admin || $gerente )
-                        <li class="sidebar-item has-sub {{ $servicesActive ? 'active' : '' }}">
+                        {{-- <li class="sidebar-item has-sub {{ $servicesActive ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
                                 <i class="fa-solid fa-sliders fs-5"></i>
                                 <span>Servicios</span>
@@ -784,7 +788,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="sidebar-item has-sub {{ $departamentoActive ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
                                 <i class="fa-solid fa-user-group fs-5"></i>

@@ -44,8 +44,8 @@ class BudgetConceptsController extends Controller
     {
         // Validamos los campos
         $this->validate($request, [
-            'services_category_id' => 'required|filled',
-            'service_id' => 'required',
+            'services_category_id' => 'nullable|filled',
+            'service_id' => 'nullable',
             'title' => 'required',
             'concept' => 'required',
             'units' => 'required',
@@ -298,7 +298,7 @@ class BudgetConceptsController extends Controller
 
         $suppliers = Supplier::all();
         $budgetSupplierSelectedOption = BudgetConceptSupplierRequest::where('budget_concept_id', $presupuesto->id)->where('selected', 1)->get()->first();
-
+        $piezas = Piezas::all();
         $categorias = ServiceCategories::where('inactive',0)->where('type',1)->get();
         return view('budgets-concepts.createTypeSupplier', compact(
             'categorias',
@@ -307,7 +307,8 @@ class BudgetConceptsController extends Controller
             'services',
             'serviceCategories',
             'suppliers',
-            'budgetSupplierSelectedOption'
+            'budgetSupplierSelectedOption',
+            'piezas'
         ));
     }
 
@@ -317,15 +318,17 @@ class BudgetConceptsController extends Controller
 
         // Validamos los campos
         $this->validate($request, [
-            'services_category_id' => 'required|exists:services_categories,id',
+            'services_category_id' => 'nullable|exists:services_categories,id',
             'service_id' => 'nullable',
             'title' => 'required',
             'concept' => 'required',
             'units' => 'required|array|min:1',
             'units.*' => 'required|numeric|min:0', // Valida cada elemento del array de unidades
-            'supplierId1' => 'required',
-            'supplierId2' => 'required',
-            'supplierId3' => 'required',
+            'supplierId1' => 'nullable',
+            'supplierId2' => 'nullable',
+            'supplierId3' => 'nullable',
+            'purchase_price' => 'nullable',
+            'pieza_id' => 'nullable',
         ], [
             'services_category_id.required' => 'La categoria del servicio es requerido para continuar',
             'service_id.required' => 'El servicio es requerido para continuar',
@@ -339,13 +342,14 @@ class BudgetConceptsController extends Controller
             'units.*.required' => 'Este campo de unidades es requerido.',
             'units.*.numeric' => 'Las unidades deben ser numéricas.',
             'units.*.min' => 'Las unidades no pueden ser menores a 0.',
-            'supplierId1.required' => 'El proveedor 1 es requerido para continuar',
-            'supplierId2.required' => 'El proveedor 2 es requerido para continuar',
-            'supplierId3.required' => 'El proveedor 3 es requerido para continuar',
+            'supplierId1.nullable' => 'El proveedor 1 es requerido para continuar',
+            'supplierId2.nullable' => 'El proveedor 2 es requerido para continuar',
+            'supplierId3.nullable' => 'El proveedor 3 es requerido para continuar',
+            'pieza_id.nullable' => 'La pieza es requerida para continuar',
         ]);
 
         $data = $request->all();
-        if($data['service_id'] == 'null' ){
+        if(isset($data['service_id']) && $data['service_id'] == 'null' ){
             $data['service_id'] = null;
         }
         $data['budget_id'] = $budget;
@@ -356,12 +360,17 @@ class BudgetConceptsController extends Controller
             $budgetConcept = BudgetConcept::create([
                 'budget_id' => $budget,
                 'concept_type_id' => 1,
-                'services_category_id' => $data['services_category_id'],
+                'services_category_id' => isset($data['services_category_id']) ? $data['services_category_id'] : null,
                 'service_id' => $data['service_id'] ?? null,
                 'units' => $unit,
                 'title' => $data['title'],
                 'concept' => $data['concept'],
-
+                'purchase_price' => $data['purchase_price'] ?? null,
+                'benefit_margin' => $data['benefit_margin'] ?? null,
+                'total_no_discount' => $data['sale_price'] ?? null,
+                'total' => $data['sale_price'] ?? null,
+                'sale_price' => $data['sale_price'] ?? null,
+                'pieza_id' => $data['pieza_id'] ?? null,
             ]);
 
             $budgetConceptSaved = $budgetConcept->save();
@@ -390,9 +399,9 @@ class BudgetConceptsController extends Controller
                 $newSupplierOpt2 = array(
                     "_token" => $data['_token'],
                     "budget_concept_id" =>$budgetConcept->id,
-                    "supplier_id" => $data['supplierId2'],
-                    "mail" => $data['supplierEmail2'],
-                    "price" => $data['supplierPrice2'],
+                    "supplier_id" => $data['supplierId2'] ?? null,
+                    "mail" => $data['supplierEmail2'] ?? null,
+                    "price" => $data['supplierPrice2'] ?? null,
                     "option_number" => 2,
                 );
                 $budgetSupplierRequest2 = BudgetConceptSupplierRequest::create($newSupplierOpt2);
@@ -402,9 +411,9 @@ class BudgetConceptsController extends Controller
                 $newSupplierOpt3 = array(
                     "_token" => $data['_token'],
                     "budget_concept_id" =>$budgetConcept->id,
-                    "supplier_id" => $data['supplierId3'],
-                    "mail" => $data['supplierEmail3'],
-                    "price" => $data['supplierPrice3'],
+                    "supplier_id" => $data['supplierId3'] ?? null,
+                    "mail" => $data['supplierEmail3'] ?? null,
+                    "price" => $data['supplierPrice3'] ?? null,
                     "option_number" => 3,
                 );
                 $budgetSupplierRequest3 = BudgetConceptSupplierRequest::create($newSupplierOpt3);
@@ -451,6 +460,26 @@ class BudgetConceptsController extends Controller
 
         return view('budgets-concepts.editTypeSupplier', compact('budgetConcept', 'presupuesto','suppliers', 'budgetSuppliersSaved', 'budgetSupplierSelectedOption', 'services', 'categorias', 'client', 'arrayEmails'));
     }
+
+    public function storePieza(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'codigo' => 'nullable|string|max:255',
+            'fabricante' => 'nullable|string|max:255',
+            'marca' => 'nullable|string|max:255',
+            'modelo' => 'nullable|string|max:255',
+            'descripcion' => 'nullable',
+            'nota' => 'nullable|string|max:255',
+            'proveedor_id' => 'nullable|exists:suppliers,id',
+            'numero_serie' => 'nullable|string|max:255',
+            
+        ]);
+
+    $pieza = Piezas::create($validatedData);
+
+    return response()->json($pieza);
+}
 
     public function updateTypeSupplier(Request $request, $budget)
     {

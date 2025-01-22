@@ -48,7 +48,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label class="mb-2 text-left">Campañas</label>
                                             <div class="flex flex-row align-items-start mb-0">
                                                 <select class=" form-select w-100 @error('project_id') is-invalid @enderror" name="project_id"  id="proyecto" @if($campanias != null )@if( $campanias->count() < 0){{'disabled'}} @endif @endif >
@@ -65,7 +65,7 @@
                                                     <strong>{{ $message }}</strong>
                                                 </p>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group mb-3">
                                             <label class="mb-2 text-left" for="payment_method_id">Forma de pago:</label>
                                             <div class="flex flex-row align-items-start mb-0">
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="text-left mb-2">Cliente Asociado:</label>
                                             <div class="flex flex-row align-items-start">
                                                 <select id="cliente" class=" w-100 form-select @error('client_id') is-invalid @enderror" name="client_id" >
@@ -133,7 +133,7 @@
                                                 </p>
                                             @enderror
                                         </div>
-                                        <div class="form-group mb-3">
+                                        {{-- <div class="form-group mb-3">
                                             <label class="mb-2 text-left">Gestor</label>
                                             <select class=" form-select w-100 @error('admin_user_id') is-invalid @enderror" name="admin_user_id" id="gestor">
                                                 @if ($gestores->count() > 0)
@@ -149,8 +149,10 @@
                                                     <strong>{{ $message }}</strong>
                                                 </p>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group mb-3">
+                                            <input type="text" hidden name="admin_user_id" value="{{ $presupuesto->admin_user_id }}">
+
                                             <label class="mb-2 text-left" for="concept">Concepto:</label>
                                             <input type="text" class="form-control @error('concept') is-invalid @enderror" id="concept" value="{{ $presupuesto->concept }}" name="concept">
                                             @error('concept')
@@ -193,10 +195,10 @@
                                         <input type="checkbox" class="form-check-input" id="no_sumatorio" name="no_sumatorio">
                                         <label class="form-check-label ml-2" for="no_sumatorio">No mostrar sumatorio</label>
                                     </div>
-                                    <div class="col-6 form-check form-switch d-flex justify-content-center mt-2">
+                                    {{-- <div class="col-6 form-check form-switch d-flex justify-content-center mt-2">
                                         <input type="checkbox" class="form-check-input" id="is_ceuta" name="is_ceuta" value="1" {{ old('ceuta',$presupuesto->is_ceuta) ? ' checked' : '' }}>
                                         <label class="form-check-label ml-2" for="is_ceuta">Ceuta</label>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <hr class="mt-3 mb-3">
                                 <div class="row">

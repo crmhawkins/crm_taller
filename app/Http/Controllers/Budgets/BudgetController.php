@@ -170,7 +170,7 @@ class BudgetController extends Controller
         // Validamos los campos
         $data = $this->validate($request, [
             'client_id' => 'required|integer',
-            'project_id' => 'required|integer',
+            'project_id' => 'nullable|integer',
             'admin_user_id' => 'nullable|integer',
             'concept' => 'required|max:200',
             'commercial_id' => 'nullable|integer',
@@ -284,12 +284,16 @@ class BudgetController extends Controller
         $budget = Budget::find($id);
         // Validación
 
+
         $request->validate([
             'client_id' => 'required',
-            'project_id' => 'required',
+            'project_id' => 'nullable',
             'admin_user_id' => 'required',
             'payment_method_id' => 'required'
         ]);
+
+
+        //return $request->all();
 
         // Formulario datos
         $data = $request->all();
@@ -303,17 +307,17 @@ class BudgetController extends Controller
 
         // Comprobar existencia a la hora de guardar por si se eliminó un registro durante la creación
         $clientID = $data['client_id'];
-        $projectID = $data['project_id'];
+        //$projectID = $data['project_id'];
         $adminUserID = $data['admin_user_id'];
 
-        $projectExists = Project::where('id', $projectID)->get()->first();
+        //$projectExists = Project::where('id', $projectID)->get()->first();
 
-        if( !$projectExists){
-            return redirect()->back()->with('toast', [
-                'icon' => 'error',
-                'mensaje' => 'La campaña seleccinada no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
-            ]);
-        }
+        // if( !$projectExists){
+        //     return redirect()->back()->with('toast', [
+        //         'icon' => 'error',
+        //         'mensaje' => 'La campaña seleccinada no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
+        //     ]);
+        // }
 
         $clientExists = Client::where('id', $clientID)->get()->first();
 
@@ -323,6 +327,8 @@ class BudgetController extends Controller
                 'mensaje' => 'El cliente seleccinado no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
             ]);
         }
+               // return $request->all();
+
 
         $adminUserExists = User::where('id', $adminUserID)->get()->first();
 

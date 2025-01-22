@@ -46,8 +46,8 @@
                                             <select id="cliente" class="choices w-100 form-select @error('client_id') is-invalid @enderror" name="client_id" >
                                                 @if ($clientes->count() > 0)
                                                 <option value="">Seleccione un Cliente</option>
-                                                    @foreach ( $clientes as $cliente )
-                                                        <option @if(old('client_id', $clienteId) == $cliente->id) {{'selected'}} @endif data-id="{{$cliente->id}}" value="{{$cliente->id}}">{{$cliente->company ?? $cliente->name}}</option>
+                                                    @foreach ($clientes as $cliente)
+                                                        <option @if(old('client_id', request('cliente_id')) == $cliente->id) selected @endif value="{{ $cliente->id }}">{{ $cliente->company ?? $cliente->name }}</option>
                                                     @endforeach
                                                 @else
                                                     <option value="">No existen clientes todavia</option>
@@ -62,8 +62,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
-                                    {{-- Campaña model:Project --}}
+                                {{-- <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <label class="mb-2 text-left">Campañas</label>
                                         <div class="flex flex-row align-items-start mb-0">
@@ -91,11 +90,8 @@
                                             </p>
                                         @enderror
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    {{-- Gestor model:User --}}
+                                </div> --}}
+                                {{-- <div class="col-sm-12 col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="mb-2 text-left">Gestor</label>
                                         <select class="choices form-select w-100 @error('admin_user_id') is-invalid @enderror" name="admin_user_id" id="gestor">
@@ -114,9 +110,9 @@
                                             </p>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    {{-- Comercial model:User --}}
+                                </div> --}}
+                                <input type="hidden" name="admin_user_id" value="{{ Auth::user()->id }}">
+                                {{-- <div class="col-sm-12 col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="mb-2 text-left">Comercial</label>
                                         <select class="choices form-select w-75" name="commercial_id">
@@ -130,7 +126,7 @@
                                             @endif
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">

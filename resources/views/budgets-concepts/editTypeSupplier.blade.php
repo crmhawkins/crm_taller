@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <form id="formActualizar" action="{{route('budgetConcepts.updateTypeSupplier', $budgetConcept->id)}}" method="POST">
                             @csrf
-                            <div class="form-group mb-3">
+                            {{-- <div class="form-group mb-3">
                                 <label class="text-uppercase" style="font-weight: bold" for="services_category_id">Categoría:</label>
                                 <select class="js-example-basic-single choices form-control @error('services_category_id') is-invalid @enderror" name="services_category_id" >
                                     <option value="{{null}}">Seleccione una categoria</option>
@@ -49,9 +49,9 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                 @enderror
-                            </div>
+                            </div> --}}
 
-                            <div class="form-group mb-3">
+                            {{-- <div class="form-group mb-3">
                                 <label class="text-uppercase" style="font-weight: bold" for="service_id">Servicio:</label>
                                 <select class="js-example-basic-single form-control @error('service_id') is-invalid @enderror" name="service_id" >
                                     <option value="{{null}}">Seleccione un servicio</option>
@@ -64,7 +64,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             {{-- Titulo --}}
                             <div class="form-group mb-3">
@@ -89,29 +89,33 @@
                             </div>
 
                             {{-- Unidades --}}
-                            <div class="form-group mb-3">
-                                <label class="text-uppercase" style="font-weight: bold" for="units">Unidades:</label>
-                                <input type="double" class="form-control @error('units') is-invalid @enderror" id="units" value="{{old('units', $budgetConcept->units)}}" name="units">
-                                @error('units')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror
+                            <div class="row">
+                                <div class="form-group mb-3 col-md-6">
+                                    <label class="text-uppercase" style="font-weight: bold" for="units">Unidades:</label>
+                                    <input type="double" class="form-control @error('units') is-invalid @enderror" id="units" value="{{old('units', $budgetConcept->units)}}" name="units">
+                                    @error('units')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
+                                    <input type="file" class="form-control" id="file" name="file[]" multiple>
+                                    @error('file')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+                                </div>
                             </div>
+                            
 
                             {{-- Adjunto --}}
-                            <div class="form-group">
-                                <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
-                                <input type="file" class="form-control" id="file" name="file[]" multiple>
-                                @error('file')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror
-                            </div>
+                           
                             {{-- Enviar Email --}}
                             <div class="row my-5">
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <label class="text-uppercase mb-2" style="font-weight: bold; display:block" for="em">Enviar email a todos los proveedores:</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="checkMail" name="checkMail" value="true" >
@@ -125,7 +129,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6">
                                     {{-- Precio --}}
                                     <div class="form-group">
@@ -138,10 +142,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                {{-- Margen --}}
                                 <div class="form-group col-md-6">
                                     <label class="text-uppercase" style="font-weight: bold" for="total">Margen %:</label>
                                     <input type="double" class="form-control @error('benefit_margin') is-invalid @enderror" id="benefit_margin" value="{{ old('benefit_margin', $budgetConcept->benefit_margin  ?? 50) }}" name="benefit_margin">
@@ -151,6 +151,11 @@
                                             </span>
                                     @enderror
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                {{-- Margen --}}
+                                
                                 {{-- Total --}}
                                 <div class="form-group col-md-6">
                                     <label class="text-uppercase" style="font-weight: bold" for="sale_price">Total (Precio + Margen):</label>
@@ -170,9 +175,9 @@
                                         <input id="selectedSupplierId" name="selectedSupplierId" type="hidden">
                                         <div class="col-12 mt-2" >
                                             <div class="input-group list-row-supplier">
-                                                <div class="form-check d-flex align-items-center pr-2 pl-0">
+                                                {{-- <div class="form-check d-flex align-items-center pr-2 pl-0">
                                                     <input id="supplierRadio1" @if($budgetSuppliersSaved[0]->selected == 1) checked=checked @endif type="radio" name="radioOpt" class="form-check-input m-1" style="height: 25px; width: 25px;" value="1">
-                                                </div>
+                                                </div> --}}
                                                 <select id="supplierId1" name="supplierId1" class="choices form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="1" data-show-subtext="true" data-live-search="true">
                                                     <option value="">-- Seleccione proveedor--</option>
                                                     @if($suppliers)
@@ -182,11 +187,11 @@
                                                     @endif
                                                 </select>
                                                 &nbsp;&nbsp;<input class="form-control" value="{{old('supplierEmail1',$budgetSuppliersSaved->where('option_number',1)->first()->mail)}}" id="supplierEmail1" name="supplierEmail1" type="text" placeholder="Email" >
-                                                &nbsp;&nbsp;<input class="form-control"  value="{{old('supplierPrice1',$budgetSuppliersSaved->where('option_number',1)->first()->price)}}" id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1">
+                                                &nbsp;&nbsp;<input class="form-control"  value="{{old('supplierPrice1',$budgetSuppliersSaved->where('option_number',1)->first()->price)}}" id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" hidden>
                                             </div>
                                             <br>
                                         </div>
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <div class="input-group list-row-supplier" >
                                                 <div class="form-check d-flex align-items-center pr-2 pl-0">
                                                     <input id="supplierRadio2" @if($budgetSuppliersSaved[1]->selected == 1) checked=checked @endif type="radio" name="radioOpt" class="form-check-input m-1" style="height: 25px; width: 25px;" value="2">
@@ -221,7 +226,7 @@
                                                 &nbsp;&nbsp;<input class="form-control" value="{{old('supplierPrice3',$budgetSuppliersSaved->where('option_number',3)->first()->price)}}" id="supplierPrice3" placeholder="Formato: 0.00" name="supplierPrice3">
                                             </div>
                                             <br>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

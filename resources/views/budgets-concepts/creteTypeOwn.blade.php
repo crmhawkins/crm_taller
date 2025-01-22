@@ -36,7 +36,7 @@
                         @csrf
 
                         {{-- Observaciones --}}
-                        <div class="form-group mb-3">
+                        {{-- <div class="form-group mb-3">
                             <label class="text-uppercase" style="font-weight: bold" for="services_category_id">Categoría:</label>
                             <select class="js-example-basic-single form-control @error('services_category_id') is-invalid @enderror" name="services_category_id" >
                                 <option value="{{null}}">Seleccione una categoria</option>
@@ -50,10 +50,10 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         {{-- Servicios --}}
-                        <div class="form-group mb-3">
+                        {{-- <div class="form-group mb-3">
                             <label class="text-uppercase" style="font-weight: bold" for="service_id">Servicio:</label>
                             <select class="js-example-basic-single form-control @error('service_id') is-invalid @enderror" name="service_id" >
                                 <option value="{{null}}">Seleccione una categoria</option>
@@ -63,10 +63,10 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         {{-- Pieza --}}
-                        @if ($piezas->count() > 0)
+                        {{-- @if ($piezas->count() > 0)
                         <div class="form-group mb-3">
                             <label class="text-uppercase" style="font-weight: bold" for="pieza_id">Pieza:</label>
                             <select class="js-example-basic-single form-control @error('pieza_id') is-invalid @enderror" name="pieza_id" >
@@ -82,7 +82,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        @endif
+                        @endif --}}
 
                         {{-- Titulo --}}
                         <div class="form-group mb-3">
