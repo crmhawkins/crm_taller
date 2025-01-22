@@ -11,6 +11,7 @@ class VisitasTable extends Component
     use WithPagination;
 
     public $search = '';
+    public $cocheId;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -19,11 +20,27 @@ class VisitasTable extends Component
         $this->resetPage();
     }
 
+    public function mount($cocheId = null)
+    {
+        $this->cocheId = $cocheId;
+    }
+
     public function render()
     {
-        $visitas = VisitaCoche::where('coche_id', 'like', '%' . $this->search . '%')
-            ->orWhere('fecha_ingreso', 'like', '%' . $this->search . '%')
-            ->paginate(10);
+        $query = VisitaCoche::query();
+
+        if ($this->cocheId) {
+            $query->where('coche_id', $this->cocheId);
+        }
+
+        if ($this->search) {
+            $query->where(function($q) {
+                $q->where('coche_id', 'like', '%' . $this->search . '%')
+                  ->orWhere('fecha_ingreso', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $visitas = $query->paginate(10);
 
         return view('livewire.visitas-table', compact('visitas'));
     }

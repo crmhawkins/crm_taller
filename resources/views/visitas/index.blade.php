@@ -17,7 +17,7 @@
                     <div class="mb-3">
                         <a href="{{ route('visitas.create') }}" class="btn btn-primary">Nueva Visita</a>
                     </div>
-                    <livewire:visitas-table />
+                    <livewire:visitas-table :cocheId="request('coche_id')" />
                 </div>
             </div>
         </section>

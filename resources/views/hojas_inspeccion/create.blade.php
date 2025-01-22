@@ -143,13 +143,13 @@
     }
 
                         </style>
-                        <div class="imagen-header">
+                        {{-- <div class="imagen-header">
                             <div>
 
                             </div>
                             <div>
                                 <img src="{{ asset('assets/images/sergurcaixa.png') }}" alt="Logo de Inspección">                            </div>
-                        </div>
+                        </div> --}}
                         <div class="container">
                             <div class="header">
                                 <div>

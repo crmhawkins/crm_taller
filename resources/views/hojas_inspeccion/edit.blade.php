@@ -246,14 +246,14 @@
 
                     <button type="button" onclick="window.print()" class="btn btn-secondary mb-3 imprimir">Imprimir</button>
 
-                    <div class="imagen-header">
+                    {{-- <div class="imagen-header">
                         <div>
 
                         </div>
                         <div>
                             <img src="{{ asset('assets/images/sergurcaixa.png') }}" alt="Logo de Inspección">                            
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="container">
                         <div class="header">
                             <div>
@@ -409,8 +409,14 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        <div class="grupo">
+                        <style>
+                             @media print{
+                                .frenado{
+                                   margin-top: 100px !important;
+                                }
+                            }
+                        </style>
+                        <div class="grupo neumaticos">
                             <table>
                                 <thead>
                                     <tr>
@@ -443,7 +449,7 @@
                             </table>
                         </div>
 
-                        <div class="grupo">
+                        <div class="grupo frenado">
                             <table>
                                 <thead>
                                     <tr>

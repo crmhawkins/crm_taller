@@ -333,7 +333,7 @@
                                             @endif
                                             <a href="{{ route('siniestro.create', ['coche_id' => $coche->id, 'cliente_id' => $cliente->id]) }}" class="btn btn-warning">Añadir Parte de Trabajo</a> <!-- Nuevo botón -->
 
-
+                                            <a href="{{ route('visitas.index', ['coche_id' => $coche->id]) }}" class="btn btn-info">Visitas</a>
 
                                         </td>
                                     </tr>
