@@ -694,7 +694,7 @@
                             <span>Jornadas</span>
                         </a>
                     </li>
-                    <li class="sidebar-item has-sub {{ request()->routeIs('logs.*') ? 'active' : '' }}">
+                    {{-- <li class="sidebar-item has-sub {{ request()->routeIs('logs.*') ? 'active' : '' }}">
                         <a href="#" class='sidebar-link'>
                             <i class="fa-solid fa-list"></i>
                             <span>Logs</span>
@@ -717,7 +717,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item {{ request()->routeIs('estadistica.index') ? 'active' : '' }}">
                         <a href="{{route('estadistica.index')}}" class='sidebar-link'>
                             <i class="fa-solid fa-chart-line"></i>
