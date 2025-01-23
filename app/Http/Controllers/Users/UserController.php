@@ -227,7 +227,11 @@ class UserController extends Controller
         $user = User::where('pin', $pin)->first();
 
         if ($user) {
-            $jornadas = Jornada::where('admin_user_id', $user->id)->where('start_time', '>=', Carbon::now()->subDay())->get();
+            $today = Carbon::today();
+            $jornadas = Jornada::where('admin_user_id', $user->id)
+                               ->whereDate('start_time', $today)
+                               ->get();
+
             $totalWorkedSeconds = 0;
 
             $jornadasData = $jornadas->map(function ($jornada) use (&$totalWorkedSeconds) {
