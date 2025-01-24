@@ -35,6 +35,9 @@
                             <a href="{{ route('clientes.index') }}" class="btn btn-primary btn-block mt-2">
                                 <i class="fas fa-users"></i> Ver Clientes
                             </a>
+                            <a href="{{ route('presupuesto.create') }}" class="btn btn-primary btn-block mt-2">
+                                <i class="fas fa-file-invoice"></i> Crear Presupuesto
+                            </a>
                             <a href="{{ route('presupuestos.index') }}" class="btn btn-primary btn-block mt-2">
                                 <i class="fas fa-file-invoice"></i> Ver Presupuestos
                             </a>       
