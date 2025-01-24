@@ -51,9 +51,9 @@ class ClientController extends Controller
         $this->validate($request, [
             'name' => 'required|max:200',
             'admin_user_id' => 'nullable|exists:admin_user,id',
-            'email' => 'required|email:filter',
+            'email' => 'required|email:filter|unique:clients,email',
             'company' => 'nullable|max:200',
-            'cif' => 'nullable|max:200',
+            'cif' => 'required|max:200 |unique:clients,cif',
             'identifier' => 'nullable|max:200',
             'activity' => 'nullable|max:200',
             'address' => 'nullable|max:200',
@@ -615,8 +615,14 @@ class ClientController extends Controller
 
     public function verificarClienteExistente(Request $request)
     {
-        $clienteExistente = Client::where('phone', $request->phone)
-            ->orWhere('cif', $request->cif) // Comprobación por DNI
+
+        //si el phone es null o empty y si cif es null o empty, no se puede crear un cliente
+        if( empty($request->cif)){
+            return response()->json(false);
+        }
+
+
+        $clienteExistente = Client::where('cif', $request->cif)
             ->first();
         if($clienteExistente){
             return response()->json($clienteExistente );

@@ -2,7 +2,8 @@
 
 @section('titulo', 'Editar Visita')
 @section('css')
-// ... existing code ...
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 @endsection
 
 @section('content')
@@ -385,8 +386,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="gato" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->gato == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="gato" class="form-check-input" type="checkbox" value="1" id="gato" {{ $visita->gato == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="gato">
                                         Gato
                                     </label>
 
@@ -396,8 +397,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="antena" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->antena == 1 ? 'checked' : '' }}   >
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="antena" class="form-check-input" type="checkbox" value="1" id="antena" {{ $visita->antena == 1 ? 'checked' : '' }}   >
+                                    <label class="form-check-label" for="antena">
                                         Antena
                                     </label>
 
@@ -406,8 +407,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="herramientas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->herramientas == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="herramientas" class="form-check-input" type="checkbox" value="1" id="herramientas" {{ $visita->herramientas == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="herramientas">
                                         Herramientas
                                     </label>
                                 </div>
@@ -416,8 +417,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="emblemas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->emblemas == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="emblemas" class="form-check-input" type="checkbox" value="1" id="emblemas" {{ $visita->emblemas == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="emblemas">
                                         Emblemas
                                     </label>
 
@@ -427,8 +428,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="triangulos" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->triangulos == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="triangulos" class="form-check-input" type="checkbox" value="1" id="triangulos" {{ $visita->triangulos == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="triangulos">
                                         Triángulos
                                     </label>
 
@@ -438,8 +439,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="tapones" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->tapones == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="tapones" class="form-check-input" type="checkbox" value="1" id="tapones" {{ $visita->tapones == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="tapones">
                                         Tapones de rueda
                                     </label>
 
@@ -449,8 +450,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="tapas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->tapas == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="tapas" class="form-check-input" type="checkbox" value="1" id="tapas" {{ $visita->tapas == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="tapas">
                                         Tapas
                                     </label>
 
@@ -460,8 +461,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="cables" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->cables == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="cables" class="form-check-input" type="checkbox" value="1" id="cables" {{ $visita->cables == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="cables">
                                         Cables
                                     </label>
 
@@ -471,8 +472,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="llantas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->llanta == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="llantas" class="form-check-input" type="checkbox" value="1" id="llantas" {{ $visita->llanta == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="llantas">
                                         Llanta
                                     </label>
 
@@ -482,8 +483,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="radio" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->radio == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="radio" class="form-check-input" type="checkbox" value="1" id="radio" {{ $visita->radio == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="radio">
                                         Radio
                                     </label>
 
@@ -493,8 +494,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="extintor" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->extintor == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="extintor" class="form-check-input" type="checkbox" value="1" id="extintor" {{ $visita->extintor == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="extintor">
                                         Extintor
                                     </label>
 
@@ -504,8 +505,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="encendedor" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" {{ $visita->encendedor == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="encendedor" class="form-check-input" type="checkbox" value="1" id="encendedor" {{ $visita->encendedor == 1 ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="encendedor">
                                         Encendedor
                                     </label>
 
@@ -520,13 +521,19 @@
                             </style>
 
                             <div class="col-md-12 mt-3">
-                                <div class="form-group mb-3">
-                                    <label for="nivel_gasolina">Nivel de Gasolina</label>
-                                    <input style="background-color: #777; color: red; border-radius: 10px;" type="range" class="form-range" id="nivel_gasolina" name="nivel_gasolina" min="0" max="100" step="1" value="{{ $visita->nivel_gasolina }}" oninput="this.nextElementSibling.value = this.value" {{ $visita->nivel_gasolina ? 'checked' : '' }}>
-                                    <output>{{ $visita->nivel_gasolina }}</output><span>%</span>
+                                <div class="canvas-container">
+                                    <canvas id="fuelGauge" width="200" height="200"></canvas>
+                                    <input type="hidden" id="nivel_gasolina" name="nivel_gasolina" value="{{ $visita->nivel_gasolina }}">
                                 </div>
                             </div>  
-
+                            <style>
+                                #fuelGauge {
+                                    display: block;
+                                    margin: 20px auto;
+                                    background-color: #222;
+                                    border-radius: 50%;
+                                }
+                            </style>
                             <div class="col-md-12 mt-3">
                                 <div class="canvas-container">
                                     <img id="car-image" src="{{ asset('assets/images/coche.png') }}" alt="Coche" />
@@ -646,6 +653,78 @@
                 input.value = this.classList.contains('selected') ? '1' : '0';
             });
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvas = document.getElementById('fuelGauge');
+        const ctx = canvas.getContext('2d');
+        const marks = [-160, -125, -90, -50, -10];
+        const labels = ['E', '1/4', '1/2', '3/4', 'F'];
+        const angles = [-70, -50, -35, -15, 0, 15, 35, 55, 75];
+        let angleIndex = angles.indexOf(parseInt(document.getElementById('nivel_gasolina').value)) || 0;
+
+        function drawGauge() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar el fondo del medidor
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(100, 100, 90, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Dibujar el arco del medidor con un radio más grande
+            ctx.beginPath();
+            ctx.arc(100, 100, 78, Math.PI * 1.1, Math.PI * 1.9);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+
+            // Dibujar las marcas
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#fff';
+            marks.forEach((mark, index) => {
+                const x = 100 + 85 * Math.cos((Math.PI / 180) * mark);
+                const y = 100 + 95 * Math.sin((Math.PI / 180) * mark);
+                ctx.fillText(labels[index], x - 10, y + 5);
+            });
+
+            // Dibujar la aguja
+            ctx.save();
+            ctx.translate(100, 100);
+            ctx.rotate((Math.PI / 180) * angles[angleIndex]);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -70);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.restore();
+
+            // Dibujar el centro
+            ctx.beginPath();
+            ctx.arc(100, 100, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+        }
+
+        function updateNeedle() {
+            // Incrementar el índice del ángulo
+            angleIndex = (angleIndex + 1) % angles.length;
+            // Actualizar el valor del campo oculto
+            document.getElementById('nivel_gasolina').value = angles[angleIndex];
+            drawGauge();
+        }
+
+        canvas.addEventListener('click', updateNeedle);
+
+        drawGauge();
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
     });
 </script>
 @endsection 

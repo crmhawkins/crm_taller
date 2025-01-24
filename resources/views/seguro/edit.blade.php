@@ -25,10 +25,10 @@
                                 <label for="aseguradora">Aseguradora</label>
                                 <input type="text" class="form-control" id="aseguradora" name="aseguradora" value="{{ old('aseguradora', $seguro->aseguradora) }}" required>
                             </div>
-                            <div class="form-group col-md-4 mb-2">
+                            {{-- <div class="form-group col-md-4 mb-2">
                                 <label for="precio">Precio</label>
                                 <input type="number" class="form-control" id="precio" name="precio" value="{{ old('precio', $seguro->precio) }}" required>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-4 mb-2">
                                 <label for="responsable">Responsable</label>
                                 <input type="text" class="form-control" id="responsable" name="responsable" value="{{ old('responsable', $seguro->responsable) }}" >

@@ -191,7 +191,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/budget-concept-supplier/saveOrderForSend', [BudgetConceptsController::class, 'saveOrderForSend'])->name('budgetConcepts.saveOrderForSend');
         Route::post('/budget-concept-supplier/generatePurchaseOrder/{id}', [BudgetConceptsController::class, 'generatePurchaseOrder'])->name('budgetConcepts.generatePurchaseOrder');
         Route::get('/budget-concept-supplier/preview-pdf/{id}', [BudgetConceptsController::class, 'generatePDF'])->name('purchase_order.purchaseOrderPDF');
+        Route::post('/budgets/{budget}/generate-claim', [BudgetController::class, 'generateClaim'])->name('budgets.generateClaim');
+        Route::post('/budgets/{budget}/assign-existing-claim', [BudgetController::class, 'assignExistingClaim'])->name('budgets.assignExistingClaim');
+        // Ruta para generar una nueva visita
+        Route::post('/budgets/{budget}/generate-visit', [BudgetController::class, 'generateVisit'])->name('budgets.generateVisit');
 
+        // Ruta para asignar una visita existente
+        Route::post('/budgets/{budget}/assign-existing-visit', [BudgetController::class, 'assignExistingVisit'])->name('budgets.assignExistingVisit');
+                
         // Projects (CAMPAÑAS)
         Route::get('/projects', [ProjectController::class, 'index'])->name('campania.index');
         Route::get('/projects/create', [ProjectController::class, 'create'])->name('campania.create');
@@ -257,6 +264,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/tasks/assign/{id}', [TasksController::class, 'assignTask'])->name('tasks.assign');
         Route::post('/tasks/unassign/{id}', [TasksController::class, 'unassignTask'])->name('tasks.unassign');
         Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
+
+        Route::post('/check-client', [BudgetController::class, 'checkClient'])->name('check.client');
+        Route::post('/check-car', [BudgetController::class, 'checkCar'])->name('check.car');
+
+
         // Dominios
         Route::get('/dominios', [DominiosController::class, 'index'])->name('dominios.index');
         Route::get('/dominios/create', [DominiosController::class, 'create'])->name('dominios.create');
@@ -645,6 +657,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Mostrar el formulario para editar un coche específico
     Route::get('/coches/{coche}/edit', [CocheController::class, 'edit'])->name('coches.edit');
+
+    Route::post('/store-client-car', [BudgetController::class, 'storeClientAndCar'])->name('store.client.car');
 
     // Actualizar un coche específico
     Route::put('/coches/{coche}', [CocheController::class, 'update'])->name('coches.update');

@@ -316,6 +316,9 @@ class BudgetConceptsController extends Controller
     {
         // dd($request->all());
 
+        return $request->all();
+
+
         // Validamos los campos
         $this->validate($request, [
             'services_category_id' => 'nullable|exists:services_categories,id',
@@ -449,7 +452,8 @@ class BudgetConceptsController extends Controller
         $services = Service::where('services_categories_id', $budgetConcept->services_category_id)->where('inactive',0)->get();
         $categorias = ServiceCategories::where('inactive',0)->where('type',1)->get();
         $client = Client::find($presupuesto->client_id);
-
+        $piezas = Piezas::all();
+        //dd($piezas);
         if(!$client->contacto->isEmpty()){
             foreach ($client->contacto as $contact) {
                 $arrayEmails[] = $contact->email;
@@ -458,7 +462,7 @@ class BudgetConceptsController extends Controller
 
         $budgetSupplierSelectedOption = BudgetConceptSupplierRequest::where('budget_concept_id', $budgetConcept->id)->where('selected', 1)->get()->first();
 
-        return view('budgets-concepts.editTypeSupplier', compact('budgetConcept', 'presupuesto','suppliers', 'budgetSuppliersSaved', 'budgetSupplierSelectedOption', 'services', 'categorias', 'client', 'arrayEmails'));
+        return view('budgets-concepts.editTypeSupplier', compact('budgetConcept', 'presupuesto','suppliers', 'budgetSuppliersSaved', 'budgetSupplierSelectedOption', 'services', 'categorias', 'client', 'arrayEmails', 'piezas'));
     }
 
     public function storePieza(Request $request)
@@ -484,9 +488,11 @@ class BudgetConceptsController extends Controller
     public function updateTypeSupplier(Request $request, $budget)
     {
 
+       // return $request->all();
+
         // Validamos los campos
         $this->validate($request, [
-            'services_category_id' => 'required|filled',
+            'services_category_id' => 'nullable|filled',
             'service_id' => 'nullable',
             'title' => 'required',
             'concept' => 'required',
@@ -505,8 +511,11 @@ class BudgetConceptsController extends Controller
             'supplierId3.required' => 'El proveedor 3 es requerido para continuar',
         ]);
 
+        //return $request->all();
+
+
         $data = $request->all();
-        if($data['service_id'] == 'null' ){
+        if(isset($data['service_id']) && $data['service_id'] == 'null' ){
             $data['service_id'] = null;
         }
         $data['total_no_discount'] =  $data['sale_price'];
@@ -1083,9 +1092,9 @@ class BudgetConceptsController extends Controller
 
         $supplier = Supplier::where('id',$order->supplier_id)->get()->first();
 
-        $name = $budgetCustomPDF->company_name;
+        $name = $budgetCustomPDF->company_name ?? 'Talleres Cardosa';
 
-        $proveedor = $order->Proveedor->name;
+        $proveedor = $order->Proveedor->name ?? 'Proveedor';
 
         $referencia = DB::table('budgets')
         ->join('budget_concepts', 'budget_concepts.budget_id', '=', 'budgets.id')
@@ -1093,7 +1102,7 @@ class BudgetConceptsController extends Controller
         ->where('purchase_order.id', '=', $order->id)
         ->value('reference');
 
-        $logoURL =  config('app.appUrl') . $budgetCustomPDF['logo_image'];
+        $logoURL =  config('app.appUrl').'assets/images/logo/logo.png';
 
         $arrayConceptStringsAndBreakLines = explode(PHP_EOL, $order->concepto->concept);
 
@@ -1222,12 +1231,12 @@ class BudgetConceptsController extends Controller
         // $mailsBCC[] = "emma@lchawkins.com";
         // $mailsBCC[] = "ivan@lchawkins.com";
         // $mailsBCC[] = Auth::user()->email;
-        // $supplierMail = BudgetConceptSupplierRequest::where('budget_concept_id',$order->budget_concept_id)->where('selected',1)->first()->mail;
-        // $email = new MailConceptSupplier($mailConcept, $pathFiles);
-
+         $supplierMail = BudgetConceptSupplierRequest::where('budget_concept_id',$order->budget_concept_id)->where('selected',1)->first()->mail;
+         $email = new MailConceptSupplier($mailConcept, $pathFiles);
+        $mailsBCC = [];
         try {
             // Enviar el correo
-            // Mail::to($supplierMail)->bcc($mailsBCC)->send($email);
+            Mail::to($supplierMail)->bcc($mailsBCC)->send($email);
 
             // Eliminar los archivos temporales después de enviar el correo
             foreach ($pathFiles as $file) {
@@ -1246,16 +1255,16 @@ class BudgetConceptsController extends Controller
         $order = PurcharseOrder::find($id);
         $budgetCustomPDF = BudgetCustomPDF::where('id', 1)->get()->first();
 
-        $name = $budgetCustomPDF->company_name;
+        $name = $budgetCustomPDF->company_name ?? 'Talleres Cardosa';
 
-        $proveedor = $order->Proveedor->name;
+        $proveedor = $order->Proveedor->name ?? 'Proveedor';
 
         $referencia = Budget::join('budget_concepts', 'budget_concepts.budget_id', '=', 'budgets.id')
             ->join('purchase_order', 'purchase_order.budget_concept_id', '=', 'budget_concepts.id')
             ->where('purchase_order.id', '=', $order->id)
             ->value('reference');
 
-        $logoURL =  config('app.appUrl') . $budgetCustomPDF['logo_image'];
+        $logoURL =   config('app.appUrl').'assets/images/logo/logo.png';
 
         $arrayConceptStringsAndBreakLines = explode(PHP_EOL, $order->concepto->concept);
 

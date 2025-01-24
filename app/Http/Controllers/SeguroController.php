@@ -26,7 +26,7 @@ class SeguroController extends Controller
             'responsable' => 'nullable|string|max:255',
             'telefono' => 'nullable|string|max:20',
             'notas' => 'nullable|string',
-            'precio' => 'required|numeric',
+            'precio' => 'nullable|numeric',
         ]);
 
         Seguro::create($request->all());
@@ -56,7 +56,7 @@ class SeguroController extends Controller
             'responsable' => 'nullable|string|max:255',
             'telefono' => 'nullable|string|max:20',
             'notas' => 'nullable|string',
-            'precio' => 'required|numeric',
+            'precio' => 'nullable|numeric',
         ]);
 
         $seguro->update($request->all());

@@ -525,22 +525,22 @@
                     if (cliente) {
                         Swal.fire({
                             title: 'Cliente existente',
-                            html: `Ya existe un cliente con este nombre o nombre de empresa.<br><br>
+                            html: `Ya existe un cliente con ese DNI.<br><br>
                                    <strong>Nombre:</strong> ${cliente.name}<br>
-                                   <strong>Nombre de la empresa:</strong> ${cliente.company}<br>
+                                   <strong>Nombre de la empresa:</strong> ${cliente.company || ''}<br>
                                    <strong>Teléfono:</strong> ${cliente.phone}<br>
                                    <strong>CIF:</strong> ${cliente.cif}<br><br>
-                                   ¿Estás seguro de que quieres crear uno nuevo?`,
+                                   `,
                             icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sí, crear nuevo',
-                            cancelButtonText: 'Cancelar'
+                             showCancelButton: true,
+                             confirmButtonText: 'Ver cliente',
+                             cancelButtonText: 'Cancelar'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                form.submit(); // Enviar el formulario si el usuario confirma
+                                window.location.href = '{{ url("client") }}/edit/' + cliente.id;
                             }
                         });
-                    } else {
+                    } else {    
                         form.submit(); // No existe cliente con el mismo nombre, enviar el formulario
                     }
                 }

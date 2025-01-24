@@ -37,18 +37,19 @@
              <table class="table table-hover">
                 <thead class="header-table">
                     <tr>
-                        <th>
-                            <a href="#" wire:click.prevent="sortBy('company')">
-                                EMPRESA
-                                @if ($sortColumn == 'company')
-                                    <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
-                                @endif
-                            </a>
-                        </th>
+                        
                         <th class="px-3">
                             <a href="#" wire:click.prevent="sortBy('name')">
                                 NOMBRE
                                 @if ($sortColumn == 'name')
+                                    <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" wire:click.prevent="sortBy('company')">
+                                EMPRESA
+                                @if ($sortColumn == 'company')
                                     <span>{!! $sortDirection == 'asc' ? '&#9650;' : '&#9660;' !!}</span>
                                 @endif
                             </a>
@@ -99,8 +100,9 @@
                 <tbody>
                     @foreach ($clients as $client)
                     <tr class="clickable-row" data-href="{{route('clientes.edit', $client->id)}}">
+                            <td >{{ $client->name }} {{ $client->primerApellido }} {{ $client->segundoApellido }}</td>
                             <td class="px-3">{{ $client->company }}</td>
-                            <td >{{ $client->name }}</td>
+
                             <td>{{ $client->cif }}</td>
                             {{-- <td>{{ $client->identifier }}</td>
                             <td>{{ $client->activity }}</td> --}}

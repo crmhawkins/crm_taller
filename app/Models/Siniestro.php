@@ -68,5 +68,10 @@ class Siniestro extends Model implements HasMedia
         return $this->hasMany(GaleriaSiniestros::class);
     }
 
+    public function budget()
+    {
+        return $this->belongsTo(Budget::class, 'budget_id');
+    }
+
 
 }

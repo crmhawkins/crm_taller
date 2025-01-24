@@ -34,6 +34,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Coches;
+use App\Models\Siniestro;
+use App\Models\VisitaCoche;
 class BudgetController extends Controller
 {
     /**
@@ -177,6 +179,7 @@ class BudgetController extends Controller
             'payment_method_id' => 'nullable|integer',
             'description' => 'nullable',
             'note' => 'nullable',
+            'coche_id' => 'nullable|integer',
 
         ], [
             'client_id.required' => 'El cliente es requerido para continuar',
@@ -249,7 +252,11 @@ class BudgetController extends Controller
         $estadoPresupuesto = BudgetStatu::all();
         $budgetConcepts = BudgetConcept::where("budget_id", $id)->get();
         $thisBudgetStatus = BudgetStatu::where('id',$presupuesto->budget_status_id)->get()->first();
+        //siniestros que no esten asignados a un presupuesto es decir que un presupuesno no lo tenga como siniestro_id
+        $siniestros = Siniestro::whereNotIn('id', Budget::whereNotNull('siniestro_id')->pluck('siniestro_id'))->get();
+        $visitas = VisitaCoche::whereNotIn('id', Budget::whereNotNull('visita_id')->pluck('visita_id'))->get();
 
+       
         if($presupuesto->budget_status_id == 7 && $presupuesto->total > 0){
             $totalFacturado = Invoice::where('budget_id',$presupuesto->id)->get()->sum('total');
             $porcentaje = ($totalFacturado / $presupuesto->total) * 100;
@@ -257,7 +264,7 @@ class BudgetController extends Controller
 
         session('projectId') != null ? $projectId = session('projectId') : $projectId = null;
 
-        return view('budgets.edit', compact('projectId','presupuesto', 'campanias', 'gestores', 'formasPago','estadoPresupuesto', 'budgetConcepts','thisBudgetStatus','clientes','porcentaje', 'firma', 'coches'));
+        return view('budgets.edit', compact('projectId','presupuesto', 'campanias', 'gestores', 'formasPago','estadoPresupuesto', 'budgetConcepts','thisBudgetStatus','clientes','porcentaje', 'firma', 'coches' , 'siniestros' , 'visitas'));
     }
 
     public function deleteSignature(Request $request)
@@ -2086,5 +2093,192 @@ class BudgetController extends Controller
             }
         }
     }
+
+    public function checkClient(Request $request)
+    {
+        $cif = $request->input('cif');
+        $client = Client::where('cif', $cif)->first();
+
+        if ($client) {
+            return response()->json([
+                'exists' => true,
+                'client' => $client,
+                'url' => route('clientes.edit', $client->id) // Asumiendo que tienes una ruta para mostrar el cliente
+            ]);
+        }
+
+        return response()->json(['exists' => false]);
+    }
+
+    public function checkCar(Request $request)
+    {
+        $matricula = $request->input('matricula');
+        $car = Coches::where('matricula', $matricula)->first();
+
+        if ($car) {
+            $client = $car->cliente;
+            return response()->json([
+                'exists' => true,
+                'car' => $car,
+                'client' => $client,
+                'carUrl' => route('coches.edit', $car->id), // Asumiendo que tienes una ruta para mostrar el coche
+                'clientUrl' => route('clientes.edit', $client->id) // Asumiendo que tienes una ruta para mostrar el cliente
+            ]);
+        }
+
+        return response()->json(['exists' => false]);
+    }
+
+
+    public function storeClientAndCar(Request $request)
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'cif' => 'required|string|max:255',
+        'matricula' => 'nullable|string|max:255',
+        'phone' => 'nullable|string|max:255',
+        'email' => 'nullable|string|max:255',
+        'primer_apellido' => 'nullable|string|max:255',
+        'segundo_apellido' => 'nullable|string|max:255',
+        'modelo' => 'nullable|string|max:255',
+        'anio' => 'nullable|string|max:255',
+        'marca' => 'nullable|string|max:255',
+    ]);
+
+    // Buscar cliente existente por CIF
+    $client = Client::where('cif', $validatedData['cif'])->first();
+
+    if (!$client) {
+        // Crear cliente si no existe
+        $client = Client::create([
+            'name' => $validatedData['name'],
+            'cif' => $validatedData['cif'],
+            'phone' => $validatedData['phone'] ?? null,
+            'email' => $validatedData['email'] ?? null,
+            'primerApellido' => $validatedData['primer_apellido'] ?? null,
+            'segundoApellido' => $validatedData['segundo_apellido'] ?? null,
+            'admin_user_id' => Auth::user()->id,
+            'is_client' => 1,
+            'birthdate' => Carbon::now()->format('Y-m-d'),
+        ]);
+    }
+
+    // Si se proporciona una matrícula, manejar el coche
+    if (!empty($validatedData['matricula'])) {
+        // Verificar si el coche ya está asignado a otro cliente
+        $car = Coches::where('matricula', $validatedData['matricula'])->first();
+        if ($car) {
+            // Reasignar el coche al nuevo cliente
+            $car->cliente_id = $client->id;
+            $car->save();
+        } else {
+            // Crear un nuevo coche y asignarlo al cliente
+            $car = Coches::create([
+                'matricula' => $validatedData['matricula'],
+                'modelo' => $validatedData['modelo'],
+                'anio' => $validatedData['anio'],
+                'marca' => $validatedData['marca'],
+                'cliente_id' => $client->id,
+            ]);
+        }
+    }
+
+    return response()->json(['success' => true, 'client' => $client, 'car' => $car]);
+}
+
+public function generateClaim(Request $request, Budget $budget)
+{
+    // Verificar si ya tiene un siniestro asignado
+    if ($budget->siniestro_id) {
+        return response()->json([
+            'status' => false,
+            'mensaje' => 'Este presupuesto ya tiene un siniestro asignado.'
+        ]);
+    }
+
+    // Crear un nuevo siniestro
+    $siniestro = new Siniestro();
+    $siniestro->identificador = 'temp';
+    $siniestro->cliente_id = $budget->client_id;
+    $siniestro->coche_id = $budget->coche_id; // Esto puede ser null si no tiene coche asociado
+    $siniestro->save();
+
+    // Asignar el siniestro al presupuesto
+    $budget->siniestro_id = $siniestro->id;
+    $budget->save();
+
+    // Generar la URL de edición del siniestro
+    $editUrl = route('siniestro.edit', $siniestro->id);
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Siniestro generado correctamente.',
+        'editUrl' => $editUrl
+    ]);
+}
+
+public function assignExistingClaim(Request $request, Budget $budget)
+{
+    $request->validate([
+        'siniestro_id' => 'required|exists:siniestro,id'
+    ]);
+
+    // Asignar el siniestro existente al presupuesto
+    $budget->siniestro_id = $request->siniestro_id;
+    $budget->save();
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Siniestro asignado correctamente.',
+        'editUrl' => route('siniestro.edit', $request->siniestro_id)
+    ]);
+}
+
+public function generateVisit(Request $request, Budget $budget)
+{
+    // Verificar si ya tiene una visita asignada
+    if ($budget->visita_id) {
+        return response()->json([
+            'status' => false,
+            'mensaje' => 'Este presupuesto ya tiene una visita asignada.'
+        ]);
+    }
+
+    // Crear una nueva visita
+    $visita = new VisitaCoche();
+    $visita->coche_id = $budget->coche_id; // Esto puede ser null si no tiene coche asociado
+    $visita->fecha_ingreso = now(); // Ejemplo de campo que podrías querer inicializar
+    $visita->save();
+
+    // Asignar la visita al presupuesto
+    $budget->visita_id = $visita->id;
+    $budget->save();
+
+    // Generar la URL de edición de la visita
+    $editUrl = route('visitas.edit', $visita->id);
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Visita generada correctamente.',
+        'editUrl' => $editUrl
+    ]);
+}
+
+public function assignExistingVisit(Request $request, Budget $budget)
+{
+    $request->validate([
+        'visita_id' => 'required|exists:visita_coche,id'
+    ]);
+
+    // Asignar la visita existente al presupuesto
+    $budget->visita_id = $request->visita_id;
+    $budget->save();
+
+    return response()->json([
+        'status' => true,
+        'mensaje' => 'Visita asignada correctamente.',
+        'editUrl' => route('visitas.edit', $request->visita_id)
+    ]);
+}
 
 }

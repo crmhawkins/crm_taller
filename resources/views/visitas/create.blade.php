@@ -252,12 +252,13 @@
                             </div>
                             <div class="col-md-1">
                                 <svg fill="#000000" height="50px" width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                                viewBox="0 0 511.999 511.999" xml:space="preserve">
+                                viewBox="0 0 511.999 511.999" xml:space="preserve">
                                         <g>
                                             <g>
                                                 <g>
                                                     <path d="M17.067,256c0-63.821,24.858-123.819,69.982-168.951c3.337-3.328,3.337-8.73,0-12.066c-3.328-3.337-8.73-3.337-12.066,0
-                                                        C26.633,123.332,0,187.622,0,256s26.633,132.668,74.982,181.018c1.664,1.664,3.849,2.5,6.033,2.5c2.185,0,4.369-0.836,6.033-2.5
+                                                        C26.633,123.332,0,187.622,0,256s26.633,132.668,74.982,181.018c1.664,1.664,3.849,2.5,6.033,2.5
+                                                        c2.185,0,4.369-0.836,6.033-2.5
                                                         c3.337-3.337,3.337-8.738,0-12.066C41.924,379.818,17.067,319.82,17.067,256z"/>
                                                     <path d="M437.017,74.983c-3.337-3.337-8.73-3.337-12.066,0c-3.336,3.336-3.336,8.73,0,12.066
                                                         C470.083,132.182,494.932,192.18,494.932,256c0,63.812-24.849,123.819-69.982,168.951c-3.336,3.328-3.336,8.73,0,12.066
@@ -381,8 +382,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="gato" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="gato" class="form-check-input" type="checkbox" value="1" id="gato">
+                                    <label class="form-check-label" for="gato">
                                         Gato
                                     </label>
 
@@ -392,8 +393,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="antena" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="antena" class="form-check-input" type="checkbox" value="1" id="antena">
+                                    <label class="form-check-label" for="antena">
                                         Antena
                                     </label>
 
@@ -402,8 +403,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="herramientas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="herramientas" class="form-check-input" type="checkbox" value="1" id="herramientas">
+                                    <label class="form-check-label" for="herramientas">
                                         Herramientas
                                     </label>
 
@@ -413,8 +414,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="emblemas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="emblemas" class="form-check-input" type="checkbox" value="1" id="emblemas">
+                                    <label class="form-check-label" for="emblemas">
                                         Emblemas
                                     </label>
 
@@ -424,8 +425,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="triangulos" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="triangulos" class="form-check-input" type="checkbox" value="1" id="triangulos">
+                                    <label class="form-check-label" for="triangulos">
                                         Triángulos
                                     </label>
 
@@ -435,8 +436,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="tapones" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="tapones" class="form-check-input" type="checkbox" value="1" id="tapones">
+                                    <label class="form-check-label" for="tapones">
                                         Tapones de rueda
                                     </label>
 
@@ -446,8 +447,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="tapas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="tapas" class="form-check-input" type="checkbox" value="1" id="tapas">
+                                    <label class="form-check-label" for="tapas">
                                         Tapas
                                     </label>
 
@@ -457,8 +458,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="cables" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="cables" class="form-check-input" type="checkbox" value="1" id="cables">
+                                    <label class="form-check-label" for="cables">
                                         Cables
                                     </label>
 
@@ -468,8 +469,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="llantas" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="llantas" class="form-check-input" type="checkbox" value="1" id="llantas">
+                                    <label class="form-check-label" for="llantas">
                                         Llanta
                                     </label>
 
@@ -479,8 +480,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="radio" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="radio" class="form-check-input" type="checkbox" value="1" id="radio">
+                                    <label class="form-check-label" for="radio">
                                         Radio
                                     </label>
 
@@ -490,8 +491,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="extintor" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="extintor" class="form-check-input" type="checkbox" value="1" id="extintor">
+                                    <label class="form-check-label" for="extintor">
                                         Extintor
                                     </label>
 
@@ -501,8 +502,8 @@
                             <div class="col-md-3">
                                 <!-- checkboxes -->
                                 <div class="form-check">
-                                    <input name="encendedor" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input name="encendedor" class="form-check-input" type="checkbox" value="1" id="encendedor">
+                                    <label class="form-check-label" for="encendedor">
                                         Encendedor
                                     </label>
 
@@ -516,12 +517,18 @@
                                 }
                             </style>
                             <div class="col-md-12 mt-3">
-                                <div class="form-group mb-3">
-                                    <label for="nivel_gasolina">Nivel de Gasolina</label>
-                                    <input type="range" class="form-range" id="nivel_gasolina" name="nivel_gasolina" min="0" max="100" step="1" oninput="this.nextElementSibling.value = this.value">
-                                    <output>50</output><span>%</span>
-                                </div>
+                                <canvas id="fuelGauge" width="200" height="200" style="cursor: pointer;"></canvas>
+                                    <input type="hidden" name="nivel_gasolina" id="nivel_gasolina" value="-70">
+
                             </div>  
+                            <style>
+                                #fuelGauge {
+                                    display: block;
+                                    margin: 20px auto;
+                                    background-color: #333;
+                                    border-radius: 50%;
+                                }
+                            </style>
 
                             <div class="col-md-12 mt-3">
                                 <div class="canvas-container">
@@ -648,6 +655,70 @@
         // ... existing code ...
     });
 </script>
+<script>
+    const canvas = document.getElementById('fuelGauge');
+    const ctx = canvas.getContext('2d');
+    const marks = [-160, -125, -90, -50, -10];
+    const labels = ['E', '1/4', '1/2', '3/4', 'F'];
+    const angles = [-70, -50, -35, -15, 0, 15, 35, 55, 70];
+    let angleIndex = 0; // Índice para recorrer los ángulos
+
+    function drawGauge() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Dibujar el fondo del medidor
+        ctx.fillStyle = '#333';
+        ctx.beginPath();
+        ctx.arc(100, 100, 90, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Dibujar el arco del medidor con un radio más grande
+        ctx.beginPath();
+        ctx.arc(100, 100, 78, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        // Dibujar las marcas
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '#fff';
+        marks.forEach((mark, index) => {
+            const x = 100 + 85 * Math.cos((Math.PI / 180) * mark);
+            const y = 100 + 95 * Math.sin((Math.PI / 180) * mark);
+            ctx.fillText(labels[index], x - 10, y + 5);
+        });
+
+        // Dibujar la aguja
+        ctx.save();
+        ctx.translate(100, 100);
+        ctx.rotate((Math.PI / 180) * angles[angleIndex]);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -70);
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        ctx.restore();
+
+        // Dibujar el centro
+        ctx.beginPath();
+        ctx.arc(100, 100, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#000';
+        ctx.fill();
+    }
+
+    function updateNeedle() {
+        // Incrementar el índice del ángulo
+        angleIndex = (angleIndex + 1) % angles.length;
+        // Actualizar el valor del campo oculto
+        document.getElementById('nivel_gasolina').value = angles[angleIndex];
+        drawGauge();
+    }
+
+    canvas.addEventListener('click', updateNeedle);
+
+    drawGauge();
+</script> 
 @include('partials.toast')
 @endsection
 

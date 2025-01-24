@@ -1,3 +1,4 @@
+@if( Auth::user()->access_level_id != 12)
 <div id="sidebar" class="active">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
@@ -124,6 +125,12 @@
                         </li>
                         
                     </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{route('visitas.index')}}" class='sidebar-link'>
+                        <i class="fa-solid fa-list-check fs-5"></i>
+                        <span>Visitas</span>
+                    </a>
                 </li>
                 <li class="sidebar-item {{ request()->routeIs('tarea.all') ? 'active' : '' }}">
                     <a href="{{route('tarea.all')}}" class='sidebar-link'>
@@ -930,3 +937,5 @@
         {{-- <button class="sidebar-toggler btn x"><i data-feather="x"></i></button> --}}
     </div>
 </div>
+
+@endif

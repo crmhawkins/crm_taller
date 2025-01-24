@@ -368,7 +368,7 @@
                 <td>{{ $siniestro->identificador }}</td>
                 <td>{{ $siniestro->fecha }}</td>
                 <td>{{ $siniestro->descripcion }}</td>
-                <td>{{ $siniestro->estadoSiniestro->estado   }}</td>
+                <td>{{ $siniestro->estadoSiniestro ? $siniestro->estadoSiniestro->estado : 'Sin estado' }}</td>
                 <td>
                     <a href="{{ route('siniestro.edit', $siniestro->id) }}" class="btn btn-primary">Editar</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteSiniestroModal" data-id="{{ $siniestro->id }}">Eliminar</button>

@@ -46,7 +46,21 @@ class ReservasCocheController extends Controller
                 'comentario' => 'nullable|string|max:255',
                 'km_actual' => 'required|integer',
                 'km_entregado' => 'nullable|integer',
-            ]);
+            ],
+            [
+                'coche_sustitucion_id.required' => 'El coche sustitución es obligatorio.',
+                'coche_sustitucion_id.exists' => 'El coche sustitución seleccionado no es válido.',
+                'cliente_id.required' => 'El cliente es obligatorio.',
+                'cliente_id.exists' => 'El cliente seleccionado no es válido.',
+                'fecha_inicio.required' => 'La fecha de inicio es obligatoria.',
+                'fecha_inicio.date' => 'La fecha de inicio debe ser una fecha válida.',
+                'fecha_fin.date' => 'La fecha de fin debe ser una fecha válida.',
+                'fecha_fin.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
+            ]
+            
+            )
+            
+            ;
 
             ReservasCoche::create($validated);
 

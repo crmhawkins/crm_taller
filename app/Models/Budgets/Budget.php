@@ -49,6 +49,8 @@ class Budget extends Model
         'firma',
         'km_coche',
         'coche_id',
+        'siniestro_id',
+        'visita_id',
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
@@ -113,5 +115,15 @@ class Budget extends Model
     public function coche()
     {
         return $this->belongsTo(Coches::class, 'coche_id');
+    }
+
+    public function siniestro()
+    {
+        return $this->belongsTo(Siniestro::class, 'siniestro_id');
+    }
+
+    public function visita()
+    {
+        return $this->belongsTo(VisitaCoche::class, 'visita_id');
     }
 }

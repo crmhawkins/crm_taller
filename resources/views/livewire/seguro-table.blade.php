@@ -11,7 +11,6 @@
                 <th>Aseguradora</th>
                 <th>Responsable</th>
                 <th>Teléfono</th>
-                <th>Precio</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -23,7 +22,7 @@
                     <td>{{ $seguro->aseguradora }}</td>
                     <td>{{ $seguro->responsable }}</td>
                     <td>{{ $seguro->telefono }}</td>
-                    <td>{{ $seguro->precio }}</td>
+                    {{-- <td>{{ $seguro->precio }}</td> --}}
                     <td>
                         <a href="{{ route('seguro.edit', $seguro->id) }}" class="btn btn-sm btn-warning">Editar</a>
                         <form action="{{ route('seguro.destroy', $seguro->id) }}" method="POST" style="display:inline;">

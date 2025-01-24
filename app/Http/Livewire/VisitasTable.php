@@ -55,8 +55,9 @@ class VisitasTable extends Component
             $query->whereBetween('fecha_ingreso', [$this->fechaInicio, $this->fechaFin]);
         }
 
-        $visitas = $query->paginate(10);
+        $visitasCoche = $query->paginate(10);
+        //dd($visitas);
 
-        return view('livewire.visitas-table', compact('visitas'));
+        return view('livewire.visitas-table', compact('visitasCoche'));
     }
 }

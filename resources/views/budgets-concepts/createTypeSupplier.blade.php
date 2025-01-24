@@ -19,16 +19,16 @@
         <div class="page-title card-body">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Crear Concepto de Proveedor</h3>
-                    <p class="text-subtitle text-muted">Formulario para registrar un concepto de proveedor</p>
+                    <h3>Crear Concepto de Piezas</h3>
+                    <p class="text-subtitle text-muted">Formulario para registrar un concepto de Piezas</p>
                 </div>
 
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('presupuestos.index')}}">Conceptos de Proveedor</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Crear concepto de proveedor</li>
+                            <li class="breadcrumb-item"><a href="{{route('presupuestos.index')}}">Conceptos de Piezas</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Crear concepto de piezas</li>
                         </ol>
                     </nav>
                 </div>
@@ -95,12 +95,12 @@
 
                         {{-- Unidades --}}
                         <div class="form-group row align-items-end" id="filaAgregar">
-                            <div class="form-group mb-3 col-md-5 mt-3">
+                            <div class="form-group  col-md-3 mt-3">
                                 <label class="text-uppercase" style="font-weight: bold" for="concept">Piezas:</label>
                                 <select class="form-control @error('piezas') is-invalid @enderror select2" name="pieza_id" id="piezas">
                                     <option value="">Seleccione una pieza</option>
                                     @foreach ($piezas as $pieza)
-                                        <option value="{{ $pieza->id }}">{{ $pieza->nombre }}</option>
+                                        <option value="{{ $pieza->id }}">{{ $pieza->nombre }} - {{$pieza->codigo}} </option>
                                     @endforeach
                                 </select>
                                 
@@ -115,7 +115,16 @@
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
-                            <div class="form-group mt-3 col-md-6">
+                            <div class="col-md-3">
+                                <label class="text-uppercase" style="font-weight: bold" for="units0">Unidades:</label>
+                                <input type="text" class="form-control @error('units.0') is-invalid @enderror" id="units0" value="{{ old('units.0') }}" name="units[]">
+                                @error('units.0')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+                            <div class="form-group mt-3 col-md-3">
                                 <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
                                 <input type="file" class="form-control" id="file" name="file[]" multiple>
                                 @error('file')
@@ -129,18 +138,10 @@
                             </div> --}}
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <label class="text-uppercase" style="font-weight: bold" for="units0">Unidades:</label>
-                                <input type="text" class="form-control @error('units.0') is-invalid @enderror" id="units0" value="{{ old('units.0') }}" name="units[]">
-                                @error('units.0')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror
-                            </div>
+                            
                             <div class="form-group mb-3 col-md-6 mt-3">
                                 {{-- Precio --}}
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="text-uppercase" style="font-weight: bold" for="purchase_price">Precio:</label>
                                     <input type="double" class="form-control @error('purchase_price') is-invalid @enderror" id="purchase_price" value="{{ old('purchase_price', $budgetConcept->purchase_price ?? 0) }}" name="purchase_price">
                                     @error('purchase_price')
@@ -148,12 +149,12 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                     @enderror
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="row">
                             {{-- Margen --}}
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label class="text-uppercase" style="font-weight: bold" for="total">Margen %:</label>
                                 <input type="double" class="form-control @error('benefit_margin') is-invalid @enderror" id="benefit_margin" value="{{ old('benefit_margin', $budgetConcept->benefit_margin  ?? 50) }}" name="benefit_margin">
                                 @error('benefit_margin')
@@ -161,9 +162,9 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                 @enderror
-                            </div>
+                            </div> --}}
                             {{-- Total --}}
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label class="text-uppercase" style="font-weight: bold" for="sale_price">Total (Precio + Margen):</label>
                                 <input type="double" class="form-control @error('sale_price') is-invalid @enderror" id="sale_price" value="{{ old('sale_price', $budgetConcept->sale_price ?? 0) }}" name="sale_price" readonly >
                                 @error('sale_price')
@@ -171,7 +172,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
                         
 
@@ -219,9 +220,9 @@
                                             @enderror
                                         </div>
                                         <input class="form-control mr-3" id="supplierEmail1" name="supplierEmail1" type="text" placeholder="Email" value="{{ old('supplierEmail1') }}">
-                                        <input class="form-control " id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" value="{{ old('supplierPrice1') }}" hidden>
+                                        <input class="form-control " id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" value="{{ old('supplierPrice1') }}" >
                                     </div>
-                                    {{-- <div class="col-12 flex flex-row justify-between mb-3">
+                                    <div class="col-12 flex flex-row justify-between mb-3">
                                         <div class="input-group list-row-supplier mr-3" >
                                             <select id="supplierId2" name="supplierId2" class="@error('supplierId2') is-invalid @enderror  choices selectpicker select2 form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="2" data-show-subtext="true" data-live-search="true">
                                                 <option value="">-- Seleccione proveedor--</option>
@@ -238,11 +239,11 @@
                                             @enderror
                                         </div>
                                         <input  id="supplierEmail2" name="supplierEmail2" type="text" placeholder="Email" class="form-control mr-3" value="{{ old('supplierEmail2') }}">
-                                        <input class="form-control"  id="supplierPrice2" placeholder="Formato: 0.00" name="supplierPrice2" value="{{ old('supplierPrice2') }}" hidden>
+                                        <input class="form-control"  id="supplierPrice2" placeholder="Formato: 0.00" name="supplierPrice2" value="{{ old('supplierPrice2') }}" >
 
                                         <br>
-                                    </div> --}}
-                                    {{-- <div class="col-12 flex flex-row justify-between mb-3">
+                                    </div>
+                                    <div class="col-12 flex flex-row justify-between mb-3">
                                         <div class="input-group list-row-supplier mr-3" >
                                             <select id="supplierId3" name="supplierId3" class="@error('supplierId3') is-invalid @enderror  choices selectpicker select2 form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="3" data-show-subtext="true" data-live-search="true">
                                                 <option value="">-- Seleccione proveedor--</option>
@@ -259,10 +260,10 @@
                                             @enderror
                                         </div>
                                         <input id="supplierEmail3"  name="supplierEmail3" type="text" placeholder="Email" class="form-control mr-3" value="{{ old('supplierEmail3') }}">
-                                        <input class="form-control" id="supplierPrice3" placeholder="Formato: 0.00" name="supplierPrice3" value="{{ old('supplierPrice3') }}" hidden>
+                                        <input class="form-control" id="supplierPrice3" placeholder="Formato: 0.00" name="supplierPrice3" value="{{ old('supplierPrice3') }}" >
 
                                         <br>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -367,6 +368,10 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+    }
+
+    .select2 {
+        height: 50px !important;
     }
 </style>
 @endsection

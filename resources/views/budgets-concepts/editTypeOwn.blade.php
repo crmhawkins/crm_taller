@@ -13,16 +13,16 @@
         <div class="page-title card-body">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Editar Concepto Propio</h3>
-                    <p class="text-subtitle text-muted">Formulario para editar un concepto propio</p>
+                    <h3>Editar Concepto Mano de obra</h3>
+                    <p class="text-subtitle text-muted">Formulario para editar un concepto Mano de obra</p>
                 </div>
 
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('presupuestos.index')}}">Conceptos Propios</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Crear concepto propio</li>
+                            <li class="breadcrumb-item"><a href="{{route('presupuestos.index')}}">Mano de obra</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Editar concepto mano de obra</li>
                         </ol>
                     </nav>
                 </div>
@@ -134,6 +134,7 @@
                                     </span>
                             @enderror
                         </div>
+                        
 
                         {{-- Boton --}}
                         <div class="form-group mt-5">

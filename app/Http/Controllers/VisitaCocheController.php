@@ -13,7 +13,7 @@ class VisitaCocheController extends Controller
      */
     public function index()
     {
-        $visitas = VisitaCoche::all();
+        $visitas = VisitaCoche::paginate(10);
         return view('visitas.index', compact('visitas'));
     }
 
@@ -31,6 +31,7 @@ class VisitaCocheController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validatedData = $request->validate([
             'coche_id' => 'required|exists:coches,id',
             'fecha_ingreso' => 'nullable|date',
@@ -62,9 +63,14 @@ class VisitaCocheController extends Controller
             'cables' => 'nullable|boolean',
             'radio' => 'nullable|boolean',
             'encendedor' => 'nullable|boolean',
-            'nivel_gasolina' => 'nullable|integer|min:0|max:100',
+            'nivel_gasolina' => 'nullable',
             'foto_daños' => 'nullable|string',
         ]);
+
+        // dd($request->all());
+
+
+        // dd($validatedData);
 
         //dd($validatedData);
 
@@ -98,7 +104,7 @@ class VisitaCocheController extends Controller
     {
         $visita = VisitaCoche::find($id);
         $visita->update($request->all());
-        return redirect()->route('visitas.index')->with('success', 'Visita actualizada con éxito.');
+        return redirect()->route('visitas.edit', $id)->with('success', 'Visita actualizada con éxito.');
     }
 
     /**

@@ -62,7 +62,7 @@
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label for="fecha_fin">Fecha de Fin:</label>
-                                <input type="date" name="fecha_fin" class="form-control" value="{{ $reservasCoche->fecha_fin }}" required>
+                                <input type="date" name="fecha_fin" class="form-control" value="{{ $reservasCoche->fecha_fin }}" >
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label for="km_actual">Kilómetros Actuales:</label>

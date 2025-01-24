@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
@@ -49,9 +49,13 @@
                     <td>{{ $siniestro->id }}</td>
                     <td>{{ $siniestro->identificador }}</td>
                     <td>{{ $siniestro->fecha }}</td>
-                    <td><a href="{{ route('seguro.edit', $siniestro->seguro->id) }}" class="btn btn-link">
-                        {{ $siniestro->seguro->aseguradora }}
-                    </a></td>
+                    @if($siniestro->seguro)
+                        <td><a href="{{ route('seguro.edit', $siniestro->seguro->id) }}" class="btn btn-link">
+                            {{ $siniestro->seguro->aseguradora }}
+                        </a></td>
+                    @else
+                        <td></td>
+                    @endif
                     <td>
                         <a href="{{ route('clientes.edit', $siniestro->cliente->id) }}" class="btn btn-link">
                             {{ $siniestro->cliente->name }} {{ $siniestro->cliente->surname }}

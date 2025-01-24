@@ -36,7 +36,7 @@ class PiezasController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'codigo' => 'required|string|max:255',
+            'codigo' => 'nullable|string|max:255',
             'fabricante' => 'nullable|string|max:255',
             'foto' => 'nullable|image',
             'marca' => 'nullable|string|max:255',
@@ -75,7 +75,7 @@ class PiezasController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'codigo' => 'required|string|max:255',
+            'codigo' => 'nullable|string|max:255',
             'fabricante' => 'nullable|string|max:255',
             'foto' => 'nullable|image',
             'marca' => 'nullable|string|max:255',

@@ -29,53 +29,38 @@ class SiniestroTable extends Component
         $this->resetPage();
     }
 
+    public function updatingFechaInicio()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFechaFin()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $siniestros = Siniestro::query();
+        $query = Siniestro::query();
 
-        if ($this->fechaInicio) {
-            $siniestros->whereDate('fecha', '>=', $this->fechaInicio);
+        if ($this->search) {
+            $query->where($this->campo, 'like', '%' . $this->search . '%');
         }
-        if ($this->fechaFin) {
-            $siniestros->whereDate('fecha', '<=', $this->fechaFin);
+
+        if ($this->fechaInicio && $this->fechaFin) {
+            $query->whereBetween('fecha', [$this->fechaInicio, $this->fechaFin]);
         }
 
         if ($this->coche_id) {
-            $siniestros->where('coche_id', $this->coche_id);
+            $query->where('coche_id', $this->coche_id);
         }
 
         if ($this->cliente_id) {
-            $siniestros->where('cliente_id', $this->cliente_id);
+            $query->where('cliente_id', $this->cliente_id);
         }
 
-        if ($this->search !== '') {
-            switch ($this->campo) {
-                case 'identificador':
-                    $siniestros->where('identificador', 'like', '%' . $this->search . '%');
-                    break;
-                case 'seguro':
-                    $siniestros->whereHas('seguro', function($query) {
-                        $query->where('aseguradora', 'like', '%' . $this->search . '%');
-                    });
-                    break;
-                case 'cliente':
-                    $siniestros->whereHas('cliente', function($query) {
-                        $query->where('name', 'like', '%' . $this->search . '%');
-                    });
-                    break;
-                case 'matricula':
-                    $siniestros->whereHas('coche', function($query) {
-                        $query->where('matricula', 'like', '%' . $this->search . '%');
-                    });
-                    break;
-                case 'prioridad':
-                    $siniestros->where('prioridad', 'like', '%' . $this->search . '%');
-                    break;
-            }
-        }
+        $siniestros = $query->paginate(10);
 
-        return view('livewire.siniestro-table', [
-            'siniestros' => $siniestros->paginate(10)
-        ]);
+        return view('livewire.siniestro-table', compact('siniestros'));
     }
 } 

@@ -13,16 +13,16 @@
     <div class="page-title card-body">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Editar Concepto de Proveedor</h3>
-                <p class="text-subtitle text-muted">Formulario para editar un concepto de proveedor</p>
+                <h3>Editar Concepto de Piezas</h3>
+                <p class="text-subtitle text-muted">Formulario para editar un concepto de piezas</p>
             </div>
 
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('presupuestos.index')}}">Conceptos de Proveedor</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Editar concepto de proveedor</li>
+                        <li class="breadcrumb-item"><a href="{{route('presupuestos.index')}}">Conceptos de Piezas</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Editar concepto de piezas</li>
                     </ol>
                 </nav>
             </div>
@@ -166,6 +166,24 @@
                                             </span>
                                     @enderror
                                 </div>
+
+                                @if ($piezas->count() > 0)
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label class="text-uppercase" style="font-weight: bold" for="pieza_id">Pieza:</label>
+                                        <select class="js-example-basic-single form-control @error('pieza_id') is-invalid @enderror" name="pieza_id">
+                                            <option value="{{null}}">Seleccione una pieza</option>
+
+                                            @foreach ($piezas as $pieza)
+                                                <option value="{{$pieza->id}}" {{ $pieza->id == $budgetConcept->pieza_id ? 'selected' : '' }}>{{$pieza->nombre}} - {{$pieza->codigo}} </option>
+                                            @endforeach
+                                        </select>
+                                        @error('pieza_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                        @enderror
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-12 form-group mt-3">
@@ -175,9 +193,9 @@
                                         <input id="selectedSupplierId" name="selectedSupplierId" type="hidden">
                                         <div class="col-12 mt-2" >
                                             <div class="input-group list-row-supplier">
-                                                {{-- <div class="form-check d-flex align-items-center pr-2 pl-0">
+                                                <div class="form-check d-flex align-items-center pr-2 pl-0">
                                                     <input id="supplierRadio1" @if($budgetSuppliersSaved[0]->selected == 1) checked=checked @endif type="radio" name="radioOpt" class="form-check-input m-1" style="height: 25px; width: 25px;" value="1">
-                                                </div> --}}
+                                                </div>
                                                 <select id="supplierId1" name="supplierId1" class="choices form-control supplier-list-row-select selectSupplier" width="auto" data-supplier-number="1" data-show-subtext="true" data-live-search="true">
                                                     <option value="">-- Seleccione proveedor--</option>
                                                     @if($suppliers)
@@ -187,11 +205,11 @@
                                                     @endif
                                                 </select>
                                                 &nbsp;&nbsp;<input class="form-control" value="{{old('supplierEmail1',$budgetSuppliersSaved->where('option_number',1)->first()->mail)}}" id="supplierEmail1" name="supplierEmail1" type="text" placeholder="Email" >
-                                                &nbsp;&nbsp;<input class="form-control"  value="{{old('supplierPrice1',$budgetSuppliersSaved->where('option_number',1)->first()->price)}}" id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" hidden>
+                                                &nbsp;&nbsp;<input class="form-control"  value="{{old('supplierPrice1',$budgetSuppliersSaved->where('option_number',1)->first()->price)}}" id="supplierPrice1" placeholder="Formato: 0.00" name="supplierPrice1" >
                                             </div>
                                             <br>
                                         </div>
-                                        {{-- <div class="col-12">
+                                        <div class="col-12">
                                             <div class="input-group list-row-supplier" >
                                                 <div class="form-check d-flex align-items-center pr-2 pl-0">
                                                     <input id="supplierRadio2" @if($budgetSuppliersSaved[1]->selected == 1) checked=checked @endif type="radio" name="radioOpt" class="form-check-input m-1" style="height: 25px; width: 25px;" value="2">
@@ -226,7 +244,7 @@
                                                 &nbsp;&nbsp;<input class="form-control" value="{{old('supplierPrice3',$budgetSuppliersSaved->where('option_number',3)->first()->price)}}" id="supplierPrice3" placeholder="Formato: 0.00" name="supplierPrice3">
                                             </div>
                                             <br>
-                                        </div> --}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

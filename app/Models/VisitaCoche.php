@@ -53,4 +53,9 @@ class VisitaCoche extends Model
     {
         return $this->belongsTo(Coches::class);
     }
+
+    public function budget()
+    {
+        return $this->belongsTo(Budget::class, 'visita_id');
+    }
 }

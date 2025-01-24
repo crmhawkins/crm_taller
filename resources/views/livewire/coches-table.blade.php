@@ -3,7 +3,7 @@
         <input type="text" class="form-control" placeholder="Buscar por matrícula o modelo" wire:model="search">
     </div>
 
-    <table class="table ">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Matrícula</th>
@@ -31,7 +31,7 @@
                     <td>{{ $coche->kilometraje }}</td>
                     <td>{{ $coche->color }}</td>
                     @if ($coche->cliente_id)
-                        <td>{{ $coche->cliente->name }} {{ $coche->cliente->lastname }} </td>
+                        <td><a href="{{ route('clientes.edit', $coche->cliente->id) }}">{{ $coche->cliente->name }} {{ $coche->cliente->lastname }} </a></td>
                     @else
                         <td>Sin cliente</td>
                     @endif

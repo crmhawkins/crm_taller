@@ -288,7 +288,11 @@ class DashboardController extends Controller
                     }
                 }
                 return view('dashboards.dashboard_comercial', compact('user','diasDiferencia','estadosKit','comisionRestante','ayudas','comisionTramitadas','comisionPendiente', 'comisionCurso', 'pedienteCierre','timeWorkedToday', 'jornadaActiva', 'pausaActiva'));
-        }
+            case(12):
+                return redirect()->route('tarea.all'); // Asegúrate de que 'tasks.all' sea el nombre de la ruta correcta
+                break;
+
+            }
     }
 
     public function parseFlexibleTime($time) {

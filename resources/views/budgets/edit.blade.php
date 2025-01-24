@@ -4,6 +4,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/vendors/choices.js/choices.min.css')}}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
 @endsection
 
@@ -31,7 +32,7 @@
 
         <section class="section mt-4">
             <div class="row">
-                <div class="col-9">
+                <div class="col-10">
                     <div class="card">
                         <div class="card-body">
                             <form id="update" action="{{route('presupuesto.update', $presupuesto->id)}}" method="POST">
@@ -205,8 +206,8 @@
                                     <div class="col-12">
                                         <h3 class="text-center text-uppercase fs-5 mb-3">Conceptos</h3>
                                         <div class="d-inline-block m-auto text-center w-100">
-                                            <button id="btnPropio" type="button" class="btn btn-dark">Propio</button>
-                                            <button id="btnProveedor" type="button" class="btn btn-secondary">Proveedor</button>
+                                            <button id="btnPropio" type="button" class="btn btn-dark">Mano de obra</button>
+                                            <button id="btnProveedor" type="button" class="btn btn-secondary">Piezas</button>
                                         </div>
                                     </div>
                                 </div>
@@ -398,27 +399,44 @@
                     </div>
                 </div>
                 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title">
                                 Acciones
                                 <hr>
                             </div>
-                            <a href="" id="actualizarPresupuesto" class="btn btn-success btn-block mb-3">Actualizar</a>
-                            <a href="" id="aceptarPresupuesto" class="btn btn-primary btn-block mb-3">Aceptar</a>
-                            <a href="" id="cancelarPresupuesto"class="btn btn-danger btn-block mb-3">Cancelar</a>
-                            <form action="{{ route('presupuesto.duplicate', $presupuesto->id) }}" method="POST">
+                            <style>
+  .select2-container {
+        z-index: 2050; /* Asegúrate de que este valor sea mayor que el z-index del modal */
+    }
+                            </style>
+                            <a href="" id="actualizarPresupuesto" class="btn btn-success btn-block mb-3 d-block w-100">Actualizar</a>
+                            <a href="" id="aceptarPresupuesto" class="btn btn-primary btn-block mb-3 d-block w-100">Aceptar</a>
+                            <a href="" id="cancelarPresupuesto"class="btn btn-danger btn-block mb-3 d-block w-100">Cancelar</a>
+                            <form class="d-block" action="{{ route('presupuesto.duplicate', $presupuesto->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-secondary btn-block mb-3">Duplicar</button>
+                                <button type="submit" class="btn btn-secondary btn-block mb-3 d-block w-100">Duplicar</button>
                             </form>
-                            <a href="" id="generatePdf" class="btn btn-dark btn-block mb-3">Generar PDF</a>
-                            <a href="" id="enviarEmail" data-id="{{$presupuesto->id}}" class="btn btn-dark btn-block mb-3">Enviar por email</a>
-                            <a href="" id="generateInvoice" class="btn btn-dark btn-block mb-3">Generar factura</a>
-                            <a href="" id="generateInvoicePartial" class="btn btn-dark btn-block mb-3">Generar factura parcial</a>
-                            <a href="" id="generateTask" class="btn btn-dark btn-block mb-3">Generar tareas</a>
-                            <a href="" id="deletePresupuesto" data-id="{{$presupuesto->id}}" class="btn btn-outline-danger btn-block mb-3">Eliminar</a>
-                            <a href="#" id="signInvoice" class="btn btn-warning btn-block mb-2" data-toggle="modal" data-target="#signatureModal">Firmar Factura</a>
+                            <a href="" id="generatePdf" class="btn btn-dark btn-block mb-3 d-block w-100">Generar PDF</a>
+                            <a href="" id="enviarEmail" data-id="{{$presupuesto->id}}" class="btn btn-dark btn-block mb-3 d-block w-100">Enviar por email</a>
+                            <a href="" id="generateInvoice" class="btn btn-dark btn-block mb-3 d-block w-100">Generar factura</a>
+                            <a href="" id="generateInvoicePartial" class="btn btn-dark btn-block mb-3 d-block w-100">Generar factura parcial</a>
+                            <a href="" id="generateTask" class="btn btn-dark btn-block mb-3 d-block w-100">Generar tareas</a>
+                            @if(!$presupuesto->siniestro_id)
+                                <button type="button" id="generateClaim" class="btn btn-secondary btn-block mb-3 d-block w-100">Generar Parte de trabajo</button>
+                            @else
+                                <a href="{{ route('siniestro.edit', $presupuesto->siniestro_id) }}" target="_blank" class="btn btn-primary btn-block mb-3 d-block w-100">Ver Parte de trabajo</a>
+                            @endif
+                            @if(!$presupuesto->visita_id)
+                                <button type="button" id="generateVisit" class="btn btn-secondary btn-block mb-3 d-block w-100">Generar Visita</button>
+                            @else
+                                <a href="{{ route('visitas.edit', $presupuesto->visita_id) }}" target="_blank" class="btn btn-primary btn-block mb-3 d-block w-100">Ver Visita</a>
+                            @endif
+                            {{-- <button type="button" class="btn btn-secondary btn-block mb-3 d-block w-100">Generar visita</button> --}}
+
+                            <a href="" id="deletePresupuesto" data-id="{{$presupuesto->id}}" class="btn btn-outline-danger btn-block mb-3 d-block w-100">Eliminar</a>
+                            <a href="#" id="signInvoice" class="btn btn-warning btn-block mb-2 d-block w-100" data-toggle="modal" data-target="#signatureModal">Firmar Factura</a>
                         </div>
                     </div>
                 </div>
@@ -428,6 +446,53 @@
     </div>
 
     @include('partials.toast')
+
+    <!-- Modal -->
+    <div class="modal fade" id="claimModal" tabindex="-1" aria-labelledby="claimModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="claimModalLabel">Opciones de Parte de trabajo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" id="createNewClaim" class="btn btn-success mb-3">Generar nuevo Parte de trabajo</button>
+                    <hr>
+                    <label for="existingClaims" class="form-label mt-2">Asignar Parte de trabajo existente:</label>
+                    <select id="existingClaims" class=" select2">
+                        <option value="">Selecciona un Parte de trabajo</option>
+                        @foreach($siniestros as $siniestro)
+                            <option value="{{ $siniestro->id }}">{{ $siniestro->identificador }} - {{ $siniestro->cliente->name }} - {{$siniestro->created_at->format('d/m/Y') }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" id="assignExistingClaim" class="btn btn-primary mt-3">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Visitas -->
+    <div class="modal fade" id="visitModal" tabindex="-1" aria-labelledby="visitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="visitModalLabel">Opciones de Visita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" id="createNewVisit" class="btn btn-success mb-3">Generar nueva Visita</button>
+                    <hr>
+                    <label for="existingVisits">Asignar Visita existente:</label>
+                    <select id="existingVisits" class="form-select">
+                        @foreach($visitas as $visita)
+                            <option value="{{ $visita->id }}">{{ $visita->fecha_ingreso }} - {{ $visita->coche->matricula }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" id="assignExistingVisit" class="btn btn-primary mt-3">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -443,6 +508,12 @@
     var urlTemplate = "{{ route('campania.createFromBudget', ['cliente' => 'CLIENTE_ID']) }}";
     var urlTemplateCliente = "{{ route('cliente.createFromBudget') }}";
 
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
 </script>
 <script>
     $(document).ready(function() {
@@ -551,6 +622,118 @@
                         icon: 'error',
                         title: 'Error',
                         text: 'Ocurrió un error al eliminar la firma. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#generateClaim').click(function() {
+            $('#claimModal').modal('show');
+        });
+
+        $('#claimModal').on('shown.bs.modal', function () {
+            $('#existingClaims').select2({
+                dropdownParent: $('#claimModal') // Asegura que el dropdown se anide dentro del modal
+            });
+        });
+
+        $('#createNewClaim').click(function() {
+            const idPresupuesto = @json($presupuesto->id);
+
+            $.ajax({
+                url: '{{ route("budgets.generateClaim", $presupuesto->id) }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.open(response.editUrl, '_blank');
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al generar el siniestro. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#assignExistingClaim').click(function() {
+            const siniestroId = $('#existingClaims').val();
+            const idPresupuesto = @json($presupuesto->id);
+
+            $.ajax({
+                url: '{{ route("budgets.assignExistingClaim", $presupuesto->id) }}',
+                type: 'POST',
+                data: { siniestro_id: siniestroId },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.open(response.editUrl, '_blank');
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al asignar el siniestro. Por favor, inténtalo de nuevo.',
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
@@ -1386,6 +1569,118 @@
                 }
             });
         }
+
+        $('#generateVisit').click(function() {
+            $('#visitModal').modal('show');
+        });
+
+        $('#visitModal').on('shown.bs.modal', function () {
+            $('#existingVisits').select2({
+                dropdownParent: $('#visitModal')
+            });
+        });
+
+        $('#createNewVisit').click(function() {
+            const idPresupuesto = @json($presupuesto->id);
+
+            $.ajax({
+                url: '{{ route("budgets.generateVisit", $presupuesto->id) }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.open(response.editUrl, '_blank');
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al generar la visita. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#assignExistingVisit').click(function() {
+            const visitaId = $('#existingVisits').val();
+            const idPresupuesto = @json($presupuesto->id);
+
+            $.ajax({
+                url: '{{ route("budgets.assignExistingVisit", $presupuesto->id) }}',
+                type: 'POST',
+                data: { visita_id: visitaId },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.open(response.editUrl, '_blank');
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.mensaje,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al asignar la visita. Por favor, inténtalo de nuevo.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
 
         actualizarPrecios()
         const selectedProjectId = @json(old('project_id', $presupuesto->project_id));

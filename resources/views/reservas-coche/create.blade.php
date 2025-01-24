@@ -60,7 +60,7 @@
                             </div>
                             <div class="form-group mb-3 col-md-3">
                                 <label for="km_actual">Kilómetros Actuales:</label>
-                                <input type="number" name="km_actual" class="form-control" >
+                                <input type="number" name="km_actual" class="form-control" required>
                             </div>
                             <div class="form-group mb-3 col-md-3">
                             <label for="km_entregado">Kilómetros Entregado:</label>

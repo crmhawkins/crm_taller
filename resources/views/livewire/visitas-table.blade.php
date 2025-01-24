@@ -15,7 +15,7 @@
     </div>
     
 
-    <table class="table table-striped">
+    <table class="table ">
         <thead>
             <tr>
                 <th>ID</th>
@@ -26,7 +26,8 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($visitas as $visita)
+            @foreach($visitasCoche as $visita)
+            {{-- {{dd($visitasCoche)}} --}}
                 <tr class="{{ is_null($visita->fecha_salida) ? 'table-warning' : '' }}">
                     <td>{{ $visita->id }}</td>
                     <td>{{ $visita->coche ? $visita->coche->matricula : 'Sin coche' }}</td>
@@ -46,6 +47,6 @@
     </table>
 
     <div class="d-flex justify-content-center">
-        {{ $visitas->links() }}
+        {{ $visitasCoche->links() }}
     </div>
 </div>

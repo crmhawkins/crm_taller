@@ -122,6 +122,7 @@
                                 <div class="form-group mb-3">
                                     <label for="seguro_id">Seguro</label>
                                     <select class="form-control" id="seguro_id" name="seguro_id">
+                                        <option value="">Selecciona un seguro</option>
                                         @foreach($seguros as $seguro)
                                             <option value="{{ $seguro->id }}" {{ $siniestro->seguro_id == $seguro->id ? 'selected' : '' }}>{{ $seguro->identificador }}</option>
                                         @endforeach
@@ -175,6 +176,7 @@
                                 <div class="form-group mb-3">
                                     <label for="tipo_siniestro_id">Tipo de Trabajo</label>
                                     <select class="form-control" id="tipo_siniestro_id" name="tipo_siniestro_id">
+                                        <option value="">Selecciona un tipo</option>
                                         @foreach($tiposSiniestro as $tipo)
                                             <option value="{{ $tipo->id }}" {{ $siniestro->tipo_siniestro_id == $tipo->id ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
                                         @endforeach
@@ -185,6 +187,7 @@
                                 <div class="form-group mb-3">
                                     <label for="estado_siniestro_id">Estado de Trabajo</label>
                                     <select class="form-control" id="estado_siniestro_id" name="estado_siniestro_id">
+                                        <option value="">Selecciona un estado</option>
                                         @foreach($estadosSiniestro as $estado)
                                             <option value="{{ $estado->id }}" {{ $siniestro->estado_siniestro_id == $estado->id ? 'selected' : '' }}>{{ $estado->estado }}</option>
                                         @endforeach

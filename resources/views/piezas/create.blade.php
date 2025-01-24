@@ -63,7 +63,7 @@
                             <input type="text" name="modelo" class="form-control">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <div class="form-group mb-3">
                             <label for="proveedor_id">Proveedor:</label>
                             <select name="proveedor_id" class="form-control">
@@ -73,7 +73,7 @@
                             @endforeach
                             </select>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-3">
                         <div class="form-group mb-3">
                             <label for="categoria_id">Categoría:</label>

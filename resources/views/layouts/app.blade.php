@@ -54,7 +54,7 @@
         @include('layouts.sidebar')
 
         <main id="main">
-            @include('layouts.topBar')
+                @include('layouts.topBar')
             <div class="contenedor p-4">
                 @yield('content')
             </div>
@@ -76,7 +76,7 @@
          document.addEventListener('DOMContentLoaded', function() {
             let accessLevel = {{ auth()->user()->access_level_id}};
             // Verificar si el nivel de acceso del usuario es 4
-            if (accessLevel == 5 || accessLevel == 6) {
+            if (accessLevel == 5 || accessLevel == 6 || accessLevel == 12) {
                 $("#sidebar").remove();
                 $("#main").css("margin-left", "0px");
             }
