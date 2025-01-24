@@ -125,13 +125,13 @@
                                 @enderror
                             </div>
                             <div class="form-group mt-3 col-md-3">
-                                <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
-                                <input type="file" class="form-control" id="file" name="file[]" multiple>
-                                @error('file')
+                                {{-- <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label> --}}
+                                <input type="file" class="form-control" id="file" name="file[]" multiple hidden>
+                                {{-- @error('file')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
-                                @enderror
+                                @enderror --}}
                             </div>
                             {{-- <div class="col-6">
                                 <button id="añadirFilaUnidades" class="btn btn-secondary">Añadir más unidades</button>
@@ -319,8 +319,12 @@
                             <label for="modelo">Modelo</label>
                             <input type="text" class="form-control" id="modelo" name="modelo">
                         </div>
-                        <!-- Descripción -->
                         <div class="form-group col-md-6">
+                            <label for="numero_serie">Número de Serie</label>
+                            <input type="text" class="form-control" id="numero_serie" name="numero_serie">
+                        </div>
+                        <!-- Descripción -->
+                        {{-- <div class="form-group col-md-6">
                             <label for="proveedor_id">Proveedor</label>
                             <select class="form-control" id="proveedor_id" name="proveedor_id">
                                 <option value="">Seleccione un proveedor</option>
@@ -329,7 +333,7 @@
                                 @endforeach
                                 <!-- Aquí puedes cargar los proveedores desde el backend -->
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row">
                         <!-- Nota -->
@@ -344,13 +348,7 @@
                         <!-- Proveedor -->
                         
                     </div>
-                    <div class="row">
-                        <!-- Número de Serie -->
-                        <div class="form-group col-md-6">
-                            <label for="numero_serie">Número de Serie</label>
-                            <input type="text" class="form-control" id="numero_serie" name="numero_serie">
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

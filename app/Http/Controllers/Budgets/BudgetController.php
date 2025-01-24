@@ -291,7 +291,6 @@ class BudgetController extends Controller
         $budget = Budget::find($id);
         // Validación
 
-
         $request->validate([
             'client_id' => 'required',
             'project_id' => 'nullable',
@@ -299,18 +298,20 @@ class BudgetController extends Controller
             'payment_method_id' => 'required'
         ]);
 
+        // return response()->json($request->all());
 
         //return $request->all();
 
         // Formulario datos
         $data = $request->all();
         $thisBudgetConcepts = BudgetConcept::where('budget_id', $budget->id)->get();
-        if ($thisBudgetConcepts->isEmpty()) {
-            return redirect()->back()->with('toast', [
-                'icon' => 'error',
-                'mensaje' => 'Para guardar el presupuesto debe tener al menos un concepto.'
-            ]);
-        }
+        // if ($thisBudgetConcepts->isEmpty()) {
+        //     return redirect()->back()->with('toast', [
+        //         'icon' => 'error',
+        //         'mensaje' => 'Para guardar el presupuesto debe tener al menos un concepto.'
+        //     ]);
+        // }
+        //return response()->json($request->all());
 
         // Comprobar existencia a la hora de guardar por si se eliminó un registro durante la creación
         $clientID = $data['client_id'];
@@ -326,98 +327,99 @@ class BudgetController extends Controller
         //     ]);
         // }
 
-        $clientExists = Client::where('id', $clientID)->get()->first();
+        if(!$thisBudgetConcepts->isEmpty()){
+            $clientExists = Client::where('id', $clientID)->get()->first();
 
-        if( !$clientExists){
-            return redirect()->back()->with('toast', [
-                'icon' => 'error',
-                'mensaje' => 'El cliente seleccinado no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
-            ]);
-        }
-               // return $request->all();
-
-
-        $adminUserExists = User::where('id', $adminUserID)->get()->first();
-
-        if( !$adminUserExists){
-            return redirect()->back()->with('toast', [
-                'icon' => 'error',
-                'mensaje' => 'El gestor seleccinado no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
-            ]);
-        }
-
-        // Dates
-        if(isset($data['creation_date'])){
-            if ($data['creation_date'] != null){
-                $data['creation_date'] = date('Y-m-d', strtotime(str_replace('/', '-',  $data['creation_date'])));
-            }
-        }
-
-        if(!isset($data['iva_percentage'])){
-            $data['iva_percentage'] = $request->iva_percentage;
-            $ivaPercentage = $request->iva_percentage;
-        }else{
-            $ivaPercentage  = $data['iva_percentage'];
-        }
-
-        // Obtener los conceptos con descuento y actualizarlos
-        if(isset($data['discount'])){
-            $conceptsDiscounts = $data['discount'];
-            // Calculo los valores del presupuesto y de sus conceptos (descuento, total, etc)
-            $updateBudgetQuantities = $this->updateBudgetQuantities($budget, $conceptsDiscounts,  $ivaPercentage);
-        }else {
-            $conceptsDiscounts = 0;
-            // Calculo los valores del presupuesto y de sus conceptos (descuento, total, etc)
-            $updateBudgetQuantities = $this->updateBudgetQuantities($budget, $conceptsDiscounts,  $ivaPercentage);
-        }
-
-        if(!$data['iva']){
-            $data['iva'] = $updateBudgetQuantities['iva'];
-        }
-        $data['discount'] = $updateBudgetQuantities['discount'];
-        $data['gross'] = $updateBudgetQuantities['gross'];
-        $data['base'] = $updateBudgetQuantities['base'];
-        $data['total'] = $data['base'] + $data['iva'];
-
-
-        if($budget->temp == 1 ){
-            $referencia = $this->generateBudgetReference();
-            if ($referencia === null) {
+            if( !$clientExists){
                 return redirect()->back()->with('toast', [
                     'icon' => 'error',
-                    'mensaje' => 'Error al actualizar el presupuesto.'
+                    'mensaje' => 'El cliente seleccinado no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
                 ]);
             }
-            $data['temp'] = 0;
-            $data['reference'] = $referencia['reference'];
-            $data['reference_autoincrement_id'] = $referencia['id'];
+                // return $request->all();
+
+
+            $adminUserExists = User::where('id', $adminUserID)->get()->first();
+
+            if( !$adminUserExists){
+                return redirect()->back()->with('toast', [
+                    'icon' => 'error',
+                    'mensaje' => 'El gestor seleccinado no existe. Es posible que se borrase durante el proceso de creación. Por favor, recargue la página.'
+                ]);
+            }
+
+            // Dates
+            if(isset($data['creation_date'])){
+                if ($data['creation_date'] != null){
+                    $data['creation_date'] = date('Y-m-d', strtotime(str_replace('/', '-',  $data['creation_date'])));
+                }
+            }
+
+            if(!isset($data['iva_percentage'])){
+                $data['iva_percentage'] = $request->iva_percentage;
+                $ivaPercentage = $request->iva_percentage;
+            }else{
+                $ivaPercentage  = $data['iva_percentage'];
+            }
+
+            // Obtener los conceptos con descuento y actualizarlos
+            if(isset($data['discount'])){
+                $conceptsDiscounts = $data['discount'];
+                // Calculo los valores del presupuesto y de sus conceptos (descuento, total, etc)
+                $updateBudgetQuantities = $this->updateBudgetQuantities($budget, $conceptsDiscounts,  $ivaPercentage);
+            }else {
+                $conceptsDiscounts = 0;
+                // Calculo los valores del presupuesto y de sus conceptos (descuento, total, etc)
+                $updateBudgetQuantities = $this->updateBudgetQuantities($budget, $conceptsDiscounts,  $ivaPercentage);
+            }
+
+            if(!$data['iva']){
+                $data['iva'] = $updateBudgetQuantities['iva'];
+            }
+            $data['discount'] = $updateBudgetQuantities['discount'];
+            $data['gross'] = $updateBudgetQuantities['gross'];
+            $data['base'] = $updateBudgetQuantities['base'];
+            $data['total'] = $data['base'] + $data['iva'];
+
+
+            if($budget->temp == 1 ){
+                $referencia = $this->generateBudgetReference();
+                if ($referencia === null) {
+                    return redirect()->back()->with('toast', [
+                        'icon' => 'error',
+                        'mensaje' => 'Error al actualizar el presupuesto.'
+                    ]);
+                }
+                $data['temp'] = 0;
+                $data['reference'] = $referencia['reference'];
+                $data['reference_autoincrement_id'] = $referencia['id'];
+            }
+
         }
-
-
-        $budgetupdated=$budget->update($data);
-        $budget->cambiarEstadoPresupuesto($budget->budget_status_id);
-
-        if( str_starts_with($budget->reference, 'temp_')){
-            $referencia = $this->generateBudgetReference();
-            $data['reference'] = $referencia['reference'];
-            $data['reference_autoincrement_id'] = $referencia['id'];
             $budgetupdated=$budget->update($data);
-        }
+            $budget->cambiarEstadoPresupuesto($budget->budget_status_id);
 
-        if($budgetupdated){
-           $rutaPrevia = session()->get('ruta_previa','presupuestos.index');
+            if( str_starts_with($budget->reference, 'temp_')){
+                $referencia = $this->generateBudgetReference();
+                $data['reference'] = $referencia['reference'];
+                $data['reference_autoincrement_id'] = $referencia['id'];
+                $budgetupdated=$budget->update($data);
+            }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Presupuesto actualizado correctamente.',
-                'redirect' => Route($rutaPrevia)
-            ]);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al actualizar el presupuesto.',
-            ]);
-        }
+            if($budgetupdated){
+            $rutaPrevia = session()->get('ruta_previa','presupuestos.index');
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Presupuesto actualizado correctamente.',
+                    'redirect' => Route($rutaPrevia)
+                ]);
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al actualizar el presupuesto.',
+                ]);
+            }
     }
 
     /**
@@ -2162,7 +2164,7 @@ class BudgetController extends Controller
             'birthdate' => Carbon::now()->format('Y-m-d'),
         ]);
     }
-
+    $car = null;
     // Si se proporciona una matrícula, manejar el coche
     if (!empty($validatedData['matricula'])) {
         // Verificar si el coche ya está asignado a otro cliente
@@ -2279,6 +2281,89 @@ public function assignExistingVisit(Request $request, Budget $budget)
         'mensaje' => 'Visita asignada correctamente.',
         'editUrl' => route('visitas.edit', $request->visita_id)
     ]);
+}
+
+public function checkOrCreateCar(Request $request)
+    {
+        $validated = $request->validate([
+            'matricula' => 'required|string|max:255',
+            'marca' => 'nullable|string|max:255',
+            'modelo' => 'nullable|string|max:255',
+            'anio' => 'nullable|integer',
+        ]);
+
+        //return response()->json($validated);
+
+        $coche = Coches::where('matricula', $request->matricula)->first();
+        $cliente = Client::where('id', $request->cliente_id)->first();
+       // return response()->json($request->all());
+        //return response()->json($coche);
+        
+        if ($coche) {
+            return response()->json(['exists' => true, 'coche' => $coche , 'cliente' => $cliente]);
+        } else {
+            $coche = Coches::create($validated);
+
+            if($cliente){
+                $coche->cliente_id = $cliente->id;
+                $coche->save();
+            }
+            
+            return response()->json(['exists' => false, 'coche' => $coche , 'cliente' => $cliente]);
+        }
+    }
+
+    public function assignCarToClient(Request $request)
+{    
+
+    $request->validate([
+        'car_id' => 'required|exists:coches,id',
+        'cliente_id' => 'nullable',
+    ]);
+
+
+   // return response()->json($request->all());
+    $car = Coches::find($request->car_id);
+
+    
+    $clientId = $request->cliente_id; // O de donde obtengas el cliente actual
+    if ($clientId && $car) {
+        $car->cliente_id = $clientId;
+        $car->save();
+        $car = Coches::find($request->car_id);
+            return response()->json(['success' => true, 'message' => 'Coche asignado correctamente.' , 'coche' => $car , 'cliente' => $clientId]);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Error al asignar el coche.']);
+}
+
+public function checkOrCreateClient(Request $request)
+{
+
+    $validatedData = $request->validate([
+        'name' => 'nullable|string|max:255',
+        'cif' => 'required|string|max:255',
+        'primerApellido' => 'nullable|string|max:255',
+        'segundoApellido' => 'nullable|string|max:255',
+        'email' => 'nullable',
+        'phone' => 'nullable|string|max:255',
+    ]);
+
+
+
+    // Verificar si el cliente ya existe por CIF
+    $client = Client::where('cif', $validatedData['cif'])->first();
+
+    if ($client) {
+        return response()->json(['exists' => true, 'client' => $client]);
+    }
+
+    // Crear un nuevo cliente si no existe
+    $validatedData['admin_user_id'] = Auth::user()->id;
+    $validatedData['is_client'] = 1;
+    $client = Client::create($validatedData);
+
+    return response()->json(['success' => true, 'client' => $client]);
 }
 
 }

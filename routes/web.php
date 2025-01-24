@@ -123,6 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/clientes/reserva-coche/{id}', [ClientController::class, 'destroyReservaCoche'])->name('clientes.reserva-coche.destroy');
         Route::put('/clientes/reserva-coche/{id}', [ClientController::class, 'updateReservaCoche'])->name('clientes.reserva-coche.update');
        
+
         Route::post('/ruta-para-crear-pieza', [BudgetConceptsController::class, 'storePieza'])->name('piezas-budget.store');
         //Proveedores
         Route::get('/supplier', [SuppliersController::class, 'index'])->name('proveedores.index');
@@ -733,7 +734,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('estado-siniestro/{estado}/edit', [EstadoSiniestroController::class, 'edit'])->name('estado-siniestro.edit');
     Route::put('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'update'])->name('estado-siniestro.update');
     Route::delete('estado-siniestro/{estado}', [EstadoSiniestroController::class, 'destroy'])->name('estado-siniestro.destroy');
-
+    Route::post('/check-or-create-car', [BudgetController::class, 'checkOrCreateCar'])->name('checkOrCreateCar');
+    Route::post('/assign-car-to-client', [BudgetController::class, 'assignCarToClient'])->name('assignCarToClient');
     // Seguros
     Route::get('seguros', [SeguroController::class, 'index'])->name('seguro.index');
     Route::get('seguros/create', [SeguroController::class, 'create'])->name('seguro.create');
@@ -759,6 +761,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('coches-sustitucion/{cochesSustitucion}/edit', [CochesSustitucionController::class, 'edit'])->name('coches-sustitucion.edit');
     Route::put('coches-sustitucion/{cochesSustitucion}', [CochesSustitucionController::class, 'update'])->name('coches-sustitucion.update');
     Route::delete('coches-sustitucion/{cochesSustitucion}', [CochesSustitucionController::class, 'destroy'])->name('coches-sustitucion.destroy');
+
+
+    Route::post('/check-or-create-client', [BudgetController::class, 'checkOrCreateClient'])->name('checkOrCreateClient');
 
     // Reservas de Coches
     Route::get('reservas-coche', [ReservasCocheController::class, 'index'])->name('reservas-coche.index');

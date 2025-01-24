@@ -9,7 +9,15 @@
 @endsection
 
 @section('content')
-
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
     <div class="page-heading card" style="box-shadow: none !important" >
         <div class="page-title card-body" >
             <div class="row">
@@ -104,29 +112,35 @@
 
                                         <div class="form-group mb-3">
                                             <label class="mb-2 text-left" for="coche_id">Coche:</label>
-                                            <select class="form-control @error('coche_id') is-invalid @enderror" id="coche_id" name="coche_id">
+                                            <select class="form-control select2 @error('coche_id') is-invalid @enderror" id="coche_id" name="coche_id">
                                                 <option value="">Seleccione un coche</option>
                                                 @foreach ($coches as $coche)
-                                                    <option value="{{ $coche->id }}" {{ $presupuesto->coche_id == $coche->id ? 'selected' : '' }}>{{ $coche->marca }} {{ $coche->modelo }}</option>
+                                                    <option value="{{ $coche->id }}" {{ $presupuesto->coche_id == $coche->id ? 'selected' : '' }}> {{ $coche->matricula }} - {{ $coche->marca }} {{ $coche->modelo }}</option>
                                                 @endforeach
                                             </select>
+                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addCarModal">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                            
+                                            <!-- Modal -->
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group mb-3">
                                             <label class="text-left mb-2">Cliente Asociado:</label>
                                             <div class="flex flex-row align-items-start">
-                                                <select id="cliente" class=" w-100 form-select @error('client_id') is-invalid @enderror" name="client_id" >
+                                                <select id="cliente" class=" select2 w-100 form-select @error('client_id') is-invalid @enderror" name="client_id" >
                                                     @if ($clientes->count() > 0)
                                                     <option value="">Seleccione un Cliente</option>
                                                         @foreach ( $clientes as $cliente )
-                                                            <option @if($presupuesto->client_id == $cliente->id) {{'selected'}} @endif data-id="{{$cliente->id}}" value="{{$cliente->id}}">{{$cliente->company ?? $cliente->name}}</option>
+                                                            <option @if($presupuesto->client_id == $cliente->id) {{'selected'}} @endif data-id="{{$cliente->id}}" value="{{$cliente->id}}">{{$cliente->company ?? $cliente->name}} - {{$cliente->cif}}</option>
                                                         @endforeach
                                                     @else
                                                         <option value="">No existen clientes todavia</option>
                                                     @endif
                                                 </select>
-                                                <button id="newClient" type="button" class="btn btn-color-1 ml-3" style="height: fit-content" @if(isset($petitionId)){{'disabled'}}@endif><i class="fa-solid fa-plus"></i></button>
+                                                <button id="" data-bs-toggle="modal" data-bs-target="#createClientModal" type="button" class="btn btn-color-1 ml-3" style="height: fit-content" @if(isset($petitionId)){{'disabled'}}@endif><i class="fa-solid fa-plus"></i></button>
                                             </div>
                                             @error('client_id')
                                                 <p class="invalid-feedback d-block" role="alert">
@@ -371,7 +385,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true" style="z-index: 9000">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -407,6 +421,13 @@
                                 <hr>
                             </div>
                             <style>
+
+                               
+.modal-backdrop.fade.show {
+    display: none;
+}
+
+
   .select2-container {
         z-index: 2050; /* Asegúrate de que este valor sea mayor que el z-index del modal */
     }
@@ -443,12 +464,53 @@
             </div>
 
         </section>
+        <style>
+            .modal-content{
+                background: #f3f3f3;
+                box-shadow: 0 0 100px 100px rgba(0, 0, 0, 0.1);
+            }
+            .swal2-container{
+                z-index: 9999;
+            }
+        </style>
+        <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true" style="z-index: 9000">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCarModalLabel">Añadir Coche</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addCarForm">
+                            <div class="mb-3">
+                                <label for="matricula" class="form-label">Matrícula</label>
+                                <input type="text" class="form-control" id="matricula" name="matricula" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="marca" class="form-label">Marca</label>
+                                <input type="text" class="form-control" id="marca" name="marca" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modelo" class="form-label">Modelo</label>
+                                <input type="text" class="form-control" id="modelo" name="modelo" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="anio" class="form-label">Año</label>
+                                <input type="number" class="form-control" id="anio" name="anio" required>
+                            </div>
+                            <input type="hidden" id="cliente_id" name="cliente_id" value="{{$presupuesto->client_id}}">
+                            <button type="button" class="btn btn-primary" id="saveCarButton">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     @include('partials.toast')
 
     <!-- Modal -->
-    <div class="modal fade" id="claimModal" tabindex="-1" aria-labelledby="claimModalLabel" aria-hidden="true">
+    <div class="modal fade" id="claimModal" tabindex="-1" aria-labelledby="claimModalLabel" aria-hidden="true" style="z-index: 9000">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -459,12 +521,14 @@
                     <button type="button" id="createNewClaim" class="btn btn-success mb-3">Generar nuevo Parte de trabajo</button>
                     <hr>
                     <label for="existingClaims" class="form-label mt-2">Asignar Parte de trabajo existente:</label>
-                    <select id="existingClaims" class=" select2">
+                    <br>
+                    <select id="existingClaims" class=" select2 w-100">
                         <option value="">Selecciona un Parte de trabajo</option>
                         @foreach($siniestros as $siniestro)
                             <option value="{{ $siniestro->id }}">{{ $siniestro->identificador }} - {{ $siniestro->cliente->name }} - {{$siniestro->created_at->format('d/m/Y') }}</option>
                         @endforeach
                     </select>
+                    <br>
                     <button type="button" id="assignExistingClaim" class="btn btn-primary mt-3">Asignar</button>
                 </div>
             </div>
@@ -472,7 +536,7 @@
     </div>
 
     <!-- Modal para Visitas -->
-    <div class="modal fade" id="visitModal" tabindex="-1" aria-labelledby="visitModalLabel" aria-hidden="true">
+    <div class="modal fade" id="visitModal" tabindex="-1" aria-labelledby="visitModalLabel" aria-hidden="true" style="z-index: 9000">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -489,6 +553,49 @@
                         @endforeach
                     </select>
                     <button type="button" id="assignExistingVisit" class="btn btn-primary mt-3">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear cliente -->
+    <div class="modal fade" id="createClientModal" tabindex="-1" aria-labelledby="createClientModalLabel" aria-hidden="true" style="z-index: 9000">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createClientModalLabel">Crear Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorMessage" class="text-danger mb-3" style="display: none;"></div>
+                    <div class="form-group">
+                        <label for="cif">DNI/CIF</label>
+                        <input type="text" class="form-control" id="cif" name="cif" required> 
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido1">Primer Apellido</label>
+                        <input type="text" class="form-control" id="primerApellido" name="primerApellido">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido2">Segundo Apellido</label>
+                        <input type="text" class="form-control" id="segundoApellido" name="segundoApellido">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="text" class="form-control" id="phone" name="phone">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="saveClientButton">Guardar Cliente</button>
                 </div>
             </div>
         </div>
@@ -1739,6 +1846,151 @@
         }
     });
 
+</script>
+<script>
+    let shouldReopenModal = false;
+
+    $('#saveCarButton').on('click', function() {
+        const formData = {
+            matricula: $('#matricula').val(),
+            marca: $('#marca').val(),
+            modelo: $('#modelo').val(),
+            anio: $('#anio').val(),
+            cliente_id: $('#cliente_id').val(),
+        };
+
+        fetch('{{ route('checkOrCreateCar') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                // Usar SweetAlert para confirmar la asignación
+                Swal.fire({
+                    title: 'El coche ya existe',
+                    text: "¿Desea asignarlo al cliente?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, asignar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                        assignCarToClient(data.coche.id , data.cliente.id);
+                    }
+                });
+            } else {
+                $('#coche_id').val(data.coche.id);
+                const select = $('#coche_id');
+                const option = new Option(`${data.coche.matricula} - ${data.coche.marca} ${data.coche.modelo}`, data.coche.id, true, true);
+                select.append(option);
+                shouldReopenModal = true; // Establecer la bandera para reabrir el modal
+                Swal.fire('Coche asignado', 'El coche ha sido asignado al cliente.', 'success');
+                $('#successMessage').show(); // Mostrar el mensaje de éxito
+                $('#addCarModal').modal('hide'); // Cerrar el modal
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    $('#addCarModal').on('hidden.bs.modal', function () {
+        setTimeout(() => {
+            if ($('.modal-backdrop').length) {
+                $('.modal-backdrop').remove(); // Eliminar el backdrop si aún existe
+            }
+            $('body').removeClass('modal-open'); // Asegúrate de que el scroll se restablezca
+
+            if (shouldReopenModal) {
+                $('#addCarModal').modal('show'); // Reabrir el modal si la bandera está establecida
+                shouldReopenModal = false; // Restablecer la bandera
+            }
+        }, 200); // Espera un poco para asegurarte de que el DOM se actualice
+    });
+
+    function assignCarToClient(carId, clienteId) {
+        fetch('{{ route('assignCarToClient') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ car_id: carId, cliente_id: clienteId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('Asignado', 'El coche ha sido asignado al cliente.', 'success');
+                const select = $('#coche_id');
+                const option = new Option(`${data.coche.matricula} - ${data.coche.marca} ${data.coche.modelo}`, carId, true, true);
+                select.append(option);
+                select.val(carId).trigger('change'); // Seleccionar el coche asignado
+            } else {
+                Swal.fire('Error', 'No se pudo asignar el coche al cliente.', 'error');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    $(document).ready(function() {
+        let shouldReopenClientModal = false;
+
+        $('#saveClientButton').on('click', function() {
+            const clientData = {
+                name: $('#name').val(),
+                cif: $('#cif').val(),
+                email: $('#email').val(),
+                telefono: $('#telefono').val(),
+                _token: '{{ csrf_token() }}'
+            };
+
+            fetch('{{ route('checkOrCreateClient') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify(clientData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    Swal.fire('Cliente Existente', 'El cliente ya existe y ha sido asignado.', 'info');
+                    const newOption = new Option(data.client.company ?? data.client.name, data.client.id, true, true);
+                    $('#cliente').append(newOption).val(data.client.id).trigger('change');
+                    $('#createClientModal').modal('hide');
+                } else if (data.success) {
+                    Swal.fire('Éxito', 'Cliente creado exitosamente.', 'success');
+                    const newOption = new Option(data.client.company ?? data.client.name, data.client.id, true, true);
+                    $('#cliente').append(newOption).val(data.client.id).trigger('change');
+                    shouldReopenClientModal = true; // Establecer la bandera para reabrir el modal
+                    $('#createClientModal').modal('hide');
+                } else {
+                    $('#errorMessage').text(data.message).show();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        $('#createClientModal').on('hidden.bs.modal', function () {
+            setTimeout(() => {
+                if ($('.modal-backdrop').length) {
+                    $('.modal-backdrop').remove(); // Eliminar el backdrop si aún existe
+                }
+                $('body').removeClass('modal-open'); // Asegúrate de que el scroll se restablezca
+
+                if (shouldReopenClientModal) {
+                    $('#createClientModal').modal('show'); // Reabrir el modal si la bandera está establecida
+                    shouldReopenClientModal = false; // Restablecer la bandera
+                }
+            }, 200); // Espera un poco para asegurarte de que el DOM se actualice
+        });
+
+        // ... código existente ...
+    });
 </script>
 @endsection
 

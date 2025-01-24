@@ -99,15 +99,32 @@
                                             </span>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-6">
+                                {{-- <div class="form-group col-md-6">
                                     <label class="text-uppercase" style="font-weight: bold" for="file">Archivo Adjunto:</label>
-                                    <input type="file" class="form-control" id="file" name="file[]" multiple>
+                                    <input type="file" class="form-control" id="file" name="file[]" multiple hidden>
                                     @error('file')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                     @enderror
-                                </div>
+                                </div> --}}
+                                @if ($piezas->count() > 0)
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label class="text-uppercase" style="font-weight: bold" for="pieza_id">Pieza:</label>
+                                        <select class="js-example-basic-single form-control @error('pieza_id') is-invalid @enderror" name="pieza_id">
+                                            <option value="{{null}}">Seleccione una pieza</option>
+
+                                            @foreach ($piezas as $pieza)
+                                                <option value="{{$pieza->id}}" {{ $pieza->id == $budgetConcept->pieza_id ? 'selected' : '' }}>{{$pieza->nombre}} - {{$pieza->codigo}} </option>
+                                            @endforeach
+                                        </select>
+                                        @error('pieza_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                        @enderror
+                                    </div>
+                                @endif
                             </div>
                             
 
@@ -167,23 +184,7 @@
                                     @enderror
                                 </div>
 
-                                @if ($piezas->count() > 0)
-                                    <div class="form-group mb-3 col-md-6">
-                                        <label class="text-uppercase" style="font-weight: bold" for="pieza_id">Pieza:</label>
-                                        <select class="js-example-basic-single form-control @error('pieza_id') is-invalid @enderror" name="pieza_id">
-                                            <option value="{{null}}">Seleccione una pieza</option>
-
-                                            @foreach ($piezas as $pieza)
-                                                <option value="{{$pieza->id}}" {{ $pieza->id == $budgetConcept->pieza_id ? 'selected' : '' }}>{{$pieza->nombre}} - {{$pieza->codigo}} </option>
-                                            @endforeach
-                                        </select>
-                                        @error('pieza_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                        @enderror
-                                    </div>
-                                @endif
+                                
                             </div>
 
                             <div class="col-12 form-group mt-3">
@@ -276,7 +277,7 @@
 </div>
     <style>
         .select2-container--default .select2-selection--single {
-            height: 100%;
+            height: 50px;
             display: flex;
             flex-direction: row;
             justify-content: center;

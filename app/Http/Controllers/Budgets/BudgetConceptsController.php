@@ -316,7 +316,7 @@ class BudgetConceptsController extends Controller
     {
         // dd($request->all());
 
-        return $request->all();
+       // return $request->all();
 
 
         // Validamos los campos

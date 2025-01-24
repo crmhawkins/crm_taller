@@ -69,10 +69,28 @@
         .delete-button:hover {
             background-color: rgba(255, 0, 0, 1);
         }
+        .select2-container--default .select2-selection--single {
+            height: 50px !important;
+            display: block !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        .select2-selection--single > span {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: center !important;
+            margin: 0 auto !important;
+            height: 50px !important;
+        }
     </style>
+
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
     <div class="page-heading card" style="box-shadow: none !important">
         <div class="page-title card-body p-3">
@@ -101,7 +119,8 @@
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="coche_id">Coche</label>
-                                    <select class="form-control" id="coche_id" name="coche_id">
+                                    <br>
+                                    <select class="form-control select2" id="coche_id" name="coche_id">
                                         @foreach($coches as $coche)
                                             <option value="{{ $coche->id }}" {{ $siniestro->coche_id == $coche->id ? 'selected' : '' }}>{{ $coche->matricula }} {{ $coche->marca }} {{ $coche->modelo }} - {{ $coche->color }}</option>
                                         @endforeach
@@ -111,7 +130,7 @@
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="cliente_id">Cliente</label>
-                                    <select class="form-control" id="cliente_id" name="cliente_id">
+                                    <select class="form-control select2" id="cliente_id" name="cliente_id">
                                         @foreach($clientes as $cliente)
                                             <option value="{{ $cliente->id }}" {{ $siniestro->cliente_id == $cliente->id ? 'selected' : '' }}>{{ $cliente->name }} {{ $cliente->surname }} - {{ $cliente->cif }}</option>
                                         @endforeach
@@ -121,7 +140,7 @@
                             <div class="col-md-3">
                                 <div class="form-group mb-3">
                                     <label for="seguro_id">Seguro</label>
-                                    <select class="form-control" id="seguro_id" name="seguro_id">
+                                    <select class="form-control select2" id="seguro_id" name="seguro_id">
                                         <option value="">Selecciona un seguro</option>
                                         @foreach($seguros as $seguro)
                                             <option value="{{ $seguro->id }}" {{ $siniestro->seguro_id == $seguro->id ? 'selected' : '' }}>{{ $seguro->identificador }}</option>
@@ -269,3 +288,12 @@
 
     </div>
 @endsection 
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+</script>
+@endsection

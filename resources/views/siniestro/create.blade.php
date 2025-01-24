@@ -6,7 +6,25 @@
 @endsection
 
 @section('content')
+    <style>
+        .select2-container--default .select2-selection--single {
+            height: 50px !important;
+            display: block !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
 
+        .select2-selection--single > span {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: center !important;
+            margin: 0 auto !important;
+            height: 50px !important;
+        }
+
+    </style>
     <div class="page-heading card" style="box-shadow: none !important">
 
         <div class="page-title card-body p-3">

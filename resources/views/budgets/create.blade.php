@@ -17,6 +17,15 @@
         display: none !important;
     }
 </style>
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 
 @endsection
 
@@ -417,8 +426,10 @@
                         // Añadir la nueva opción al <select> y seleccionarla
                         var newOption = new Option(response.client.name, response.client.id, true, true);
                         window.currentClientId = response.client.id;
-                        window.currentCarId = response.car.id;
-                        $('#car_id').val(response.car.id);
+                        if(response.car){
+                            window.currentCarId = response.car.id;
+                            $('#car_id').val(response.car.id);
+                        }
                         $('#cliente').append(newOption).trigger('change');
 
                         $('#successMessage').text('Cliente y coche creados exitosamente.').show();
