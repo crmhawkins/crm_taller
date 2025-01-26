@@ -128,7 +128,7 @@
                 </span>
         @enderror
     </div>
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label for="fax">Fax:</label>
         <input type="text" class="form-control @error('fax') is-invalid @enderror" id="fax" value="{{ old('fax', isset($proveedor) ? $proveedor->fax : '') }}" name="fax">
         @error('fax')
@@ -136,9 +136,9 @@
                     <strong>{{ $message }}</strong>
                 </span>
         @enderror
-    </div>
+    </div> --}}
 
-    <h3 class="mt-5 mb-2 text-center uppercase">Redes Sociales - web</h3>
+    {{-- <h3 class="mt-5 mb-2 text-center uppercase">Redes Sociales - web</h3>
     <hr class="mb-4">
 
     <div class="form-group">
@@ -149,9 +149,9 @@
                     <strong>{{ $message }}</strong>
                 </span>
         @enderror
-    </div>
+    </div> --}}
 
-    <h4 class="mt-5 mb-2 text-left uppercase">Redes Sociales</h4>
+    {{-- <h4 class="mt-5 mb-2 text-left uppercase">Redes Sociales</h4>
     <div class="row form-group">
         <div class="col-md-4 mb-3">
             <label for="facebook"><i class="fa-brands fa-facebook"></i> Facebook:</label>
@@ -198,7 +198,7 @@
                     </span>
             @enderror
         </div>
-    </div>
+    </div> --}}
 
     <div class="form-group mt-5">
         <button type="submit" class="btn btn-primary w-100">
