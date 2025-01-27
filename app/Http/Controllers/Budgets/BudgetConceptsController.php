@@ -957,6 +957,8 @@ class BudgetConceptsController extends Controller
         if ($budgetConcept->id){
 
             $searchOrder = PurcharseOrder::where("budget_concept_id", $budgetConcept->id)->first();
+
+            //return response()->json($searchOrder);
             if($searchOrder){
                 $budgetConceptSupplier = BudgetConceptSupplierRequest::where("budget_concept_id", $budgetConcept->id)->where("selected", 1)->first();
 

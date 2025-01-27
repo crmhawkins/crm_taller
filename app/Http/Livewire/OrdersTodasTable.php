@@ -52,7 +52,7 @@ class OrdersTodasTable extends Component
                 ->orWhere('budgets.reference', 'like', '%' . $this->buscar . '%')
                 ->orWhere('associated_expenses.reference', 'like', '%' . $this->buscar . '%');
             })
-            ->join('associated_expenses', 'purchase_order.id', '=', 'associated_expenses.purchase_order_id')
+            ->leftjoin('associated_expenses', 'purchase_order.id', '=', 'associated_expenses.purchase_order_id')
             ->join('budget_concepts', 'purchase_order.budget_concept_id', '=', 'budget_concepts.id') // Join para llegar a los conceptos
             ->join('budgets', 'budget_concepts.budget_id', '=', 'budgets.id') // Join para llegar a los presupuestos
             ->join('admin_user', 'budgets.admin_user_id', '=', 'admin_user.id') // Join para llegar al usuario
@@ -64,6 +64,8 @@ class OrdersTodasTable extends Component
 
         // Verifica si se seleccionó 'all' para mostrar todos los registros
         $this->orders = $this->perPage === 'all' ? $query->get() : $query->paginate(is_numeric($this->perPage) ? $this->perPage : 10);
+        // $this->orders = PurcharseOrder::all();
+        // dd($this->orders);
     }
 
     public function sortBy($column)
