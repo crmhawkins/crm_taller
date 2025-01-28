@@ -521,8 +521,8 @@
                             </style>
 
                             <div class="col-md-12 mt-3">
-                                <div class="canvas-container">
-                                    <canvas id="fuelGauge" width="200" height="200"></canvas>
+                                <div class="canvas-container" >
+                                    <canvas id="fuelGauge" width="200" height="200" style="cursor: pointer;"></canvas>
                                     <input type="hidden" id="nivel_gasolina" name="nivel_gasolina" value="{{ $visita->nivel_gasolina }}">
                                 </div>
                             </div>  
@@ -534,10 +534,10 @@
                                     border-radius: 50%;
                                 }
                             </style>
-                            <div class="col-md-12 mt-3">
-                                <div class="canvas-container">
-                                    <img id="car-image" src="{{ asset('assets/images/coche.png') }}" alt="Coche" />
-                                    <canvas id="drawing-canvas"></canvas>
+                            <div class="col-md-12 mt-3" style="width: 100%;">
+                                <div class="canvas-container" style="width: 100%;">
+                                    <img id="car-image" src="{{ asset('assets/images/coche.png') }}" alt="Coche" style="cursor: pointer; width: 80%;" />
+                                    <canvas id="drawing-canvas" style="width: 80%;"></canvas>
                                 </div>
                             </div>
 

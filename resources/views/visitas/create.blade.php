@@ -531,9 +531,9 @@
                             </style>
 
                             <div class="col-md-12 mt-3">
-                                <div class="canvas-container">
-                                    <img id="car-image" src="{{ asset('assets/images/coche.png') }}" alt="Coche" />
-                                    <canvas id="drawing-canvas"></canvas>
+                                <div class="canvas-container" style="cursor: pointer; width: 80%; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+                                    <img id="car-image" src="{{ asset('assets/images/coche.png') }}" alt="Coche" style="cursor: pointer; width: 80%;" />
+                                    <canvas id="drawing-canvas" style="width: 80%;"></canvas>
                                 </div>
                             </div>
 
