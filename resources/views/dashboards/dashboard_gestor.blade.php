@@ -139,7 +139,7 @@
                                     <div class="col-12 d-flex flex-wrap justify-content-center mb-4 align-items-center">
                                         <div class="mx-4 text-center">
                                             <h5 class="my-3">{{$user->name}}&nbsp;{{$user->surname}}</h5>
-                                            <p class="text-muted mb-1">{{$user->departamento->name}}</p>
+                                            <p class="text-muted mb-1">{{$user->departamento ? $user->departamento->name : 'Departamento no asignado'}}</p>
                                             <p class="text-muted mb-4">{{$user->acceso->name}}</p>
                                             {{-- <div class="d-flex  align-items-center my-2">
                                                 <input type="color" class="form-control form-control-color" style="padding: 0.4rem" id="color">

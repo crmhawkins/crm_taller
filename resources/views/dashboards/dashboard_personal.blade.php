@@ -691,7 +691,7 @@
                                         <div class="col-12 d-flex flex-wrap justify-content-center mb-4 align-items-center">
                                             <div class="mx-4 text-center">
                                                 <h5 class="my-3">{{$user->name}}&nbsp;{{$user->surname}}</h5>
-                                                <p class="text-muted mb-1">{{$user->departamento->name}}</p>
+                                                <p class="text-muted mb-1">{{$user->departamento ? $user->departamento->name : 'Departamento no asignado'}}</p>
                                                 <p class="text-muted mb-4">{{$user->acceso->name}}</p>
                                                 {{-- <div class="d-flex  align-items-center my-2">
                                                     <input type="color" class="form-control form-control-color" style="padding: 0.4rem" id="color">
@@ -708,18 +708,18 @@
                                             <div>
                                                 <div class="d-flex justify-content-center align-items-center">
                                                     <div class="mx-4 text-center">
-                                                        <h1 class="fs-5">Productividad</h1>
-                                                        <div class="progress-circle"
+                                                        {{-- <h1 class="fs-5">Productividad</h1> --}}
+                                                        {{-- <div class="progress-circle"
                                                             data-percentage="{{ number_format($productividadIndividual, 2) }}">
-                                                        </div>
+                                                        </div> --}}
 
                                                     </div>
                                                     <div class="mx-4 text-center">
-                                                        <div class="card" style="border: 1px solid {{ $user->bono > 0 ? 'green' : 'gray' }}; padding: 10px;">
+                                                        {{-- <div class="card" style="border: 1px solid {{ $user->bono > 0 ? 'green' : 'gray' }}; padding: 10px;">
                                                             <h5 class="m-0" style="color: {{ $user->bono > 0 ? 'green' : 'gray' }};">
                                                                 {{ $user->bono > 0 ? 'Bono: ' . $user->bono.' €' : 'Sin bono' }}
                                                             </h5>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                 </div>
                                                 <div class="mx-4 my-2">
@@ -738,29 +738,29 @@
                                                 href="{{route('nominas.index_user', $user->id)}}">Nomina</a>
                                                 <a class="btn btn-outline-secondary"
                                                 href="{{route('holiday.index')}}">Vacaciones</a>
-                                                <a class="btn btn-outline-secondary"
-                                                href="{{route('passwords.index')}}">Contraseñas</a>
+                                                {{-- <a class="btn btn-outline-secondary"
+                                                href="{{route('passwords.index')}}">Contraseñas</a> --}}
                                             </div>
                                             <div class="my-2 ml-4 text-center col-auto" role="tablist">
-                                                <a class=" btn btn-outline-secondary active"
+                                                {{-- <a class=" btn btn-outline-secondary active"
                                                     id="list-todo-list" data-bs-toggle="list" href="#list-todo"
-                                                    role="tab">TO-DO</a>
+                                                    role="tab">TO-DO</a> --}}
                                                 <a class=" btn btn-outline-danger"
                                                     id="list-todo-list-finalizados" data-bs-toggle="list" href="#list-todo-finalizados"
                                                     role="tab">Finalizados</a>
-                                                <a class="btn btn-outline-secondary"
+                                                {{-- <a class="btn btn-outline-secondary"
                                                     id="list-agenda-list" data-bs-toggle="list"
-                                                    href="#list-agenda" role="tab">Agenda</a>
+                                                    href="#list-agenda" role="tab">Agenda</a> --}}
                                             </div>
                                             <div class="my-2 ml-4 text-center col-auto" >
-                                                <a class="btn btn-outline-secondary"
+                                                {{-- <a class="btn btn-outline-secondary"
                                                     
-                                                    href="{{route('tarea.all')}}" role="tab">Tareas</a>
+                                                    href="{{route('tarea.all')}}" role="tab">Tareas</a> --}}
                                             </div>
                                         </div>
 
                                     </div>
-                                    <div class="tab-content text-justify" id="nav-tabContent">
+                                    {{-- <div class="tab-content text-justify" id="nav-tabContent">
                                         <div class="tab-pane show active" id="list-todo" role="tabpanel"
                                             aria-labelledby="list-todo-list">
                                             <div class="card2 mt-4">
@@ -916,7 +916,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

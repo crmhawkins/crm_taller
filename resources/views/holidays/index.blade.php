@@ -20,9 +20,11 @@
                         <p class="text-subtitle text-muted">Listado de mis vacaciones</p>
                     </div>
                     <div class="col-auto">
+                        @if(isset($userHolidaysQuantity) && $userHolidaysQuantity->quantity > 0)
                         <a class="btn btn-outline-secondary" href="{{route('holiday.create')}}">
                             <i class="fa-solid fa-plus"></i> Petición de vacaciones
                         </a>
+                        @endif
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-6 order-md-2 order-first">
