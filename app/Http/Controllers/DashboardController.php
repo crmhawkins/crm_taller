@@ -234,9 +234,9 @@ class DashboardController extends Controller
                     ]);
                 }else {
                         // Actualizar el registro existente
-                    $productividadMensual->update([
-                        'productividad' => $totalProductividad,
-                    ]);
+                    // $productividadMensual->update([
+                    //     'productividad' => $totalProductividad,
+                    // ]);
                 }
 
                 $productividadIndividual = $totalTareas > 0 ? $totalProductividad : 0;
