@@ -64,20 +64,21 @@ class TasksRevisionTable extends Component
                 })
                 ->when($this->selectedGestor, function ($query) {
                     $query->where('tasks.gestor_id', $this->selectedGestor);
-                })
-                ->join('budget_concepts', 'tasks.budget_concept_id', '=', 'budget_concepts.id')
-                ->join('services_categories', 'budget_concepts.services_category_id', '=', 'services_categories.id')
-                ->join('budgets', 'tasks.budget_id', '=', 'budgets.id')
-                ->join('clients', 'budgets.client_id', '=', 'clients.id')
-                ->join('admin_user as gestor', 'tasks.gestor_id', '=', 'gestor.id')
-                ->join('admin_user as empleado', 'tasks.admin_user_id', '=', 'empleado.id')
-                ->select('tasks.*', 'services_categories.name as categoria_nombre','budget_concepts.title as concept', 'clients.name as cliente', 'gestor.name as gestor','empleado.name as empleado');
+                });
+                // ->join('budget_concepts', 'tasks.budget_concept_id', '=', 'budget_concepts.id')
+                // ->join('services_categories', 'budget_concepts.services_category_id', '=', 'services_categories.id')
+                // ->join('budgets', 'tasks.budget_id', '=', 'budgets.id')
+                // ->join('clients', 'budgets.client_id', '=', 'clients.id')
+                // ->join('admin_user as gestor', 'tasks.gestor_id', '=', 'gestor.id')
+                // ->join('admin_user as empleado', 'tasks.admin_user_id', '=', 'empleado.id')
+                // ->select('tasks.*', 'services_categories.name as categoria_nombre','budget_concepts.title as concept', 'clients.name as cliente', 'gestor.name as gestor','empleado.name as empleado');
 
 
         $query->orderBy($this->sortColumn, $this->sortDirection);
 
         // Verifica si se seleccionó 'all' para mostrar todos los registros
         $this->tasks = $this->perPage === 'all' ? $query->get() : $query->paginate(is_numeric($this->perPage) ? $this->perPage : 10);
+        // dd($this->tasks);
     }
 
     public function sortBy($column)

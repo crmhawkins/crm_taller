@@ -209,6 +209,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    let selectedUserId = null;
+    let selectedTaskId = null;
     document.getElementById('toggleFullscreen').addEventListener('click', function() {
         const pageContainer = document.querySelector('.ambas-tablas');
         if (!document.fullscreenElement) {
@@ -394,8 +396,7 @@
         const userSearchInput = document.getElementById('userSearchInput');
         const searchUserButton = document.getElementById('searchUserButton');
         const userResults = document.getElementById('userResults');
-        let selectedUserId = null;
-        let selectedTaskId = null;
+        
 
         document.querySelectorAll('.assign-user').forEach(button => {
             button.addEventListener('click', function() {

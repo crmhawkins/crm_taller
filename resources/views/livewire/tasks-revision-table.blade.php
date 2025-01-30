@@ -70,11 +70,11 @@
                         @foreach ([
                             'id' => 'REF',
                             'title' => 'TITULO',
-                            'categoria_nombre' => 'CATEGORIA',
+                            // 'categoria_nombre' => 'CATEGORIA',
                             'concept' => 'CONCEPTO',
                             'cliente' => 'CLIENTE',
                             'empleado' => 'EMPLEADO ASIGNADO',
-                            'gestor' => 'GESTOR',
+                            // 'gestor' => 'GESTOR',
                             'created_at' => 'FECHA DE CREACION',
                         ] as $field => $label)
                             <th class="px-3" style="font-size:0.75rem">
@@ -94,11 +94,11 @@
                         <tr class="clickable-row" data-href="{{route('tarea.edit', $tarea->id)}}">
                             <td class="px-3">{{$tarea->id}}</td>
                             <td class="">{{$tarea->title}}</td>
-                            <td class="">{{$tarea->presupuestoConcepto->servicioCategoria->name ?? 'No definido' }}</td>
+                            {{-- <td class="">{{$tarea->presupuestoConcepto->servicioCategoria->name ?? 'No definido' }}</td> --}}
                             <td class="">{{$tarea->presupuestoConcepto->title ?? 'No definido'}}</td>
                             <td class="">{{$tarea->presupuesto->cliente->company ?? $tarea->presupuesto->cliente->name ?? 'Cliente Borrado'}}</td>
-                            <td class="">{{$tarea->split_master_task_id ? ($tarea->usuario->name ?? 'No definido') : 'Tarea Maestra'}}</td>
-                            <td class="">{{$tarea->gestor ?? 'No definido'}}</td>
+                            <td class="">{{ ($tarea->usuario->name ?? 'No definido') }} {{$tarea->usuario->surname ?? ''}}</td>
+                            {{-- <td class="">{{$tarea->gestor ?? 'No definido'}}</td> --}}
                             <td class="">{{Carbon\Carbon::parse($tarea->created_at)->format('d/m/Y')}}</td>
                             <td class="flex flex-row justify-evenly align-middle" style="min-width: 120px">
                                 <a class="" href="{{route('tarea.edit', $tarea->id)}}"><img src="{{asset('assets/icons/edit.svg')}}" alt="Editar servicio"></a>

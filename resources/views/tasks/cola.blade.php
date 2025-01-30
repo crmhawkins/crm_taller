@@ -67,7 +67,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="card-title">{{$usuario->name}} {{$usuario->surname}}</p>
-                                <p class="card-subtitle">{{$usuario->departamento->name}}</p>
+                                <p class="card-subtitle">{{$usuario->departamento ? $usuario->departamento->name : 'Departamento no asignado'}}</p>
                             </div>
                             <a class="btn btn-outline-secondary" href="{{route('tarea.calendar',$usuario->id)}}" target="_blank">
                                 Ver calendario
