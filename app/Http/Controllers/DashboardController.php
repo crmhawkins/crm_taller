@@ -226,12 +226,12 @@ class DashboardController extends Controller
                     ->first();
 
                 if (!$productividadMensual) {
-                    ProductividadMensual::create([
-                        'admin_user_id' => $user->id,
-                        'mes' => $currentMonth,
-                        'año' => $currentYear,
-                        'productividad' => $totalProductividad,
-                    ]);
+                    // ProductividadMensual::create([
+                    //     'admin_user_id' => $user->id,
+                    //     'mes' => $currentMonth,
+                    //     'año' => $currentYear,
+                    //     'productividad' => $totalProductividad,
+                    // ]);
                 }else {
                         // Actualizar el registro existente
                     // $productividadMensual->update([
