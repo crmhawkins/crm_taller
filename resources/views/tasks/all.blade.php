@@ -197,6 +197,25 @@
         </div>
     </div>
 
+    <!-- Modal para ingresar PIN -->
+    <div class="modal fade" id="userValidatePinModal" tabindex="-1" aria-labelledby="userValidatePinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="userValidatePinModalLabel">Ingresar PIN de Usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <input type="text" id="userPinInput" class="form-control" placeholder="Ingrese su PIN">
+            <div id="userPinError" class="text-danger mt-2" style="display:none;">Por favor ingrese su PIN</div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" id="validatePinButton" class="btn btn-primary">Validar PIN</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
 
 </div>
@@ -209,7 +228,29 @@
     let selectedTaskId = null;
 
 
+    function showPinModal(taskId, action) {
+        // Mostrar el modal de Bootstrap
+        var myModal = new bootstrap.Modal(document.getElementById('userPinModal'));
+        myModal.show();
 
+        // Agregar evento al botón de validación del PIN
+        document.getElementById('validatePinButton').onclick = function() {
+            const pin = document.getElementById('userPinInput').value;
+
+            // Validar si el PIN está vacío
+            if (!pin) {
+                document.getElementById('userPinError').style.display = 'block'; // Mostrar el mensaje de error
+            } else {
+                document.getElementById('userPinError').style.display = 'none'; // Ocultar el mensaje de error
+
+                // Llamar a la función para validar el PIN
+                validatePin(pin, action, taskId);
+
+                // Cerrar el modal después de la validación
+                myModal.hide();
+            }
+        };
+    }
     function showPinAlert( taskId, action) {
         Swal.fire({
             title: 'Ingresar PIN de Usuario',
@@ -432,7 +473,7 @@
                 const taskId = this.getAttribute('data-task-id');
 
 
-                showPinAlert(taskId ,'Reanudar' );
+                showPinModal(taskId ,'Reanudar' );
                 //changeTaskStatus(taskId, 'Reanudar');
                 // startRealTimeCounter(taskId);
             });
@@ -441,7 +482,7 @@
         document.querySelectorAll('.pause-task').forEach(button => {
             button.addEventListener('click', function() {
                 const taskId = this.getAttribute('data-task-id');
-                showPinAlert(taskId, 'Pausada');
+                showPinModal(taskId, 'Pausada');
                 // stopRealTimeCounter(taskId);
             });
         });
@@ -449,7 +490,7 @@
         document.querySelectorAll('.finish-task').forEach(button => {
             button.addEventListener('click', function() {
                 const taskId = this.getAttribute('data-task-id');
-                showPinAlert(taskId, 'Finalizada');
+                showPinModal(taskId, 'Finalizada');
                 // stopRealTimeCounter(taskId);
             });
         });
