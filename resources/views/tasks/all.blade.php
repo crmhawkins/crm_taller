@@ -229,6 +229,7 @@
 
                 // Llamar a la función para validar el PIN
                 validatePin(pin, action, taskId);
+                console.log(pin, action, taskId);
             }
         });
     }
