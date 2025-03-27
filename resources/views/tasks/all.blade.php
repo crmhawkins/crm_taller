@@ -353,9 +353,9 @@
             })
             .then(data => {
                 const tbodyEstado1y2 = document.getElementById('tasksTableBodyEstado1y2');
-                const tbodyOtrosEstados = document.getElementById('tasksTableBodyOtrosEstados');
+                //const tbodyOtrosEstados = document.getElementById('tasksTableBodyOtrosEstados');
                 tbodyEstado1y2.innerHTML = ''; // Limpiar el contenido actual
-                tbodyOtrosEstados.innerHTML = ''; // Limpiar el contenido actual
+                // tbodyOtrosEstados.innerHTML = ''; // Limpiar el contenido actual
 
                 data.forEach(tarea => {
                     const row = document.createElement('tr');
