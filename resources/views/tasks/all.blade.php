@@ -245,34 +245,11 @@
 
                 // Llamar a la función para validar el PIN
                 validatePin(pin, action, taskId);
-
+                document.getElementById('uservalidatePinInput').value = ''; // Limpiar el campo de entrada
                 // Cerrar el modal después de la validación
                 myModal.hide();
             }
         };
-    }
-    function showPinAlert( taskId, action) {
-        Swal.fire({
-            title: 'Ingresar PIN de Usuario',
-            input: 'text',
-            inputPlaceholder: 'Ingrese su PIN',
-            showCancelButton: true,
-            confirmButtonText: 'Validar PIN',
-            cancelButtonText: 'Cancelar',
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'Por favor ingrese su PIN';
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const pin = result.value;
-
-                // Llamar a la función para validar el PIN
-                validatePin(pin, action, taskId);
-                console.log(pin, action, taskId);
-            }
-        });
     }
 
     function validatePin(pin, action, taskId) {
