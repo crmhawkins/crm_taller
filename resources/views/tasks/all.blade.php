@@ -73,7 +73,7 @@
                                                         </button>
                                                     @endif
                                                 @endif
-                                                @if($tarea->estado->name != 'En revisión')
+                                                @if($tarea->estado->name != 'En revisión' && $tarea->estado->name != 'Pausada')
                                                     <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                                         Asignar
                                                     </button>
@@ -130,7 +130,7 @@
                                                     </button>
                                                 @endif
                                             @endif
-                                            @if($tarea->estado->id != 5)
+                                            @if($tarea->estado->id != 5 && $tarea->estado->id != 2)
                                                 <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                                     Asignar
                                                 </button>
@@ -153,7 +153,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="userSearchInput" class="form-control" placeholder="Buscar usuario...">
+                    <input type="text" id="userSearchInput" class="form-control" placeholder="Introduce el pin del usuario...">
                     {{-- <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button> --}}
                     {{-- <ul id="userResults" class="list-group mt-2"></ul> --}}
                 </div>
@@ -467,7 +467,7 @@
         const userSearchInput = document.getElementById('userSearchInput');
         const searchUserButton = document.getElementById('searchUserButton');
         const userResults = document.getElementById('userResults');
-
+        const userModal = document.getElementById('assignUserModal');
 
         document.querySelectorAll('.assign-user').forEach(button => {
             button.addEventListener('click', function() {
@@ -512,16 +512,29 @@
                     if (data.success) {
                         Swal.fire('Éxito', data.message, 'success');
                         fetchTasks(); // Actualizar la tabla
+                        userSearchInput.value = ''; // Limpiar el campo de búsqueda
+                        userModal.modal('hide'); // Ocultar el modal de asignación de usuario
                     } else {
                         Swal.fire('Error', data.message, 'error');
+                        userSearchInput.value = ''; // Limpiar el campo de búsqueda
+                        userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+
+
                     }
                 })
                 .catch(error => {
                     Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
                     console.error('Error:', error);
+                    userSearchInput.value = ''; // Limpiar el campo de búsqueda
+                    userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+
+
                 });
             } else {
-                Swal.fire('Error', 'Por favor, selecciona un usuario y una tarea.', 'error');
+                Swal.fire('Error', 'Por favor, Introduce el pin del usuario y selecciona una tarea.', 'error');
+                userSearchInput.value = ''; // Limpiar el campo de búsqueda
+                userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+
             }
         });
 
