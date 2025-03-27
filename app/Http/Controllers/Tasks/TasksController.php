@@ -64,7 +64,7 @@ public function assignTaskToUser($taskId, $pin)
         return response()->json(['success' => false, 'message' => 'Tarea o usuario no encontrado.']);
     }
 
-    $task->admin_user_id = $userId;
+    $task->admin_user_id = $user->id;
     $task->save();
 
     return response()->json(['success' => true, 'message' => 'Usuario asignado correctamente a la tarea.']);
