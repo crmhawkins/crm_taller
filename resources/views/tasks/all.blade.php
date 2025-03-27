@@ -210,7 +210,7 @@
 
 
 
-    function showPinAlert(action, taskId) {
+    function showPinAlert( taskId, action) {
         Swal.fire({
             title: 'Ingresar PIN de Usuario',
             input: 'text',
@@ -510,30 +510,30 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        userSearchInput.value = ''; // Limpiar el campo de búsqueda
+                        userModal.modal('hide'); // Ocultar el modal de asignación de usuario
                         Swal.fire('Éxito', data.message, 'success');
                         fetchTasks(); // Actualizar la tabla
-                        userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                        userModal.modal('hide'); // Ocultar el modal de asignación de usuario
                     } else {
-                        Swal.fire('Error', data.message, 'error');
                         userSearchInput.value = ''; // Limpiar el campo de búsqueda
                         userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                        Swal.fire('Error', data.message, 'error');
 
 
                     }
                 })
                 .catch(error => {
-                    Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
-                    console.error('Error:', error);
                     userSearchInput.value = ''; // Limpiar el campo de búsqueda
                     userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                    Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
+                    console.error('Error:', error);
 
 
                 });
             } else {
-                Swal.fire('Error', 'Por favor, Introduce el pin del usuario y selecciona una tarea.', 'error');
                 userSearchInput.value = ''; // Limpiar el campo de búsqueda
                 userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                Swal.fire('Error', 'Por favor, Introduce el pin del usuario y selecciona una tarea.', 'error');
 
             }
         });
