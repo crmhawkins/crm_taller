@@ -73,7 +73,7 @@
                                                         </button>
                                                     @endif
                                                 @endif
-                                                @if($tarea->estado->name != 'En revisión' && $tarea->estado->name != 'Pausada')
+                                                @if($tarea->estado->name != 'En revisión'  || $tarea->estado->name != 'Pausada')
                                                     <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                                         Asignar
                                                     </button>
@@ -130,7 +130,7 @@
                                                     </button>
                                                 @endif
                                             @endif
-                                            @if($tarea->estado->id != 5 && $tarea->estado->id != 2)
+                                            @if($tarea->estado->id != 5  || $tarea->estado->id != 2)
                                                 <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                                     Asignar
                                                 </button>
