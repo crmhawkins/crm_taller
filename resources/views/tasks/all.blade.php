@@ -564,32 +564,32 @@
             });
         }
 
-        // Manejar el botón "Iniciar"
-        document.querySelectorAll('.start-task').forEach(button => {
-            button.addEventListener('click', function() {
-                const taskId = this.getAttribute('data-task-id');
-                changeTaskStatus(taskId, 'Reanudar');
-                startRealTimeCounter(taskId);
-            });
-        });
+        // // Manejar el botón "Iniciar"
+        // document.querySelectorAll('.start-task').forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const taskId = this.getAttribute('data-task-id');
+        //         changeTaskStatus(taskId, 'Reanudar');
+        //         startRealTimeCounter(taskId);
+        //     });
+        // });
 
-        // Manejar el botón "Pausar"
-        document.querySelectorAll('.pause-task').forEach(button => {
-            button.addEventListener('click', function() {
-                const taskId = this.getAttribute('data-task-id');
-                changeTaskStatus(taskId, 'Pausada');
-                stopRealTimeCounter(taskId);
-            });
-        });
+        // // Manejar el botón "Pausar"
+        // document.querySelectorAll('.pause-task').forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const taskId = this.getAttribute('data-task-id');
+        //         changeTaskStatus(taskId, 'Pausada');
+        //         stopRealTimeCounter(taskId);
+        //     });
+        // });
 
-        // Manejar el botón "Finalizar"
-        document.querySelectorAll('.finish-task').forEach(button => {
-            button.addEventListener('click', function() {
-                const taskId = this.getAttribute('data-task-id');
-                changeTaskStatus(taskId, 'Finalizada');
-                stopRealTimeCounter(taskId);
-            });
-        });
+        // // Manejar el botón "Finalizar"
+        // document.querySelectorAll('.finish-task').forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const taskId = this.getAttribute('data-task-id');
+        //         changeTaskStatus(taskId, 'Finalizada');
+        //         stopRealTimeCounter(taskId);
+        //     });
+        // });
     });
 
     // Asegúrate de que el modal se muestre correctamente en pantalla completa
