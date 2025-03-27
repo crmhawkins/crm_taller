@@ -467,7 +467,7 @@
         const userSearchInput = document.getElementById('userSearchInput');
         const searchUserButton = document.getElementById('searchUserButton');
         const userResults = document.getElementById('userResults');
-        const userModal = document.getElementById('assignUserModal');
+        var userModal = new bootstrap.Modal(document.getElementById('assignUserModal'));
 
         document.querySelectorAll('.assign-user').forEach(button => {
             button.addEventListener('click', function() {
@@ -511,18 +511,18 @@
                 .then(data => {
                     if (data.success) {
                         userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                        ('#assignUserModal').modal('hide');
+                        userModal.hide(); // Ocultar el modal de asignación de usuario
                         Swal.fire('Éxito', data.message, 'success');
                         fetchTasks(); // Actualizar la tabla
                     } else {
                         userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                        ('#assignUserModal').modal('hide');
+                        userModal.hide(); // Ocultar el modal de asignación de usuario
                         Swal.fire('Error', data.message, 'error');
                     }
                 })
                 .catch(error => {
                     userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                    ('#assignUserModal').modal('hide');
+                    userModal.hide(); // Ocultar el modal de asignación de usuario
                     Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
                     console.error('Error:', error);
 
@@ -530,7 +530,7 @@
                 });
             } else {
                 userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                ('#assignUserModal').modal('hide');
+                userModal.hide(); // Ocultar el modal de asignación de usuario
                 Swal.fire('Error', 'Por favor, Introduce el pin del usuario y selecciona una tarea.', 'error');
 
             }
