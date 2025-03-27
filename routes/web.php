@@ -686,7 +686,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/users/search', [TasksController::class, 'search'])->name('users.search');
     Route::post('/tasks/assign/{taskId}/{pin}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
-    Route::post('tasks/validate-pin', [TasksController::class, 'validatePin'])->name('tasks.validatePin');
+    Route::post('/users/validate-pin', [TasksController::class, 'validatePin'])->name('tasks.validatePin');
 
     // Ruta para actualizar una cita existente
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
