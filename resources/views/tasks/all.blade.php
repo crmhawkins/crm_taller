@@ -145,77 +145,78 @@
             </div>
         </div> --}}
          <!-- Modal para asignar usuario -->
-    <div class="modal fade" id="assignUserModal" tabindex="-1" aria-labelledby="assignUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="assignUserModalLabel">Asignar Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="userSearchInput" class="form-control" placeholder="Introduce el pin del usuario...">
-                    {{-- <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button> --}}
-                    {{-- <ul id="userResults" class="list-group mt-2"></ul> --}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="assignUserButton">Asignar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="userPinModal" tabindex="-1" aria-labelledby="userPinModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userPinModalLabel">Ingresar PIN de Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="userPinInput" class="form-control" placeholder="Ingrese su PIN">
-                    <button type="button" id="validatePinButton" class="btn btn-primary mt-2">Validar PIN</button>
-                    <div id="userMessage" class="mt-3"></div>
-                    <div id="jornadaButtons" class="mt-3" style="display: none;">
-                        <button type="button" id="startJornadaButton" class="btn btn-success">Iniciar Jornada</button>
-                        <button type="button" id="endJornadaButton" class="btn btn-danger">Finalizar Jornada</button>
+        <div class="modal fade" id="assignUserModal" tabindex="-1" aria-labelledby="assignUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="assignUserModalLabel">Asignar Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <table id="jornadasTable" class="table mt-3" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Fecha de Inicio</th>
-                                <th>Fecha de Fin</th>
-                                <th>Estado</th>
-                                <th>Horas Trabajadas</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para ingresar PIN -->
-    <div class="modal fade" id="userValidatePinModal" tabindex="-1" aria-labelledby="userValidatePinModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userValidatePinModalLabel">Ingresar PIN de Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="uservalidatePinInput" class="form-control" placeholder="Ingrese su PIN">
-                    <div id="userPinError" class="text-danger mt-2" style="display:none;">Por favor ingrese su PIN</div>
+                    <div class="modal-body">
+                        <input type="text" id="userSearchInput" class="form-control" placeholder="Introduce el pin del usuario...">
+                        {{-- <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button> --}}
+                        {{-- <ul id="userResults" class="list-group mt-2"></ul> --}}
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="uservalidatePinButton" class="btn btn-primary">Validar PIN</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="assignUserButton">Asignar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="userPinModal" tabindex="-1" aria-labelledby="userPinModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userPinModalLabel">Ingresar PIN de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="userPinInput" class="form-control" placeholder="Ingrese su PIN">
+                        <button type="button" id="validatePinButton" class="btn btn-primary mt-2">Validar PIN</button>
+                        <div id="userMessage" class="mt-3"></div>
+                        <div id="jornadaButtons" class="mt-3" style="display: none;">
+                            <button type="button" id="startJornadaButton" class="btn btn-success">Iniciar Jornada</button>
+                            <button type="button" id="endJornadaButton" class="btn btn-danger">Finalizar Jornada</button>
+                        </div>
+                        <table id="jornadasTable" class="table mt-3" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>Fecha de Inicio</th>
+                                    <th>Fecha de Fin</th>
+                                    <th>Estado</th>
+                                    <th>Horas Trabajadas</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Modal para ingresar PIN -->
+        <div class="modal fade" id="userValidatePinModal" tabindex="-1" aria-labelledby="userValidatePinModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userValidatePinModalLabel">Ingresar PIN de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="uservalidatePinInput" class="form-control" placeholder="Ingrese su PIN">
+                        <div id="userPinError" class="text-danger mt-2" style="display:none;">Por favor ingrese su PIN</div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="uservalidatePinButton" class="btn btn-primary">Validar PIN</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 </div>
