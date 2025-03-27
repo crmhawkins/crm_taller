@@ -359,6 +359,7 @@
 
                 data.forEach(tarea => {
                     const row = document.createElement('tr');
+                    row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
 
                     let actionButtons = '';
                     if (tarea.usuario) {
