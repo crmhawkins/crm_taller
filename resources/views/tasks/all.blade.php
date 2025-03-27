@@ -13,7 +13,7 @@
                     <h3><i class="bi bi-globe-americas"></i> Todas las Tareas</h3>
                     <p class="text-subtitle text-muted">Listado de todas las tareas</p>
                 </div>
-                
+
             </div>
             <div class="col-sm-12 col-md-4 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -29,7 +29,7 @@
     <div class="ambas-tablas">
 
 
-    
+
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
@@ -42,7 +42,6 @@
                                 <tr>
                                     <th>Título</th>
                                     <th>Responsable</th>
-                                    <th>Estado</th>
                                     <th>Tiempo Estimado</th>
                                     <th>Tiempo Real</th>
                                     <th>Acciones</th>
@@ -54,7 +53,6 @@
                                         <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
                                             <td>{{ $tarea->title }}</td>
                                             <td>{{ $tarea->usuario->name ?? 'No asignado' }} {{$tarea->usuario->surname ?? ''}}</td>
-                                            <td>{{ $tarea->estado->name ?? 'Sin estado' }}</td>
                                             <td>{{ $tarea->estimated_time }}</td>
                                             <td class="real-time">{{ $tarea->real_time }}</td>
                                             <td>
@@ -100,7 +98,6 @@
                         <thead>
                             <tr>
                                 <th>Título</th>
-                                <th>Responsable</th>
                                 <th>Estado</th>
                                 <th>Tiempo Estimado</th>
                                 <th>Tiempo Real</th>
@@ -113,7 +110,6 @@
                                     <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
                                         <td>{{ $tarea->title }}</td>
                                         <td>{{ $tarea->usuario->name ?? 'No asignado' }} {{$tarea->usuario->surname ?? ''}}</td>
-                                        <td>{{ $tarea->estado->name ?? 'Sin estado' }}</td>
                                         <td>{{ $tarea->estimated_time }}</td>
                                         <td>{{ $tarea->real_time }}</td>
                                         <td>
@@ -158,8 +154,8 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" id="userSearchInput" class="form-control" placeholder="Buscar usuario...">
-                    <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button>
-                    <ul id="userResults" class="list-group mt-2"></ul>
+                    {{-- <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button> --}}
+                    {{-- <ul id="userResults" class="list-group mt-2"></ul> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -201,7 +197,7 @@
         </div>
     </div>
 
-   
+
 
 </div>
 
@@ -211,6 +207,77 @@
 <script>
     let selectedUserId = null;
     let selectedTaskId = null;
+
+
+
+    function showPinAlert(action, taskId) {
+        Swal.fire({
+            title: 'Ingresar PIN de Usuario',
+            input: 'text',
+            inputPlaceholder: 'Ingrese su PIN',
+            showCancelButton: true,
+            confirmButtonText: 'Validar PIN',
+            cancelButtonText: 'Cancelar',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Por favor ingrese su PIN';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const pin = result.value;
+
+                // Llamar a la función para validar el PIN
+                validatePin(pin, action, taskId);
+            }
+        });
+    }
+
+    function validatePin(pin, action, taskId) {
+    // Llamada para validar el PIN enviando tanto el PIN como el ID de la tarea
+        fetch('/users/validate-pin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                pin: pin,
+                taskId: taskId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.valid) {
+                // Si el PIN es válido, ejecutar la acción de la tarea
+                executeTaskAction(action, taskId);
+            } else {
+                // Si el PIN es incorrecto
+                Swal.fire('Error', 'PIN inválido. Intente de nuevo.', 'error');
+            }
+        })
+        .catch(error => {
+            Swal.fire('Error', 'Error al validar el PIN.', 'error');
+            console.error('Error:', error);
+        });
+    }
+
+    function executeTaskAction(action, taskId) {
+        switch (action) {
+            case 'Reanudar':
+                changeTaskStatus(taskId, 'Reanudar');
+                break;
+            case 'Pausada':
+                changeTaskStatus(taskId, 'Pausada');
+                break;
+            case 'Finalizada':
+                changeTaskStatus(taskId, 'Finalizada');
+                break;
+        }
+    }
+
+
+
     document.getElementById('toggleFullscreen').addEventListener('click', function() {
         const pageContainer = document.querySelector('.ambas-tablas');
         if (!document.fullscreenElement) {
@@ -274,7 +341,7 @@
                 data.forEach(tarea => {
                     const row = document.createElement('tr');
                     row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
-                    
+
                     let actionButtons = '';
                     if (tarea.usuario) {
                         if (tarea.estado.name !== 'Reanudada') {
@@ -360,7 +427,10 @@
         document.querySelectorAll('.start-task').forEach(button => {
             button.addEventListener('click', function() {
                 const taskId = this.getAttribute('data-task-id');
-                changeTaskStatus(taskId, 'Reanudar');
+
+
+                showPinAlert(taskId ,'Reanudar' );
+                //changeTaskStatus(taskId, 'Reanudar');
                 // startRealTimeCounter(taskId);
             });
         });
@@ -368,7 +438,7 @@
         document.querySelectorAll('.pause-task').forEach(button => {
             button.addEventListener('click', function() {
                 const taskId = this.getAttribute('data-task-id');
-                changeTaskStatus(taskId, 'Pausada');
+                showPinAlert(taskId, 'Pausada');
                 // stopRealTimeCounter(taskId);
             });
         });
@@ -376,7 +446,7 @@
         document.querySelectorAll('.finish-task').forEach(button => {
             button.addEventListener('click', function() {
                 const taskId = this.getAttribute('data-task-id');
-                changeTaskStatus(taskId, 'Finalizada');
+                showPinAlert(taskId, 'Finalizada');
                 // stopRealTimeCounter(taskId);
             });
         });
@@ -396,7 +466,7 @@
         const userSearchInput = document.getElementById('userSearchInput');
         const searchUserButton = document.getElementById('searchUserButton');
         const userResults = document.getElementById('userResults');
-        
+
 
         document.querySelectorAll('.assign-user').forEach(button => {
             button.addEventListener('click', function() {
@@ -404,32 +474,32 @@
             });
         });
 
-        searchUserButton.addEventListener('click', function() {
-            const query = userSearchInput.value;
-            if (query.length >= 1) {
-                fetch(`{{ route("users.search") }}?q=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        userResults.innerHTML = '';
-                        data.forEach(user => {
-                            const listItem = document.createElement('li');
-                            listItem.className = 'list-group-item';
-                            listItem.textContent = user.name;
-                            listItem.dataset.userId = user.id;
-                            listItem.addEventListener('click', function() {
-                                selectedUserId = this.dataset.userId;
-                                userResults.querySelectorAll('li').forEach(item => item.classList.remove('active'));
-                                this.classList.add('active');
-                            });
-                            userResults.appendChild(listItem);
-                        });
-                    });
-            }
-        });
+        // searchUserButton.addEventListener('click', function() {
+        //     const query = userSearchInput.value;
+        //     if (query.length >= 1) {
+        //         fetch(`{{ route("users.search") }}?q=${query}`)
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 userResults.innerHTML = '';
+        //                 data.forEach(user => {
+        //                     const listItem = document.createElement('li');
+        //                     listItem.className = 'list-group-item';
+        //                     listItem.textContent = user.name;
+        //                     listItem.dataset.userId = user.id;
+        //                     listItem.addEventListener('click', function() {
+        //                         selectedUserId = this.dataset.userId;
+        //                         userResults.querySelectorAll('li').forEach(item => item.classList.remove('active'));
+        //                         this.classList.add('active');
+        //                     });
+        //                     userResults.appendChild(listItem);
+        //                 });
+        //             });
+        //     }
+        // });
 
         document.getElementById('assignUserButton').addEventListener('click', function() {
-            if (selectedUserId && selectedTaskId) {
-                fetch(`/tasks/assign/${selectedTaskId}/${selectedUserId}`, {
+            if (userSearchInput.value && selectedTaskId) {
+                fetch(`/tasks/assign/${selectedTaskId}/${userSearchInput.value}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

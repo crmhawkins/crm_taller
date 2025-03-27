@@ -122,7 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/clientes/reserva-coche/store', [ClientController::class, 'storeReservaCoche'])->name('clientes.reserva-coche.store');
         Route::delete('/clientes/reserva-coche/{id}', [ClientController::class, 'destroyReservaCoche'])->name('clientes.reserva-coche.destroy');
         Route::put('/clientes/reserva-coche/{id}', [ClientController::class, 'updateReservaCoche'])->name('clientes.reserva-coche.update');
-       
+
 
         Route::post('/ruta-para-crear-pieza', [BudgetConceptsController::class, 'storePieza'])->name('piezas-budget.store');
         //Proveedores
@@ -199,7 +199,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Ruta para asignar una visita existente
         Route::post('/budgets/{budget}/assign-existing-visit', [BudgetController::class, 'assignExistingVisit'])->name('budgets.assignExistingVisit');
-                
+
         // Projects (CAMPAÑAS)
         Route::get('/projects', [ProjectController::class, 'index'])->name('campania.index');
         Route::get('/projects/create', [ProjectController::class, 'create'])->name('campania.create');
@@ -685,9 +685,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/users/search', [TasksController::class, 'search'])->name('users.search');
-    Route::post('/tasks/assign/{taskId}/{userId}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
+    Route::post('/tasks/assign/{taskId}/{pin}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
+    Route::post('tasks/validate-pin', [TasksController::class, 'validatePin'])->name('tasks.validatePin');
 
-    
     // Ruta para actualizar una cita existente
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
@@ -773,7 +773,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'update'])->name('reservas-coche.update');
     Route::delete('reservas-coche/{reservaCoche}', [ReservasCocheController::class, 'destroy'])->name('reservas-coche.destroy');
     Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
-   
+
 
     Route::resource('visitas', VisitaCocheController::class);
 });

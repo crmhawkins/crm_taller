@@ -36,15 +36,29 @@ class TasksController extends Controller
 public function search(Request $request)
 {
     $search = $request->get('q');
-    $users = User::where('name', 'LIKE', "%$search%")->get();
+    $users = User::where('pin',$search)->get();
 
     return response()->json($users);
 }
 
-public function assignTaskToUser($taskId, $userId)
+public function validatePin(Request $request)
+{
+    $taskId = $request->get('taskId');
+    $pin = $request->get('pin');
+    $task = Task::find($taskId);
+    $user = User::where('pin', $pin)->first();
+    if($task->admin_user_id == $user->id){
+        return response()->json(['valid' => true]);
+    }else{
+        return response()->json(['valid' => false]);
+    }
+
+}
+
+public function assignTaskToUser($taskId, $pin)
 {
     $task = Task::find($taskId);
-    $user = User::find($userId);
+    $user = User::where('pin', $pin)->first();
 
     if (!$task || !$user) {
         return response()->json(['success' => false, 'message' => 'Tarea o usuario no encontrado.']);
