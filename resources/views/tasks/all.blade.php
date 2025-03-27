@@ -511,20 +511,18 @@
                 .then(data => {
                     if (data.success) {
                         userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                        userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                        ('#assignUserModal').modal('hide');
                         Swal.fire('Éxito', data.message, 'success');
                         fetchTasks(); // Actualizar la tabla
                     } else {
                         userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                        userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                        ('#assignUserModal').modal('hide');
                         Swal.fire('Error', data.message, 'error');
-
-
                     }
                 })
                 .catch(error => {
                     userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                    userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                    ('#assignUserModal').modal('hide');
                     Swal.fire('Error', 'Error al procesar la solicitud.', 'error');
                     console.error('Error:', error);
 
@@ -532,7 +530,7 @@
                 });
             } else {
                 userSearchInput.value = ''; // Limpiar el campo de búsqueda
-                userModal.modal('hide'); // Ocultar el modal de asignación de usuario
+                ('#assignUserModal').modal('hide');
                 Swal.fire('Error', 'Por favor, Introduce el pin del usuario y selecciona una tarea.', 'error');
 
             }
