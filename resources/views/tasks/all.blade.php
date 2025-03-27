@@ -33,8 +33,8 @@
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
-                    <button id="toggleFullscreen" class="btn btn-secondary mb-3">Pantalla Completa</button>
-                    <button id="userPinButton" class="btn btn-primary mb-3">Ingresar PIN</button>
+                    <button id="toggleFullscreen" class="btn btn-secondary btn-lg mb-3">Pantalla Completa</button>
+                    <button id="userPinButton" class="btn btn-primary btn-lg mb-3">Jornada</button>
 
                     <div id="tableContainer" class="table-responsive">
                         <table class="custom-table">
