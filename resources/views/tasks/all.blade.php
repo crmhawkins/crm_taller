@@ -359,7 +359,6 @@
 
                 data.forEach(tarea => {
                     const row = document.createElement('tr');
-                    row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
 
                     let actionButtons = '';
                     if (tarea.usuario) {
@@ -398,7 +397,6 @@
                     row.innerHTML = `
                         <td>${tarea.title}</td>
                         <td>${tarea.usuario ? tarea.usuario.name : 'No asignado'} ${tarea.usuario ? tarea.usuario.surname : ''}</td>
-                        <td>${tarea.estado ? tarea.estado.name : 'Sin estado'}</td>
                         <td>${tarea.estimated_time}</td>
                         <td>${tarea.real_time}</td>
                         <td>${actionButtons}</td>
