@@ -345,14 +345,14 @@
 
                     let actionButtons = '';
                     if (tarea.usuario) {
-                        if (tarea.estado.name !== 'Reanudada') {
+                        if ($tarea.task_status_id != 1) {
                             actionButtons += `
                                 <button class="btn btn-success start-task" data-task-id="${tarea.id}">
                                     <i class="bi bi-play-fill"></i>
                                 </button>
                             `;
                         }
-                        if (tarea.task_status_id && tarea.task_status_id !== 5) {
+                        if (tarea.task_status_id !== 2 && tarea.task_status_id !== 5) {
                             actionButtons += `
                                 <button class="btn btn-warning pause-task" data-task-id="${tarea.id}">
                                     <i class="bi bi-pause-fill"></i>
@@ -367,7 +367,7 @@
                             `;
                         }
                     }
-                    if (tarea.task_status_id && tarea.task_status_id !== 5) {
+                    if ($tarea.admin_user_id == null) {
                         actionButtons += `
                             <button class="btn btn-secondary assign-user" data-task-id="${tarea.id}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                 Asignar
