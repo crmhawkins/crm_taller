@@ -798,6 +798,9 @@
     .modal-backdrop {
     display: none !important;
     }
+    .modal.show {
+    z-index: 1050 !important; /* Asegura que el modal siempre esté por encima de otros elementos */
+}
 </style>
 
 @endsection
