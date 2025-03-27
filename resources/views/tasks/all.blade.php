@@ -564,32 +564,6 @@
             });
         }
 
-        // // Manejar el botón "Iniciar"
-        // document.querySelectorAll('.start-task').forEach(button => {
-        //     button.addEventListener('click', function() {
-        //         const taskId = this.getAttribute('data-task-id');
-        //         changeTaskStatus(taskId, 'Reanudar');
-        //         startRealTimeCounter(taskId);
-        //     });
-        // });
-
-        // // Manejar el botón "Pausar"
-        // document.querySelectorAll('.pause-task').forEach(button => {
-        //     button.addEventListener('click', function() {
-        //         const taskId = this.getAttribute('data-task-id');
-        //         changeTaskStatus(taskId, 'Pausada');
-        //         stopRealTimeCounter(taskId);
-        //     });
-        // });
-
-        // // Manejar el botón "Finalizar"
-        // document.querySelectorAll('.finish-task').forEach(button => {
-        //     button.addEventListener('click', function() {
-        //         const taskId = this.getAttribute('data-task-id');
-        //         changeTaskStatus(taskId, 'Finalizada');
-        //         stopRealTimeCounter(taskId);
-        //     });
-        // });
     });
 
     // Asegúrate de que el modal se muestre correctamente en pantalla completa
@@ -635,20 +609,7 @@
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    document.querySelectorAll('.start-task').forEach(button => {
-        button.addEventListener('click', function() {
-            const taskId = this.getAttribute('data-task-id');
-            changeTaskStatus(taskId, 'Reanudar');
-            startRealTimeCounter(taskId);
-        });
-    });
 
-    document.querySelectorAll('.pause-task, .finish-task').forEach(button => {
-        button.addEventListener('click', function() {
-            const taskId = this.getAttribute('data-task-id');
-            stopRealTimeCounter(taskId);
-        });
-    });
 
     document.getElementById('userPinButton').addEventListener('click', function() {
         const userPinModal = new bootstrap.Modal(document.getElementById('userPinModal'));
