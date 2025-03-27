@@ -92,7 +92,7 @@ public function assignTask($id)
 public function getAllTasksJson()
    {
     $tareas = Task::with(['usuario', 'estado'])
-    ->whereNotIn('task_status_id', [3, 4])
+    ->whereNotIn('task_status_id', [3, 4,5])
     ->get();
        return response()->json($tareas);
    }

@@ -90,7 +90,7 @@
         </section>
 
         <!-- Nueva tabla para tareas con estados diferentes a 1 y 2 -->
-        <div class="card mt-4">
+        {{-- <div class="card mt-4">
             <div class="card-body">
                 <h4>Tareas en Revisión</h4>
                 <div class="table-responsive">
@@ -143,7 +143,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> --}}
          <!-- Modal para asignar usuario -->
         <div class="modal fade" id="assignUserModal" tabindex="-1" aria-labelledby="assignUserModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -352,9 +352,7 @@
             })
             .then(data => {
                 const tbodyEstado1y2 = document.getElementById('tasksTableBodyEstado1y2');
-                //const tbodyOtrosEstados = document.getElementById('tasksTableBodyOtrosEstados');
                 tbodyEstado1y2.innerHTML = ''; // Limpiar el contenido actual
-                // tbodyOtrosEstados.innerHTML = ''; // Limpiar el contenido actual
 
                 data.forEach(tarea => {
                     const row = document.createElement('tr');
