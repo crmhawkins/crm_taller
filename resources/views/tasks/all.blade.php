@@ -776,6 +776,9 @@
         color: white;
         text-shadow: 1px 1px 1px black;
     }
+    .modal-backdrop {
+    display: none !important;
+    }
 </style>
 
 @endsection
