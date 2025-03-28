@@ -855,12 +855,14 @@
     .custom-table tbody tr.estado-completada {
         background-color: #d4edda;
     }
-    .custom-table tbody tr.estado-pausada ,.custom-table tbody tr.estado-pausada td{
+    .custom-table tbody tr.estado-pausada ,{
         background-color: #ffffff;
+
+    }
+    tr.estado-pausada td{
         color: black !important;
         text-shadow: none !important;
     }
-
 
     td{
         font-weight: bold;
