@@ -6,7 +6,7 @@
 
 <div class="page-heading card" style="box-shadow: none !important">
     @if(isset(Auth::user()->access_level_id))
-        @if(Auth::user()->access_level_id != 12)
+        @if(optional(Auth::user())->access_level_id != 12)
             <div class="page-title card-body">
                 <div class="row justify-content-between">
                     <div class="col-sm-12 col-md-6 order-md-1 order-last row">
