@@ -79,11 +79,7 @@
     @laravelViewsScripts
     <script>
          document.addEventListener('DOMContentLoaded', function() {
-            let accessLevel = {{ auth()->user()->access_level_id}};
-            // Verificar si el nivel de acceso del usuario es 4
-            if (accessLevel == 5 || accessLevel == 6 || accessLevel == 12) {
                 $("#main").css("margin-left", "0px");
-            }
         });
         document.addEventListener("DOMContentLoaded", function() {
             var loader = document.getElementById('loadingOverlay');
