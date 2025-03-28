@@ -38,7 +38,7 @@
 
                         </div>
                         <div class="col-4 d-flex align-items-center justify-content-center">
-                            <h2 class="mb-0 display-1">Producción</h2>
+                            <h1 class="mb-0 h1">Producción</h1>
 
                         </div>
                         <div class="col-4">
