@@ -400,6 +400,11 @@
                                 </button>
                             `;
                         }
+                        actionButtons += `
+                                <button class="btn btn-info view-details" data-task-id="${tarea.id}" data-bs-toggle="modal" data-bs-target="#detallesModal">
+                                                    <i class="fa-solid fa-info"></i>
+                                </button>
+                            `;
                     }
                     if (tarea.task_status_id && tarea.task_status_id !== 5 ) {
                         if (!tarea.admin_user_id) {
@@ -428,6 +433,8 @@
                 });
 
                 attachEventListeners(); // Reasignar los event listeners
+                marcarTareasFueraDeTiempo();
+
             })
             .catch(error => {
                 console.error('Error al actualizar las tareas:', error);
