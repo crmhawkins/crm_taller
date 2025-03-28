@@ -89,6 +89,18 @@ public function assignTask($id)
     return response()->json(['success' => true, 'message' => 'Tarea asignada correctamente.']);
 }
 
+    public function getTaskDetails($id)
+    {
+        $task = Task::with(['usuario', 'gestor', 'prioridad', 'proyecto', 'presupuesto', 'presupuestoConcepto', 'estado'])
+            ->find($id);
+
+        if (!$task) {
+            return response()->json(['success' => false, 'message' => 'Tarea no encontrada.']);
+        }
+
+        return response()->json($task);
+    }
+
 public function getAllTasksJson()
    {
     $tareas = Task::with(['usuario', 'estado'])

@@ -75,6 +75,9 @@
                                                         </button>
                                                     @endif
                                                 @endif
+                                                <button class="btn btn-info view-details" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#detallesModal">
+                                                    <i class="fa-solid fa-info"></i>
+                                                </button>
                                                 @if(!isset($tarea->admin_user_id))
                                                     <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                                         Asignar
@@ -213,6 +216,22 @@
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" id="uservalidatePinButton" class="btn btn-primary">Validar PIN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detallesModalLabel">Detalles de la tarea</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -441,6 +460,16 @@
         });
     }
 
+    function fetchTaskDetails(taskId) {
+        fetch(`/tasks/details/${taskId}`)
+            .then(response => response.json())
+            .then(data => {
+                const modalBody = document.querySelector('#detallesModal .modal-body');
+                modalBody.innerHTML = `<p><strong>Título:</strong> ${data.title}</p>
+                                        <p><strong>Descripción:</strong> ${data.description}</p>`;
+            })
+            .catch(error => console.error('Error al cargar detalles:', error));
+    }
     // Asegúrate de que esta función esté definida antes de que se llame en attachEventListeners
     function attachEventListeners() {
         // Reasignar event listeners para los botones de las tareas
@@ -474,6 +503,13 @@
         document.querySelectorAll('.assign-user').forEach(button => {
             button.addEventListener('click', function() {
                 selectedTaskId = this.getAttribute('data-task-id');
+            });
+        });
+
+        document.querySelectorAll('.view-details').forEach(button => {
+            button.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-task-id');
+                fetchTaskDetails(taskId); // Llamar a la función para cargar detalles
             });
         });
     }

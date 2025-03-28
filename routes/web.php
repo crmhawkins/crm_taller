@@ -264,11 +264,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/task/all', [TasksController::class, 'all'])->name('tarea.all');
         Route::post('/tasks/assign/{id}', [TasksController::class, 'assignTask'])->name('tasks.assign');
         Route::post('/tasks/unassign/{id}', [TasksController::class, 'unassignTask'])->name('tasks.unassign');
-        Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
 
         Route::post('/check-client', [BudgetController::class, 'checkClient'])->name('check.client');
         Route::post('/check-car', [BudgetController::class, 'checkCar'])->name('check.car');
-
+        Route::post('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
 
         // Dominios
         Route::get('/dominios', [DominiosController::class, 'index'])->name('dominios.index');
@@ -514,7 +513,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/task/all', [TasksController::class, 'all'])->name('tarea.all');
     Route::post('/tasks/assign/{id}', [TasksController::class, 'assignTask'])->name('tasks.assign');
     Route::post('/tasks/unassign/{id}', [TasksController::class, 'unassignTask'])->name('tasks.unassign');
-    Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
 
     //Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
