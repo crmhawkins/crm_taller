@@ -107,8 +107,8 @@ class Task extends Model
             'task_id',
             'admin_user_id'
         )
-        ->withPivot('date_start', 'date_end')
-        ->distinct();
+        ->withPivot('date_start', 'date_end', 'status')
+        ->wherePivot('status','Reanudada');
     }
 
 
