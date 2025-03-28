@@ -60,7 +60,6 @@
         <div class="css-96uzu9"></div>
 
         <main id="main">
-                @include('layouts.topBar')
             <div class="contenedor p-4">
                 @yield('content')
             </div>
@@ -83,7 +82,6 @@
             let accessLevel = {{ auth()->user()->access_level_id}};
             // Verificar si el nivel de acceso del usuario es 4
             if (accessLevel == 5 || accessLevel == 6 || accessLevel == 12) {
-                $("#sidebar").remove();
                 $("#main").css("margin-left", "0px");
             }
         });
