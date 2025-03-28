@@ -103,7 +103,8 @@ Route::post('/tasks/start/{id}', [TasksController::class, 'startTask'])->name('t
 Route::post('/tasks/pause/{id}', [TasksController::class, 'pauseTask'])->name('tasks.pause');
 Route::post('/tasks/finish/{id}', [TasksController::class, 'finishTask'])->name('tasks.finish');
 Route::post('/tasks/set-status', [TasksController::class, 'setStatusTask'])->name('tasks.setStatus');
-
+Route::post('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
+Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
 Route::get('/users/validate-pin/{pin}', [UserController::class, 'validatePin']);
 Route::post('/jornada/start', [App\Http\Controllers\Users\UserController::class, 'startJornada']);
 Route::post('/jornada/end', [App\Http\Controllers\Users\UserController::class, 'endJornada']);
@@ -514,8 +515,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/productividad', [ProductividadController::class, 'index'])->name('productividad.index');
     });
 
-    Route::post('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
-    Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
+
 
 
     Route::post('/get-produccion', [DashboardController::class, 'getProduccion'])->name('productividad.get');
