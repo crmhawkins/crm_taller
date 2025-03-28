@@ -65,7 +65,7 @@
                                             <td>{{ $tarea->estimated_time }}</td>
                                             <td class="real-time">{{ $tarea->real_time }}</td>
                                             <td>
-                                                @if($tarea->usuario)
+
                                                         <button class="btn btn-success start-task" data-task-id="{{ $tarea->id }}">
                                                             <i class="bi bi-play-fill"></i>
                                                         </button>
@@ -77,7 +77,7 @@
                                                             <i class="bi bi-stop-fill"></i>
                                                         </button>
                                                     @endif
-                                                @endif
+
                                                 <button class="btn btn-info view-details" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#detallesModal">
                                                     <i class="fa-solid fa-info"></i>
                                                 </button>
