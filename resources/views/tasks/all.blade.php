@@ -44,7 +44,6 @@
                             <thead>
                                 <tr>
                                     <th>Título</th>
-                                    <th>Responsable</th>
                                     <th>Tiempo Estimado</th>
                                     <th>Tiempo Real</th>
                                     <th>Acciones</th>
@@ -55,21 +54,16 @@
                                     @if($tarea->estado->id == 1 || $tarea->estado->id == 2)
                                         <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
                                             <td>{{ $tarea->title }}</td>
-                                            <td>{{ $tarea->usuario->name ?? 'No asignado' }} {{$tarea->usuario->surname ?? ''}}</td>
                                             <td>{{ $tarea->estimated_time }}</td>
                                             <td class="real-time">{{ $tarea->real_time }}</td>
                                             <td>
                                                 @if($tarea->usuario)
-                                                    @if($tarea->estado->name != 'Reanudada')
                                                         <button class="btn btn-success start-task" data-task-id="{{ $tarea->id }}">
                                                             <i class="bi bi-play-fill"></i>
                                                         </button>
-                                                    @endif
-                                                    @if($tarea->estado->name != 'En revisión' && $tarea->estado->name != 'Pausada')
                                                         <button class="btn btn-warning pause-task" data-task-id="{{ $tarea->id }}">
                                                             <i class="bi bi-pause-fill"></i>
                                                         </button>
-                                                    @endif
                                                     @if($tarea->estado->name == 'Pausada')
                                                         <button class="btn btn-danger finish-task" data-task-id="{{ $tarea->id }}">
                                                             <i class="bi bi-stop-fill"></i>
@@ -79,11 +73,11 @@
                                                 <button class="btn btn-info view-details" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#detallesModal">
                                                     <i class="fa-solid fa-info"></i>
                                                 </button>
-                                                @if(!isset($tarea->admin_user_id))
+                                                {{-- @if(!isset($tarea->admin_user_id))
                                                     <button class="btn btn-secondary assign-user" data-task-id="{{ $tarea->id }}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                                                         Asignar
                                                     </button>
-                                                @endif
+                                                @endif --}}
                                             </td>
                                         </tr>
                                         @if ($tarea->empleados->count() > 0)
@@ -94,10 +88,6 @@
                                                         @foreach($tarea->empleados as $empleado)
                                                             <li>
                                                                 {{ $empleado->name }} {{ $empleado->surname }}
-                                                                @php
-                                                                    $horasEmpleado = $tarea->horasPorEmpleado()[$empleado->id] ?? '00:00:00';
-                                                                @endphp
-                                                                - <small>{{ $horasEmpleado }} trabajadas</small>
                                                             </li>
                                                         @endforeach
                                                     </ul>
@@ -308,7 +298,7 @@
         .then(data => {
             if (data.valid) {
                 // Si el PIN es válido, ejecutar la acción de la tarea
-                executeTaskAction(action, taskId);
+                executeTaskAction(action, taskId, pin);
             } else {
                 // Si el PIN es incorrecto
                 Swal.fire('Error', 'PIN inválido. Intente de nuevo.', 'error');
@@ -320,16 +310,16 @@
         });
     }
 
-    function executeTaskAction(action, taskId) {
+    function executeTaskAction(action, taskId, pin) {
         switch (action) {
             case 'Reanudar':
-                changeTaskStatus(taskId, 'Reanudar');
+                changeTaskStatus(taskId, 'Reanudar', pin);
                 break;
             case 'Pausada':
-                changeTaskStatus(taskId, 'Pausada');
+                changeTaskStatus(taskId, 'Pausada' , pin);
                 break;
             case 'Finalizada':
-                changeTaskStatus(taskId, 'Finalizada');
+                changeTaskStatus(taskId, 'Finalizada', pin);
                 break;
         }
     }
@@ -395,81 +385,83 @@
                 tbodyEstado1y2.innerHTML = ''; // Limpiar el contenido actual
 
                 data.forEach(tarea => {
-                    const row = document.createElement('tr');
-                    row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
-
-                    let actionButtons = '';
-                    if (tarea.usuario) {
-                        if (tarea.estado.name !== 'Reanudada') {
-                            actionButtons += `
-                                <button class="btn btn-success start-task" data-task-id="${tarea.id}">
-                                    <i class="bi bi-play-fill"></i>
-                                </button>
-                            `;
-                        }
-                        if (tarea.task_status_id && tarea.task_status_id !== 5 && tarea.task_status_id !== 2) {
-                            actionButtons += `
-                                <button class="btn btn-warning pause-task" data-task-id="${tarea.id}">
-                                    <i class="bi bi-pause-fill"></i>
-                                </button>
-                            `;
-                        }
-                        if (tarea.task_status_id && tarea.task_status_id === 2) {
-                            actionButtons += `
-                                <button class="btn btn-danger finish-task" data-task-id="${tarea.id}">
-                                    <i class="bi bi-stop-fill"></i>
-                                </button>
-                            `;
-                        }
-                        actionButtons += `
-                                <button class="btn btn-info view-details" data-task-id="${tarea.id}" data-bs-toggle="modal" data-bs-target="#detallesModal">
-                                                    <i class="fa-solid fa-info"></i>
-                                </button>
-                            `;
-                    }
-                    if (tarea.task_status_id && tarea.task_status_id !== 5 ) {
-                        if (!tarea.admin_user_id) {
-                            actionButtons += `
-                                <button class="btn btn-secondary assign-user" data-task-id="${tarea.id}" data-bs-toggle="modal" data-bs-target="#assignUserModal">
-                                    Asignar
-                                </button>
-                            `;
-                        }
-                    }
-
-                    row.innerHTML = `
-                        <td>${tarea.title}</td>
-                        <td>${tarea.description}</td>
-                        <td>${tarea.usuario ? tarea.usuario.name : 'No asignado'} ${tarea.usuario ? tarea.usuario.surname : ''}</td>
-                        <td>${tarea.estimated_time}</td>
-                        <td>${tarea.real_time}</td>
-                        <td>${actionButtons}</td>
-                    `;
-
                     if (tarea.estado && (tarea.estado.id == 1 || tarea.estado.id == 2)) {
+                        const row = document.createElement('tr');
+                        row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
+
+                        let actionButtons = '';
+                        if (tarea.usuario) {
+                            if (tarea.estado.name !== 'Reanudada') {
+                                actionButtons += `
+                                    <button class="btn btn-success start-task" data-task-id="${tarea.id}">
+                                        <i class="bi bi-play-fill"></i>
+                                    </button>
+                                `;
+                            }
+                            if (tarea.task_status_id && tarea.task_status_id !== 5 && tarea.task_status_id !== 2) {
+                                actionButtons += `
+                                    <button class="btn btn-warning pause-task" data-task-id="${tarea.id}">
+                                        <i class="bi bi-pause-fill"></i>
+                                    </button>
+                                `;
+                            }
+                            if (tarea.task_status_id && tarea.task_status_id === 2) {
+                                actionButtons += `
+                                    <button class="btn btn-danger finish-task" data-task-id="${tarea.id}">
+                                        <i class="bi bi-stop-fill"></i>
+                                    </button>
+                                `;
+                            }
+                            actionButtons += `
+                                <button class="btn btn-info view-details" data-task-id="${tarea.id}" data-bs-toggle="modal" data-bs-target="#detallesModal">
+                                    <i class="fa-solid fa-info"></i>
+                                </button>
+                            `;
+                        }
+
+                        row.innerHTML = `
+                            <td>${tarea.title}</td>
+                            <td>${tarea.estimated_time}</td>
+                            <td class="real-time">${tarea.real_time}</td>
+                            <td>${actionButtons}</td>
+                        `;
+
                         tbodyEstado1y2.appendChild(row);
-                    } else {
-                        tbodyOtrosEstados.appendChild(row);
+
+                        // Fila de empleados activos
+                        if (tarea.empleados && tarea.empleados.length > 0) {
+                            const empleadosRow = document.createElement('tr');
+                            empleadosRow.className = 'bg-light texto-negro';
+                            empleadosRow.innerHTML = `
+                                <td colspan="4">
+                                    <strong>Empleados activos:</strong>
+                                    <ul class="mb-0">
+                                        ${tarea.empleados.map(emp => `<li>${emp.name} ${emp.surname}</li>`).join('')}
+                                    </ul>
+                                </td>
+                            `;
+                            tbodyEstado1y2.appendChild(empleadosRow);
+                        }
                     }
                 });
 
-                attachEventListeners(); // Reasignar los event listeners
+                attachEventListeners(); // Reasignar eventos
                 marcarTareasFueraDeTiempo();
-
             })
             .catch(error => {
                 console.error('Error al actualizar las tareas:', error);
             });
     }
 
-    function changeTaskStatus(taskId, estado) {
+
+    function changeTaskStatus(taskId, estado, pin) {
         fetch(`/tasks/set-status`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ id: taskId, estado: estado })
+            body: JSON.stringify({ id: taskId, estado: estado , pin: pin})
         })
         .then(response => response.json())
         .then(data => {

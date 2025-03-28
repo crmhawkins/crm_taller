@@ -508,256 +508,89 @@ public function finishTask($id)
 
     public function setStatusTask(Request $request)
     {
-
-
-
+        $usuario = User::where('pin', $request->pin)->first();
         $tarea = Task::find($request->id);
         $date = Carbon::now();
-
-        $formatEstimated = strtotime($tarea->estimated_time);
-        $formatReal = strtotime($tarea->real_time);
-
-
         $error = false;
 
-
-        //if($clientIP == "81.45.82.225" || $usuario->access_level_id == 4 || $usuario->access_level_id == 3){
-
-        if ($tarea) {
-            switch ($request->estado) {
-                case "Reanudar":
-                    // $tareaActiva = Task::where("admin_user_id", $usuario->id)->where("task_status_id", 1)->get()->first();
-
-                    // if (!$tareaActiva) {
-                    //     $tarea->task_status_id = 1;
-                    // }
-
-                    $logTaskC = DB::select("SELECT id FROM `log_tasks` WHERE `status` = 'Reanudada' AND `task_id` = $tarea->id");
-                    if (count($logTaskC) == 1) {
-                        $error = true;
-                    } else {
-
-
-                        $createLog = LogTasks::create([
-                            'admin_user_id' => $tarea->admin_user_id,
-                            'task_id' => $tarea->id,
-                            'date_start' => $date,
-                            'date_end' => null,
-                            'status' => 'Reanudada'
-                        ]);
-
-                        // if ($tarea->real_time > $tarea->estimated_time) {
-                        //     // Calcular el porcentaje de exceso
-
-                        //     list($realHours, $realMinutes, $realSeconds) = explode(':', $tarea->real_time);
-                        //     $realTimeInSeconds = ($realHours * 3600) + ($realMinutes * 60) + $realSeconds;
-
-                        //     list($estimatedHours, $estimatedMinutes, $estimatedSeconds) = explode(':', $tarea->estimated_time);
-                        //     $estimatedTimeInSeconds = ($estimatedHours * 3600) + ($estimatedMinutes * 60) + $estimatedSeconds;
-
-                        //     // Calcular el porcentaje de exceso basado en segundos
-                        //     $exceedPercentage = ($realTimeInSeconds / $estimatedTimeInSeconds) * 100;
-
-                        //     // Inicializar datos comunes de la alerta
-                        //     $data = [
-                        //         "admin_user_id" => $tarea->gestor_id,
-                        //         "status_id" => 1,
-                        //         "reference_id" => $tarea->id,
-                        //         "activation_datetime" => Carbon::now()
-                        //     ];
-
-                            // Definir el mensaje y el stage_id según el porcentaje de exceso
-                            // if ($exceedPercentage >= 100) {
-                            //     $data["stage_id"] = 40; // Stage para el 100% de sobrepaso
-                            //     $data["description"] = 'Tarea ' . $tarea->id.' '.$tarea->title .' ha sobrepasado las horas estimadas en un 100% o más (pérdidas)';
-                            // } elseif ($exceedPercentage >= 50) {
-                            //     $data["stage_id"] = 40; // Stage para el 50% de sobrepaso
-                            //     $data["description"] = 'Tarea ' . $tarea->id.' '.$tarea->title .' está sobrepasando las horas estimadas en un 50%';
-                            // } else {
-                            //     $data["stage_id"] = 40; // Stage para sobrepaso menor al 50%
-                            //     $data["description"] = 'Aviso de Tarea - Se está sobrepasando las horas estimadas en la tarea ' . $tarea->title;
-                            // }
-
-                            // $existe = Alert::where('stage_id', $data["stage_id"]) ->where('reference_id', $tarea->id)->where('description', $data["description"])->exists();
-                            // // Crear y guardar la alerta
-                            // if (!$existe) {
-                            //     $alert = Alert::create($data);
-                            //     $alertSaved = $alert->save();
-                            // }
-                        // }
-
-
-                        // $logTask = DB::select("SELECT id FROM `log_tasks` WHERE date_start BETWEEN DATE_SUB(now(), interval 6 hour) AND DATE_ADD(NOW(), INTERVAL 7 hour) AND `task_id` = $tarea->id");
-                        // if (count(value: $logTask) == 1) {
-
-                        //     $activeJornada = $usuario->activeJornada();
-
-                        //     if (!$activeJornada) {
-                        //         $jornada =  Jornada::create([
-                        //             'admin_user_id' => $usuario->id,
-                        //             'start_time' => Carbon::now(),
-                        //             'is_active' => true,
-                        //         ]);
-                        //     }
-
-                        //     $horaLimiteEntrada = Carbon::createFromTime(9, 30, 0, 'Europe/Madrid');
-                        //     $horaLimiteEntradaUTC = $horaLimiteEntrada->setTimezone('UTC');
-                        //     $mesActual = Carbon::now()->month;
-                        //     $añoActual = Carbon::now()->year;
-                        //     $fechaActual = Carbon::now();
-
-                        //     $todayJornada = Jornada::where('admin_user_id', $usuario->id)
-                        //     ->whereDate('start_time', $fechaActual->toDateString())
-                        //     ->whereTime('start_time', '>', $horaLimiteEntradaUTC->format('H:i:s'))
-                        //     ->get();
-
-
-                        //     $hourlyAverage = Jornada::where('admin_user_id', $usuario->id)
-                        //         ->whereMonth('start_time', $mesActual)
-                        //         ->whereYear('start_time', $añoActual)
-                        //         ->whereRaw("TIME(start_time) > ?", [$horaLimiteEntradaUTC->format('H:i:s')])
-                        //         ->get();
-
-
-
-
-                        //     $fechaNow = Carbon::now();
-
-                        //     if(count($todayJornada) > 0){
-
-                        //         if (count($hourlyAverage) > 2) {
-                        //             $alertados = [1,8];
-                        //             foreach($alertados as $alertar){
-                        //                 $data = [
-                        //                     "admin_user_id" =>  $alertar,
-                        //                     "stage_id" => 23,
-                        //                     "description" => $usuario->name . " ha llegado tarde 3 veces o mas este mes",
-                        //                     "status_id" => 1,
-                        //                     "reference_id" => $usuario->id,
-                        //                     "activation_datetime" => Carbon::now()->format('Y-m-d H:i:s')
-                        //                 ];
-
-                        //                 $alert = Alert::create($data);
-                        //                 $alertSaved = $alert->save();
-                        //             }
-                        //         }
-
-                        //         switch (count($hourlyAverage)) {
-                        //             case 1:
-                        //                 $text = 'Hemos notado que hoy llegaste después de la hora límite de entrada (09:30). Entendemos que a veces pueden surgir imprevistos, pero te recordamos la importancia de respetar el horario para mantener la eficiencia en el equipo.';
-                        //                 break;
-                        //             case 2:
-                        //                 $text = 'Nuevamente has llegado después de la hora límite de entrada (09:30). Reforzamos la importancia de cumplir con el horario para asegurar un buen rendimiento y organización en el equipo.';
-                        //                 break;
-                        //             case 3:
-                        //                 $text = 'Se ha registrado tu llegada tarde tres veces. Esta información se compartirá con la Dirección. Es importante respetar los horarios para mantener el rendimiento y la organización del equipo.';
-                        //                 break;
-                        //             default:
-                        //                 $text = 'Se ha registrado tu llegada tarde mas de  tres veces. Esta información se compartirá con la Dirección. Es importante respetar los horarios para mantener el rendimiento y la organización del equipo.';
-                        //                 break;
-                        //         }
-
-                        //         $data = [
-                        //             "admin_user_id" =>  $usuario->id,
-                        //             "stage_id" => 23,
-                        //             "description" => $text,
-                        //             "status_id" => 1,
-                        //             "reference_id" => $usuario->id,
-                        //             "activation_datetime" => $fechaNow->format('Y-m-d H:i:s')
-                        //         ];
-
-                        //         $alert = Alert::create($data);
-                        //         $alertSaved = $alert->save();
-                        //     }
-
-                        // }
-                        $tarea->task_status_id = 1;
-                    }
-                    break;
-                case "Pausada":
-                    if ($tarea->task_status_id == 1) {
-                        if ($tarea->real_time == "00:00:00") {
-                            $start = $tarea->updated_at;
-                            $end   = new \DateTime("NOW");
-                            $interval = $end->diff($start);
-
-                            $time = sprintf(
-                                '%02d:%02d:%02d',
-                                ($interval->d * 24) + $interval->h,
-                                $interval->i,
-                                $interval->s
-                            );
-                        } else {
-                            $start = $tarea->updated_at;
-                            $end   = new \DateTime("NOW");
-                            $interval = $end->diff($start);
-
-                            $time = sprintf(
-                                '%02d:%02d:%02d',
-                                ($interval->d * 24) + $interval->h,
-                                $interval->i,
-                                $interval->s
-                            );
-
-                            $time = $this->sum_the_time($tarea->real_time, $time);
-                        }
-                        $tarea->real_time = $time;
-                    }
-
-                    $last = LogTasks::where("admin_user_id", $tarea->admin_user_id)->get()->last();
-                    if ($last) {
-                        $last->date_end = $date;
-                        $last->status = "Pausada";
-                        $last->save();
-                    }
-
-                    $tarea->task_status_id = 2;
-                    break;
-                case "Finalizada":
-
-                    //Crear Alerta tarea terminada antes de tiempo
-                    // if ($formatEstimated > $formatReal) {
-                    //     $dataAlert = [
-                    //         'admin_user_id' => $usuario->id,
-                    //         'stage_id' => 14,
-                    //         'activation_datetime' => $date->format('Y-m-d H:i:s'),
-                    //         'status_id' => 1,
-                    //         'reference_id' => $tarea->id,
-                    //     ];
-
-                    //     $alert = Alert::create($dataAlert);
-                    //     $alertSaved = $alert->save();
-                    // }
-
-                    //revisar antes que la tarea este pausada
-                    if($tarea->task_status_id == 2){
-                        $tarea->task_status_id = 5;
-                    }
-
-
-                    break;
-            }
-
-            $taskSaved = $tarea->save();
-
-
-            if (($taskSaved || $tareaActiva == null) && !$error) {
-                return response()->json(['estado' => 'OK'], 200);
-
-            } else {
-                $response = json_encode(array(
-                    "estado" => "ERROR; TIENES OTRA TAREA ACTIVA. HABLA CON EL CREADOR .` . $error,"
-                ));
-            }
-        } else {
-            $response = json_encode(array(
-                "estado" => "ERROR"
-            ));
+        if (!$tarea || !$usuario) {
+            return response()->json(['estado' => 'ERROR', 'mensaje' => 'Tarea o usuario no encontrados.'], 404);
         }
-        //}
 
-        return $response;
+        switch ($request->estado) {
+            case "Reanudar":
+                $yaActiva = LogTasks::where('status', 'Reanudada')
+                    ->where('task_id', $tarea->id)
+                    ->where('admin_user_id', $usuario->id)
+                    ->whereNull('date_end')
+                    ->exists();
+
+                if ($yaActiva) {
+                    $error = true;
+                } else {
+                    LogTasks::create([
+                        'admin_user_id' => $usuario->id,
+                        'task_id' => $tarea->id,
+                        'date_start' => $date,
+                        'date_end' => null,
+                        'status' => 'Reanudada'
+                    ]);
+
+                    // Si la tarea estaba pausada, volver a marcarla como activa
+                    $tarea->task_status_id = 1;
+                }
+                break;
+
+            case "Pausada":
+                // Obtener el log activo del usuario para esta tarea
+                $logActivo = LogTasks::where('task_id', $tarea->id)
+                    ->where('admin_user_id', $usuario->id)
+                    ->whereNull('date_end')
+                    ->where('status', 'Reanudada')
+                    ->latest()
+                    ->first();
+
+                if ($logActivo) {
+                    $inicio = Carbon::parse($logActivo->date_start);
+                    $duracion = $inicio->diff($date);
+                    $duracionStr = sprintf('%02d:%02d:%02d', $duracion->h + $duracion->d * 24, $duracion->i, $duracion->s);
+                    $tarea->real_time = $this->sum_the_time($tarea->real_time, $duracionStr);
+
+                    $logActivo->date_end = $date;
+                    $logActivo->status = 'Pausada';
+                    $logActivo->save();
+                }
+
+                // Verificar si aún queda alguien con la tarea activa
+                $otrosActivos = LogTasks::where('task_id', $tarea->id)
+                    ->where('status', 'Reanudada')
+                    ->whereNull('date_end')
+                    ->where('admin_user_id', '!=', $usuario->id)
+                    ->exists();
+
+                if (!$otrosActivos) {
+                    // Solo la pausamos si NADIE la tiene ya activa
+                    $tarea->task_status_id = 2;
+                }
+                break;
+
+            case "Finalizada":
+                // Solo puede finalizarse si está en pausa
+                if ($tarea->task_status_id == 2) {
+                    $tarea->task_status_id = 5;
+                }
+                break;
+        }
+
+        $taskSaved = $tarea->save();
+
+        if (($taskSaved) && !$error) {
+            return response()->json(['estado' => 'OK'], 200);
+        } else {
+            return response()->json(['estado' => 'ERROR', 'mensaje' => 'No se pudo cambiar el estado.'], 400);
+        }
     }
+
 
     function sum_the_time($time1, $time2)
     {
