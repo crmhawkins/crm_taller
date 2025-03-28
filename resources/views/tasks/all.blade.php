@@ -41,7 +41,6 @@
                             <thead>
                                 <tr>
                                     <th>Título</th>
-                                    <th>Descripcion</th>
                                     <th>Responsable</th>
                                     <th>Tiempo Estimado</th>
                                     <th>Tiempo Real</th>
@@ -53,7 +52,6 @@
                                     @if($tarea->estado->id == 1 || $tarea->estado->id == 2)
                                         <tr class="estado-{{ str_replace(' ', '', strtolower($tarea->estado->name)) }}">
                                             <td>{{ $tarea->title }}</td>
-                                            <td>{{ $tarea->description }}</td>
                                             <td>{{ $tarea->usuario->name ?? 'No asignado' }} {{$tarea->usuario->surname ?? ''}}</td>
                                             <td>{{ $tarea->estimated_time }}</td>
                                             <td class="real-time">{{ $tarea->real_time }}</td>
