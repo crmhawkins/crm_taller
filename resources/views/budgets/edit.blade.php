@@ -121,9 +121,9 @@
                                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addCarModal">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
-                                            
+
                                             <!-- Modal -->
-                                            
+
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
@@ -412,7 +412,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-2">
                     <div class="card">
                         <div class="card-body">
@@ -422,7 +422,7 @@
                             </div>
                             <style>
 
-                               
+
 .modal-backdrop.fade.show {
     display: none;
 }
@@ -525,7 +525,7 @@
                     <select id="existingClaims" class=" select2 w-100">
                         <option value="">Selecciona un Parte de trabajo</option>
                         @foreach($siniestros as $siniestro)
-                            <option value="{{ $siniestro->id }}">{{ $siniestro->identificador }} - {{ $siniestro->cliente->name }} - {{$siniestro->created_at->format('d/m/Y') }}</option>
+                            <option value="{{ $siniestro->id }}">{{ $siniestro->identificador }} - {{ optional($siniestro->cliente)->name }} - {{$siniestro->created_at->format('d/m/Y') }}</option>
                         @endforeach
                     </select>
                     <br>
@@ -570,7 +570,7 @@
                     <div id="errorMessage" class="text-danger mb-3" style="display: none;"></div>
                     <div class="form-group">
                         <label for="cif">DNI/CIF</label>
-                        <input type="text" class="form-control" id="cif" name="cif" required> 
+                        <input type="text" class="form-control" id="cif" name="cif" required>
                     </div>
                     <div class="form-group">
                         <label for="name">Nombre</label>
@@ -1880,7 +1880,7 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        
+
                         assignCarToClient(data.coche.id , data.cliente.id);
                     }
                 });
