@@ -273,7 +273,9 @@
                 document.getElementById('userPinError').style.display = 'none'; // Ocultar el mensaje de error
 
                 // Llamar a la función para validar el PIN
-                validatePin(pin, action, taskId);
+                executeTaskAction(action, taskId, pin);
+
+                //validatePin(pin, action, taskId);
                 document.getElementById('uservalidatePinInput').value = ''; // Limpiar el campo de entrada
                 // Cerrar el modal después de la validación
                 myModal.hide();
@@ -391,20 +393,20 @@
 
                         let actionButtons = '';
                         if (tarea.usuario) {
-                            if (tarea.estado.name !== 'Reanudada') {
+
                                 actionButtons += `
                                     <button class="btn btn-success start-task" data-task-id="${tarea.id}">
                                         <i class="bi bi-play-fill"></i>
                                     </button>
                                 `;
-                            }
-                            if (tarea.task_status_id && tarea.task_status_id !== 5 && tarea.task_status_id !== 2) {
+
+
                                 actionButtons += `
                                     <button class="btn btn-warning pause-task" data-task-id="${tarea.id}">
                                         <i class="bi bi-pause-fill"></i>
                                     </button>
                                 `;
-                            }
+
                             if (tarea.task_status_id && tarea.task_status_id === 2) {
                                 actionButtons += `
                                     <button class="btn btn-danger finish-task" data-task-id="${tarea.id}">
