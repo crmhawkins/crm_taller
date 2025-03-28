@@ -32,7 +32,7 @@
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex align-items-center mb-4">
+                    <div class="col-12 d-flex align-items-center mb-4">
                         <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 60px; margin-right: 15px;">
                         <h2 class="mb-0">Producción</h2>
                     </div>
