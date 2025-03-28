@@ -857,6 +857,7 @@
     }
     .custom-table tbody tr.estado-pausada {
         background-color: #ffffff;
+        color: black;
     }
 
 
