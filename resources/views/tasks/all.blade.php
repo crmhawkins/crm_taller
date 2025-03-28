@@ -33,8 +33,17 @@
             <div class="card">
                 <div class="card-body">
                     <div class="col-12 d-flex align-items-center justify-content-center mb-4">
-                        <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 75px; margin-right: 15px;">
-                        <h2 class="mb-0 display-1">Producción</h2>
+                        <div class="col-4">
+                            <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 75px; margin-right: 15px;">
+
+                        </div>
+                        <div class="col-4 align-items-center justify-content-center">
+                            <h2 class="mb-0 display-1">Producción</h2>
+
+                        </div>
+                        <div class="col-4">
+
+                        </div>
                     </div>
                     <button id="toggleFullscreen" class="btn btn-secondary btn-lg mb-3">Pantalla Completa</button>
                     <button id="userPinButton" class="btn btn-primary btn-lg mb-3">Jornada</button>
