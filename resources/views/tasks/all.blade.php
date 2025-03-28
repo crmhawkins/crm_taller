@@ -5,26 +5,28 @@
 @section('content')
 
 <div class="page-heading card" style="box-shadow: none !important">
-    @if(Auth::user()->access_level_id != 12)
-    <div class="page-title card-body">
-        <div class="row justify-content-between">
-            <div class="col-sm-12 col-md-6 order-md-1 order-last row">
-                <div class="col-auto">
-                    <h3><i class="bi bi-globe-americas"></i> Todas las Tareas</h3>
-                    <p class="text-subtitle text-muted">Listado de todas las tareas</p>
-                </div>
+    @if(Auth::user())
+        @if(Auth::user()->access_level_id != 12)
+        <div class="page-title card-body">
+            <div class="row justify-content-between">
+                <div class="col-sm-12 col-md-6 order-md-1 order-last row">
+                    <div class="col-auto">
+                        <h3><i class="bi bi-globe-americas"></i> Todas las Tareas</h3>
+                        <p class="text-subtitle text-muted">Listado de todas las tareas</p>
+                    </div>
 
-            </div>
-            <div class="col-sm-12 col-md-4 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tareas</li>
-                    </ol>
-                </nav>
+                </div>
+                <div class="col-sm-12 col-md-4 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Tareas</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
+        @endif
     @endif
     <div class="ambas-tablas">
 
