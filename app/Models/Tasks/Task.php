@@ -51,7 +51,7 @@ class Task extends Model
     }
 
     public function logTasks() {
-        return $this->hasMany(\App\Models\Logs\LogTasks::class,'task_id');
+        return $this->hasMany(LogTasks::class,'task_id');
     }
 
     public function gestor() {
