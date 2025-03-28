@@ -28,14 +28,14 @@
     @endif
     <div class="ambas-tablas">
 
-        <div class="d-flex align-items-center mb-4">
-            <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 60px; margin-right: 15px;">
-            <h2 class="mb-0">Producción</h2>
-        </div>
 
         <section class="section pt-4">
             <div class="card">
                 <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 60px; margin-right: 15px;">
+                        <h2 class="mb-0">Producción</h2>
+                    </div>
                     <button id="toggleFullscreen" class="btn btn-secondary btn-lg mb-3">Pantalla Completa</button>
                     <button id="userPinButton" class="btn btn-primary btn-lg mb-3">Jornada</button>
 
