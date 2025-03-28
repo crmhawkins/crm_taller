@@ -110,24 +110,25 @@ class Task extends Model
     }
 
 
-        public function horasPorEmpleado()
+    public function horasPorEmpleado()
     {
         $resultados = [];
 
         foreach ($this->logTasks as $log) {
             if ($log->date_start && $log->date_end) {
                 $segundos = strtotime($log->date_end) - strtotime($log->date_start);
-                $id = $log->admin_user_id;
+                $empleadoId = $log->admin_user_id;
 
-                if (!isset($resultados[$id])) {
-                    $resultados[$id] = 0;
+                // Asegurarse de que sólo se sume dentro de esta tarea
+                if (!isset($resultados[$empleadoId])) {
+                    $resultados[$empleadoId] = 0;
                 }
 
-                $resultados[$id] += $segundos;
+                $resultados[$empleadoId] += $segundos;
             }
         }
 
-        // Convertimos los segundos a HH:MM:SS
+        // Convertir a formato HH:MM:SS
         foreach ($resultados as $id => $segundos) {
             $horas = floor($segundos / 3600);
             $minutos = floor(($segundos % 3600) / 60);
