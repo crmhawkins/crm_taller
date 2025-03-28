@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <div class="col-12 d-flex align-items-center justify-content-center mb-4">
                         <div class="col-4">
-                            <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 75px; margin-right: 15px;">
+                            <img src={{asset('assets/images/logo/logo.png') }} class="rounded" alt="Logo" style="height: 75px; margin-right: 15px;">
 
                         </div>
                         <div class="col-4 d-flex align-items-center justify-content-center">
