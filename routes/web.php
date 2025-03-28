@@ -267,7 +267,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/check-client', [BudgetController::class, 'checkClient'])->name('check.client');
         Route::post('/check-car', [BudgetController::class, 'checkCar'])->name('check.car');
-        Route::post('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
+        Route::get('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
 
         // Dominios
         Route::get('/dominios', [DominiosController::class, 'index'])->name('dominios.index');
