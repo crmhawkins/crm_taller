@@ -380,7 +380,7 @@
                         row.className = 'estado-' + (tarea.estado ? tarea.estado.name.replace(/\s+/g, '').toLowerCase() : 'sin-estado');
 
                         let actionButtons = '';
-                        if (tarea.usuario) {
+
 
                                 actionButtons += `
                                     <button class="btn btn-success start-task" data-task-id="${tarea.id}">
@@ -407,7 +407,7 @@
                                     <i class="fa-solid fa-info"></i>
                                 </button>
                             `;
-                        }
+
 
                         row.innerHTML = `
                             <td>${tarea.title}</td>
