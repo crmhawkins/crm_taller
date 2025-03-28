@@ -106,7 +106,7 @@ class Task extends Model
             'log_tasks',
             'task_id',
             'admin_user_id'
-        )->withPivot('date_start', 'date_end');
+        )->withPivot('date_start', 'date_end')->distint();
     }
 
 
