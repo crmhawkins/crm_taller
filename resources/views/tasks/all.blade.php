@@ -86,6 +86,18 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        @if($tarea->usuarios && $tarea->usuarios->count())
+                                            <tr class="empleados-row bg-light text-dark">
+                                                <td colspan="5">
+                                                    <strong>Empleados asignados:</strong>
+                                                    <ul class="mb-0 mt-1">
+                                                        @foreach($tarea->usuarios as $usuario)
+                                                            <li>{{ $usuario->name }} {{ $usuario->surname }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endif
                                 @endforeach
                             </tbody>
