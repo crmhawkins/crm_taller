@@ -785,6 +785,28 @@
         tbody.innerHTML = ''; // Limpiar el contenido de la tabla
     });
 
+
+
+    function timeToSeconds(timeStr) {
+        const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+        return hours * 3600 + minutes * 60 + seconds;
+    }
+
+    function marcarTareasFueraDeTiempo() {
+        document.querySelectorAll('#tasksTableBodyEstado1y2 tr').forEach(row => {
+            const estimated = row.cells[2].innerText.trim(); // Tiempo estimado
+            const real = row.cells[3].innerText.trim();      // Tiempo real
+
+            if (estimated && real && timeToSeconds(real) > timeToSeconds(estimated)) {
+                row.style.backgroundColor = '#ff4d4d'; // Rojo claro
+            }
+        });
+    }
+
+    // Llamar después de renderizar las tareas
+    document.addEventListener('DOMContentLoaded', () => {
+        marcarTareasFueraDeTiempo();
+    });
 </script>
 
 <style>
@@ -834,8 +856,10 @@
         background-color: #d4edda;
     }
     .custom-table tbody tr.estado-pausada {
-        background-color: #e96d77;
+        background-color: #ffffff;
     }
+
+
     td{
         font-weight: bold;
         color: white;
