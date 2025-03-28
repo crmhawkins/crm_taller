@@ -50,6 +50,10 @@ class Task extends Model
         return $this->belongsTo(\App\Models\Users\User::class,'admin_user_id');
     }
 
+    public function logTasks() {
+        return $this->hasMany(\App\Models\Logs\LogTasks::class,'task_id');
+    }
+
     public function gestor() {
         return $this->belongsTo(\App\Models\Users\User::class,'gestor_id');
     }
@@ -93,6 +97,45 @@ class Task extends Model
 
         // Formatear a HH:MM:SS
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
+
+    public function empleados()
+    {
+        return $this->belongsToMany(
+            \App\Models\Users\User::class,
+            'log_tasks',
+            'task_id',
+            'admin_user_id'
+        )->withPivot('date_start', 'date_end');
+    }
+
+
+        public function horasPorEmpleado()
+    {
+        $resultados = [];
+
+        foreach ($this->logTasks as $log) {
+            if ($log->date_start && $log->date_end) {
+                $segundos = strtotime($log->date_end) - strtotime($log->date_start);
+                $id = $log->admin_user_id;
+
+                if (!isset($resultados[$id])) {
+                    $resultados[$id] = 0;
+                }
+
+                $resultados[$id] += $segundos;
+            }
+        }
+
+        // Convertimos los segundos a HH:MM:SS
+        foreach ($resultados as $id => $segundos) {
+            $horas = floor($segundos / 3600);
+            $minutos = floor(($segundos % 3600) / 60);
+            $segundosRestantes = $segundos % 60;
+            $resultados[$id] = sprintf('%02d:%02d:%02d', $horas, $minutos, $segundosRestantes);
+        }
+
+        return $resultados;
     }
 
 }

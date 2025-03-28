@@ -86,18 +86,22 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        @if($tarea->usuarios && $tarea->usuarios->count())
-                                            <tr class="empleados-row bg-light text-dark">
-                                                <td colspan="5">
-                                                    <strong>Empleados asignados:</strong>
-                                                    <ul class="mb-0 mt-1">
-                                                        @foreach($tarea->usuarios as $usuario)
-                                                            <li>{{ $usuario->name }} {{ $usuario->surname }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        @endif
+                                        <tr class="bg-light">
+                                            <td colspan="5">
+                                                <strong>Empleados:</strong>
+                                                <ul class="mb-0">
+                                                    @foreach($tarea->empleados as $empleado)
+                                                        <li>
+                                                            {{ $empleado->name }} {{ $empleado->surname }}
+                                                            @php
+                                                                $horasEmpleado = $tarea->horasPorEmpleado()[$empleado->id] ?? '00:00:00';
+                                                            @endphp
+                                                            - <small>{{ $horasEmpleado }} trabajadas</small>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>
