@@ -86,22 +86,24 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        <tr class="bg-light">
-                                            <td colspan="5">
-                                                <strong>Empleados:</strong>
-                                                <ul class="mb-0">
-                                                    @foreach($tarea->empleados as $empleado)
-                                                        <li>
-                                                            {{ $empleado->name }} {{ $empleado->surname }}
-                                                            @php
-                                                                $horasEmpleado = $tarea->horasPorEmpleado()[$empleado->id] ?? '00:00:00';
-                                                            @endphp
-                                                            - <small>{{ $horasEmpleado }} trabajadas</small>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                        </tr>
+                                        @if ($tarea->empleados->count() > 0)
+                                            <tr class="bg-light texto-negro">
+                                                <td colspan="5">
+                                                    <strong>Empleados activos:</strong>
+                                                    <ul class="mb-0">
+                                                        @foreach($tarea->empleados as $empleado)
+                                                            <li>
+                                                                {{ $empleado->name }} {{ $empleado->surname }}
+                                                                @php
+                                                                    $horasEmpleado = $tarea->horasPorEmpleado()[$empleado->id] ?? '00:00:00';
+                                                                @endphp
+                                                                - <small>{{ $horasEmpleado }} trabajadas</small>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endif
                                 @endforeach
                             </tbody>
@@ -886,6 +888,10 @@
 
     }
     tr.estado-pausada td{
+        color: black !important;
+        text-shadow: none !important;
+    }
+    tr.texto-negro td , tr.texto-negro ul li{
         color: black !important;
         text-shadow: none !important;
     }
