@@ -32,6 +32,17 @@ class TasksController extends Controller
 
     return view('tasks.all', compact('tareas'));
 }
+    public function all2()
+{
+    $tareas = Task::with(['usuario', 'estado'])
+    ->whereNotIn('task_status_id', [3, 4])
+    ->get();
+    if (request()->ajax()) {
+        return response()->json($tareas);
+    }
+
+    return view('tasks.all', compact('tareas'));
+}
 
 public function search(Request $request)
 {

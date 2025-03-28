@@ -110,7 +110,7 @@ Route::post('/jornada/end', [App\Http\Controllers\Users\UserController::class, '
 
 Route::post('/tasks/assign/{taskId}/{pin}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
 Route::post('/users/validate-pin', [TasksController::class, 'validatePin'])->name('tasks.validatePin');
-Route::get('/pantalla', [TasksController::class, 'all'])->name('tarea.all');
+Route::get('/pantalla', [TasksController::class, 'all2'])->name('tarea.all2');
 
 Route::group(['middleware' => 'auth'], function () {
 
