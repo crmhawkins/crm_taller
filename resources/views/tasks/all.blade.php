@@ -38,8 +38,7 @@
 
                         </div>
                         <div class="col-4 d-flex align-items-center justify-content-center">
-                            <h1 class="mb-0 h1">Producción</h1>
-
+                            <h1 class="mb-0 h1" style="font-size: 50px">Producción</h1>
                         </div>
                         <div class="col-4">
 
