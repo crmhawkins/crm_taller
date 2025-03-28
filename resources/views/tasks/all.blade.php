@@ -855,7 +855,7 @@
     .custom-table tbody tr.estado-completada {
         background-color: #d4edda;
     }
-    .custom-table tbody tr.estado-pausada ,{
+    .custom-table tbody tr.estado-pausada{
         background-color: #ffffff;
 
     }
