@@ -459,14 +459,26 @@
     }
 
     function fetchTaskDetails(taskId) {
-        fetch(`/tasks/details/${taskId}`)
-            .then(response => response.json())
-            .then(data => {
-                const modalBody = document.querySelector('#detallesModal .modal-body');
-                modalBody.innerHTML = `<p><strong>Título:</strong> ${data.title}</p>
-                                        <p><strong>Descripción:</strong> ${data.description}</p>`;
-            })
-            .catch(error => console.error('Error al cargar detalles:', error));
+        fetch(`/tasks/details/${taskId}`, {
+            method: 'POST',  // Cambia el método a POST
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  // Asegúrate de que el token CSRF esté incluido en las cabeceras
+            },
+            body: JSON.stringify({ id: taskId })  // Aunque no es necesario enviar un body para este caso, se incluye como ejemplo
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const modalBody = document.querySelector('#detallesModal .modal-body');
+            modalBody.innerHTML = `<p><strong>Título:</strong> ${data.title}</p>
+                                    <p><strong>Descripción:</strong> ${data.description}</p>`;
+        })
+        .catch(error => console.error('Error al cargar detalles:', error));
     }
     // Asegúrate de que esta función esté definida antes de que se llame en attachEventListeners
     function attachEventListeners() {
