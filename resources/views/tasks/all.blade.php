@@ -824,8 +824,8 @@
 
     function marcarTareasFueraDeTiempo() {
         document.querySelectorAll('#tasksTableBodyEstado1y2 tr').forEach(row => {
-            const estimated = row.cells[2].innerText.trim(); // Tiempo estimado
-            const real = row.cells[3].innerText.trim();      // Tiempo real
+            const estimated = row.cells[1].innerText.trim(); // Tiempo estimado
+            const real = row.cells[2].innerText.trim();      // Tiempo real
 
             if (estimated && real && timeToSeconds(real) > timeToSeconds(estimated)) {
                 row.style.backgroundColor = '#ff4d4d'; // Rojo claro
