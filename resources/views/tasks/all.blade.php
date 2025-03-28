@@ -37,7 +37,7 @@
                             <img src={{asset('assets/images/logo/logo.png') }} alt="Logo" style="height: 75px; margin-right: 15px;">
 
                         </div>
-                        <div class="col-4 align-items-center justify-content-center">
+                        <div class="col-4 d-flex align-items-center justify-content-center">
                             <h2 class="mb-0 display-1">Producción</h2>
 
                         </div>
