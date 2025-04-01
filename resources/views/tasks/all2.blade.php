@@ -246,28 +246,6 @@
     let selectedUserId = null;
     let selectedTaskId = null;
 
-    $(document).ready(() => {
-
-        $('.keyboard-init').keyboard({
-            layout: 'custom',
-            customLayout: {
-                'default': [
-                    '7 8 9',
-                    '4 5 6',
-                    '1 2 3',
-                    '0 . {b}',
-                ],
-            },
-            display: {
-                '{b}': '←',
-            },
-            restrictInput: true,
-            preventPaste: true,
-            autoAccept: true,
-            usePreview: false,
-        });
-
-    });
 
     function showPinModal(taskId, action) {
         // Mostrar el modal de Bootstrap
@@ -563,6 +541,25 @@
 
 
     document.addEventListener('DOMContentLoaded', function() {
+        $('.keyboard-init').keyboard({
+            layout: 'custom',
+            customLayout: {
+                'default': [
+                    '7 8 9',
+                    '4 5 6',
+                    '1 2 3',
+                    '0 . {b}',
+                ],
+            },
+            display: {
+                '{b}': '←',
+            },
+            restrictInput: true,
+            preventPaste: true,
+            autoAccept: true,
+            usePreview: false,
+        });
+
         const userSearchInput = document.getElementById('userSearchInput');
         const searchUserButton = document.getElementById('searchUserButton');
         const userResults = document.getElementById('userResults');
