@@ -549,11 +549,14 @@
                     <label for="existingVisits">Asignar Visita existente:</label>
                     <select id="existingVisits" class="form-select">
                         @foreach($visitas as $visita)
-                            <option value="{{ $visita->id }}">{{ $visita->fecha_ingreso }} - {{ $visita->coche->matricula }}</option>
+                            <option value="{{ $visita->id }}">
+                                {{ $visita->fecha_ingreso }} - {{ optional($visita->coche)->matricula ?? 'Sin matrícula' }}
+                            </option>
                         @endforeach
                     </select>
                     <button type="button" id="assignExistingVisit" class="btn btn-primary mt-3">Asignar</button>
                 </div>
+
             </div>
         </div>
     </div>
