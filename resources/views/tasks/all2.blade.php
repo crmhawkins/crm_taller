@@ -241,6 +241,8 @@
 
 <!-- Incluir SweetAlert2 desde un CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/languages/es.min.js" integrity="sha512-ITqWMeHU/52KlwUxKod9gI0cs8PhhCbigIsr2XBLobFR+80Cw9qZqgice6ewwsUqL2AuN5v7WJBO5XoW6C0dUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/js/jquery.keyboard.min.js" integrity="sha512-bnF44HiiJPFa0Kzr+pxQktiT6MnrdSWn/jSkZcJY9Lsw2TRIWZfkI1zo6uNfKEvK0QK2AsJuvf7AIxUmCDOOmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
     let selectedUserId = null;
