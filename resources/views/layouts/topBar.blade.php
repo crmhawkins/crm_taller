@@ -5,14 +5,14 @@
         </a>
     </header>
     <ul class="topbar-menu d-flex align-items-center gap-3">
-        @if(Auth::user()->access_level_id != 12)
+        @if(optional(Auth::user())->access_level_id != 12)
         <li class="dropdown notification-list">
             <a href="{{ route('admin.emailConfig.settings') }}" type="button" class="nav-link position-relative">
                 <i class="fas fa-cogs"></i>
             </a>
         </li>
         @endif
-        @if(Auth::user()->access_level_id != 12)
+        @if(optional(Auth::user())->access_level_id != 12)
         <li class="dropdown notification-list">
             <a href="{{ route('admin.emails.index') }}" type="button" class="nav-link position-relative">
                 <i class="fa-regular fa-envelope"></i>
@@ -155,7 +155,7 @@
         </li>
         @endif
         <!-- Campana de notificaciones -->
-        @if(Auth::user()->access_level_id != 12)
+        @if(optional(Auth::user())->access_level_id != 12)
         <li class="dropdown notification-list">
             <a href="#" type="button" class="nav-link position-relative" id="btnAbrirAlertas">
                 <i class="fa-regular fa-bell"></i>

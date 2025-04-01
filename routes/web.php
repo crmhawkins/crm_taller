@@ -94,6 +94,25 @@ Route::post('/invoice/generate-pdf', [InvoiceController::class, 'generatePDF'])-
 Route::post('/budget/generate-pdf', [BudgetController::class, 'generatePDF'])->name('presupuesto.generarPDF');
 
 
+Route::post('/start-jornada', [DashboardController::class, 'startJornada'])->name('dashboard.startJornada');
+Route::post('/end-jornada', [DashboardController::class, 'endJornada'])->name('dashboard.endJornada');
+Route::post('/start-pause', [DashboardController::class, 'startPause'])->name('dashboard.startPause');
+Route::post('/end-pause', [DashboardController::class, 'endPause'])->name('dashboard.endPause');
+
+Route::post('/tasks/start/{id}', [TasksController::class, 'startTask'])->name('tasks.start');
+Route::post('/tasks/pause/{id}', [TasksController::class, 'pauseTask'])->name('tasks.pause');
+Route::post('/tasks/finish/{id}', [TasksController::class, 'finishTask'])->name('tasks.finish');
+Route::post('/tasks/set-status', [TasksController::class, 'setStatusTask'])->name('tasks.setStatus');
+Route::post('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
+Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
+Route::get('/users/validate-pin/{pin}', [UserController::class, 'validatePin']);
+Route::post('/jornada/start', [App\Http\Controllers\Users\UserController::class, 'startJornada']);
+Route::post('/jornada/end', [App\Http\Controllers\Users\UserController::class, 'endJornada']);
+
+Route::post('/tasks/assign/{taskId}/{pin}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
+Route::post('/users/validate-pin', [TasksController::class, 'validatePin'])->name('tasks.validatePin');
+Route::get('/pantalla', [TasksController::class, 'all2'])->name('tarea.all2');
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::middleware(['access.level:4'])->group(function () {
@@ -496,8 +515,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/productividad', [ProductividadController::class, 'index'])->name('productividad.index');
     });
 
-    Route::post('/tasks/details/{id}', [TasksController::class, 'getTaskDetails'])->name('tasks.details');
-    Route::get('/tasks/json', [TasksController::class, 'getAllTasksJson'])->name('tasks.json');
+
 
 
     Route::post('/get-produccion', [DashboardController::class, 'getProduccion'])->name('productividad.get');
@@ -527,10 +545,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/dashboard/updateStatusAlertAndAcceptHours', [DashboardController::class, 'updateStatusAlertAndAcceptHours'])->name('user.updateStatusAlertAndAcceptHours');
     Route::post('/dashboard/responseAlert', [DashboardController::class, 'responseAlert'])->name('user.responseAlert');
 
-    Route::post('/start-jornada', [DashboardController::class, 'startJornada'])->name('dashboard.startJornada');
-    Route::post('/end-jornada', [DashboardController::class, 'endJornada'])->name('dashboard.endJornada');
-    Route::post('/start-pause', [DashboardController::class, 'startPause'])->name('dashboard.startPause');
-    Route::post('/end-pause', [DashboardController::class, 'endPause'])->name('dashboard.endPause');
+
 
     //Jornadas
     Route::get('/jornadas', [HorasController::class, 'indexHoras'])->name('horas.index');
@@ -674,10 +689,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('coches/{coche}/hojas-inspeccion/{hoja}', [HojaInspeccionController::class, 'update'])->name('hojas_inspeccion.update');
     Route::delete('hojas_inspeccion/{cocheId}/{hojaId}', [HojaInspeccionController::class, 'destroy'])->name('hojas_inspeccion.destroy');
 
-    Route::post('/tasks/start/{id}', [TasksController::class, 'startTask'])->name('tasks.start');
-    Route::post('/tasks/pause/{id}', [TasksController::class, 'pauseTask'])->name('tasks.pause');
-    Route::post('/tasks/finish/{id}', [TasksController::class, 'finishTask'])->name('tasks.finish');
-    Route::post('/tasks/set-status', [TasksController::class, 'setStatusTask'])->name('tasks.setStatus');
+
 
     Route::get('/citas/calendario', [AppointmentController::class, 'index'])->name('appointments.calendar');
     Route::get('/citas', [AppointmentController::class, 'getAppointments'])->name('appointments.get');
@@ -685,8 +697,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/users/search', [TasksController::class, 'search'])->name('users.search');
-    Route::post('/tasks/assign/{taskId}/{pin}', [TasksController::class, 'assignTaskToUser'])->name('tasks.assign');
-    Route::post('/users/validate-pin', [TasksController::class, 'validatePin'])->name('tasks.validatePin');
+
 
     // Ruta para actualizar una cita existente
     Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
@@ -751,9 +762,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('partes-trabajo/{siniestro}/edit', [SiniestroController::class, 'edit'])->name('siniestro.edit');
     Route::put('siniestros/{siniestro}', [SiniestroController::class, 'update'])->name('siniestro.update');
     Route::delete('siniestros/{siniestro}', [SiniestroController::class, 'destroy'])->name('siniestro.destroy');
-    Route::get('/users/validate-pin/{pin}', [UserController::class, 'validatePin']);
-    Route::post('/jornada/start', [App\Http\Controllers\Users\UserController::class, 'startJornada']);
-    Route::post('/jornada/end', [App\Http\Controllers\Users\UserController::class, 'endJornada']);
+
     // Coches de Sustitución
     Route::get('coches-sustitucion', [CochesSustitucionController::class, 'index'])->name('coches-sustitucion.index');
     Route::get('coches-sustitucion/create', [CochesSustitucionController::class, 'create'])->name('coches-sustitucion.create');

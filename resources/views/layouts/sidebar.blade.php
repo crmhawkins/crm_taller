@@ -1,4 +1,4 @@
-@if( Auth::user()->access_level_id != 12)
+@if( optional(Auth::user())->access_level_id != 12)
 <div id="sidebar" class="active">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
@@ -113,7 +113,7 @@
                                 </span>
                             </a>
                         </li>
-                
+
                         <!-- Tipos de Siniestro -->
                         <li class="submenu-item {{ request()->routeIs('tipo-siniestro.index') ? 'active' : '' }}">
                             <a href="{{route('tipo-siniestro.index')}}">
@@ -123,7 +123,7 @@
                                 </span>
                             </a>
                         </li>
-                        
+
                     </ul>
                 </li>
                 <li class="sidebar-item">
@@ -239,7 +239,7 @@
                         <span>Seguros</span>
                     </a>
                 </li>
-                
+
 
                 <li class="sidebar-title">Empresa</li>
 
@@ -274,13 +274,13 @@
                     @endphp
 
 
-                
-
-                
 
 
-                
-                
+
+
+
+
+
                 {{-- <li class="sidebar-item has-sub {{ $peticionesActive ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="fa-solid fa-clipboard fs-5"></i>
@@ -466,7 +466,7 @@
                     </ul>
                 </li> --}}
                 @if ($admin || $gerente || $contable)
-                    
+
                     <li class="sidebar-item {{ request()->routeIs('order.indexAll') ? 'active' : '' }}">
                         <a href="{{route('order.indexAll')}}" class='sidebar-link'>
                             <i class="fa-solid fa-receipt"></i>
@@ -922,15 +922,15 @@
                                         </span>
                                     </a>
                                 </li>
-                                
+
 
                             </ul>
                         </li>
                     @endif
                 @endif
-               
-                
-                
+
+
+
 
             </ul>
         </div>
