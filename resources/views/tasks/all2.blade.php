@@ -3,6 +3,8 @@
 @section('titulo', 'Tareas')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/css/keyboard.min.css" integrity="sha512-4gBrVbGpT6dYENLd9Q9RsBODj4nc6/PxILsj4wFA0jwP046R76Q3B8fSR2Orzds16LoiWdC1m0ITFVaNVfQ8+A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/black-tie/theme.min.css" integrity="sha512-3XFNUWwXWmbYEhNdBem3FxT5yfJ3hzM/1sMA1m7VO9LfOAO2ctBYnPDoJYusvdrFdIglFYVLYmwm4orqrz1PEg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <div class="page-heading card" style="box-shadow: none !important">
 
@@ -155,7 +157,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" id="userSearchInput" class="form-control" placeholder="Introduce el pin del usuario...">
+                        <input type="text" id="userSearchInput" class="form-control keyboard-init" placeholder="Introduce el pin del usuario...">
                         {{-- <button type="button" id="searchUserButton" class="btn btn-primary mt-2">Buscar</button> --}}
                         {{-- <ul id="userResults" class="list-group mt-2"></ul> --}}
                     </div>
@@ -175,7 +177,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" id="userPinInput" class="form-control" placeholder="Ingrese su PIN">
+                        <input type="text" id="userPinInput" class="form-control keyboard-init" placeholder="Ingrese su PIN">
                         <button type="button" id="validatePinButton" class="btn btn-primary mt-2">Validar PIN</button>
                         <div id="userMessage" class="mt-3"></div>
                         <div id="jornadaButtons" class="mt-3" style="display: none;">
@@ -207,7 +209,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" id="uservalidatePinInput" class="form-control" placeholder="Ingrese su PIN">
+                        <input type="text" id="uservalidatePinInput" class="form-control keyboard-init" placeholder="Ingrese su PIN">
                         <div id="userPinError" class="text-danger mt-2" style="display:none;">Por favor ingrese su PIN</div>
                         </div>
                         <div class="modal-footer">
@@ -244,6 +246,28 @@
     let selectedUserId = null;
     let selectedTaskId = null;
 
+    $(document).ready(() => {
+
+        $('.keyboard-init').keyboard({
+            layout: 'custom',
+            customLayout: {
+                'default': [
+                    '7 8 9',
+                    '4 5 6',
+                    '1 2 3',
+                    '0 . {b}',
+                ],
+            },
+            display: {
+                '{b}': '←',
+            },
+            restrictInput: true,
+            preventPaste: true,
+            autoAccept: true,
+            usePreview: false,
+        });
+
+    });
 
     function showPinModal(taskId, action) {
         // Mostrar el modal de Bootstrap
