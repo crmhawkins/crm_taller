@@ -238,15 +238,17 @@
 
     </div>
 </div>
+@endsection
+
+@section('scripts')
 
 <!-- Incluir SweetAlert2 desde un CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/js/jquery.keyboard.min.js" integrity="sha512-bnF44HiiJPFa0Kzr+pxQktiT6MnrdSWn/jSkZcJY9Lsw2TRIWZfkI1zo6uNfKEvK0QK2AsJuvf7AIxUmCDOOmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/languages/es.min.js" integrity="sha512-ITqWMeHU/52KlwUxKod9gI0cs8PhhCbigIsr2XBLobFR+80Cw9qZqgice6ewwsUqL2AuN5v7WJBO5XoW6C0dUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.3.7/jquery.caret.min.js" integrity="sha512-DR6H+EMq4MRv9T/QJGF4zuiGrnzTM2gRVeLb5DOll25f3Nfx3dQp/NlneENuIwRHngZ3eN6w9jqqybT3Lwq+4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/js/jquery.keyboard.min.js" integrity="sha512-bnF44HiiJPFa0Kzr+pxQktiT6MnrdSWn/jSkZcJY9Lsw2TRIWZfkI1zo6uNfKEvK0QK2AsJuvf7AIxUmCDOOmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.30.4/languages/es.min.js" integrity="sha512-ITqWMeHU/52KlwUxKod9gI0cs8PhhCbigIsr2XBLobFR+80Cw9qZqgice6ewwsUqL2AuN5v7WJBO5XoW6C0dUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 <script>
