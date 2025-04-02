@@ -10,22 +10,22 @@
             </select>
         </div>
         <div class="col-md-9">
-            <input type="text" 
-                   class="form-control" 
-                   placeholder="Buscar..." 
+            <input type="text"
+                   class="form-control"
+                   placeholder="Buscar..."
                    wire:model.debounce.300ms="search">
         </div>
         <!-- Nuevos filtros de fecha -->
         <div class="col-md-3 mt-3">
-            <input type="date" 
-                   class="form-control" 
-                   placeholder="Fecha inicio" 
+            <input type="date"
+                   class="form-control"
+                   placeholder="Fecha inicio"
                    wire:model="fechaInicio">
         </div>
         <div class="col-md-3 mt-3">
-            <input type="date" 
-                   class="form-control" 
-                   placeholder="Fecha fin" 
+            <input type="date"
+                   class="form-control"
+                   placeholder="Fecha fin"
                    wire:model="fechaFin">
         </div>
     </div>
@@ -62,13 +62,17 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link">
-                            {{ $siniestro->coche->matricula }}
-                        </a>
+                        @if (isset($siniestro->coche->id))
+                            <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link">
+                                {{ $siniestro->coche->matricula }}
+                            </a>
+
+                        @endif
                     </td>
                     <td>{{$siniestro->prioridad}}</td>
 
                     <td>
+
                         <a href="{{ route('siniestro.edit', $siniestro->id) }}" class="btn btn-sm btn-warning">Editar</a>
                         <form action="{{ route('siniestro.destroy', $siniestro->id) }}" method="POST" style="display:inline;">
                             @csrf
@@ -84,4 +88,4 @@
     <div class="mt-3">
         {{ $siniestros->links() }}
     </div>
-</div> 
+</div>
