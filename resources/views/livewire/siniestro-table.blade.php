@@ -57,7 +57,7 @@
                         <td></td>
                     @endif
                     <td>
-                        @if (isset($siniestro->coche->id))
+                        @if (!is_null($siniestro->coche) && isset($siniestro->coche->id))
                             <a href="{{ route('clientes.edit', $siniestro->cliente->id) }}" class="btn btn-link">
                                 {{ $siniestro->cliente->name }} {{ $siniestro->cliente->surname }}
                             </a>
@@ -66,7 +66,7 @@
 
                     </td>
                     <td>
-                        @if (isset($siniestro->coche->id))
+                        @if (!is_null($siniestro->coche) && isset($siniestro->coche->id))
                             <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link" style="">
                                 {{ $siniestro->coche->matricula }}
                             </a>
