@@ -63,7 +63,7 @@
                     </td>
                     <td>
                         @if (isset($siniestro->coche->id))
-                            <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link">
+                            <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link" style="">
                                 {{ $siniestro->coche->matricula }}
                             </a>
 
