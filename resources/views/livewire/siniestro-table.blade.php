@@ -57,9 +57,13 @@
                         <td></td>
                     @endif
                     <td>
-                        <a href="{{ route('clientes.edit', $siniestro->cliente->id) }}" class="btn btn-link">
-                            {{ $siniestro->cliente->name }} {{ $siniestro->cliente->surname }}
-                        </a>
+                        @if (isset($siniestro->coche->id))
+                            <a href="{{ route('clientes.edit', $siniestro->cliente->id) }}" class="btn btn-link">
+                                {{ $siniestro->cliente->name }} {{ $siniestro->cliente->surname }}
+                            </a>
+
+                        @endif
+
                     </td>
                     <td>
                         @if (isset($siniestro->coche->id))
