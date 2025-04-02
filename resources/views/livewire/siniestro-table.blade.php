@@ -57,22 +57,25 @@
                         <td></td>
                     @endif
                     <td>
-                        @if (!is_null($siniestro->coche) && isset($siniestro->coche->id))
+                        @if (!is_null($siniestro->coche) && !is_null($siniestro->cliente))
                             <a href="{{ route('clientes.edit', $siniestro->cliente->id) }}" class="btn btn-link">
                                 {{ $siniestro->cliente->name }} {{ $siniestro->cliente->surname }}
                             </a>
-
+                        @else
+                            <span class="text-muted">Sin datos</span>
                         @endif
-
                     </td>
+
                     <td>
-                        @if (!is_null($siniestro->coche) && isset($siniestro->coche->id))
-                            <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link" style="">
+                        @if (!is_null($siniestro->coche))
+                            <a href="{{ route('coches.edit', $siniestro->coche->id) }}" class="btn btn-link">
                                 {{ $siniestro->coche->matricula }}
                             </a>
-
+                        @else
+                            <span class="text-muted">Sin coche</span>
                         @endif
                     </td>
+
                     <td>{{$siniestro->prioridad}}</td>
 
                     <td>
