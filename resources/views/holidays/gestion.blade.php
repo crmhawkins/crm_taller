@@ -13,19 +13,23 @@
 
         {{-- Titulos --}}
         <div class="page-title card-body">
-            <div class="row justify-content-between">
+            <div class="row justify-content-between align-items-center">
                 <div class="col-sm-12 col-md-4 order-md-1 order-last">
                     <h3><i class="bi bi-file-earmark-ruled"></i> Vacaciones</h3>
-                    <p class="text-subtitle text-muted">Listado de vacaciones</p>
+                    <p class="text-subtitle text-muted d-flex align-items-center gap-2">
+                        Listado de vacaciones
+                        <a href="{{ route('holiday.admin.user.create') }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">
+                            <i class="bi bi-plus-lg me-1"></i> Añadir
+                        </a>
+                    </p>
                 </div>
                 <div class="col-sm-12 col-md-4 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Gestión de vacaciones</li>
                         </ol>
                     </nav>
-
                 </div>
             </div>
         </div>

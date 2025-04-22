@@ -385,4 +385,223 @@ class AdminHolidaysController extends Controller
     public function getDate(holidaysPetitions $holidaysPetitions){
         return response()->json([ 'fecha_inicio' =>$holidaysPetitions->from]);
     }
+
+    public function createHoliday()
+    {
+        $user = User::all();
+
+        return view('holidays.create_admin', compact( 'user'));
+    }
+
+
+    public function storeHoliday(Request $request)
+    {
+
+
+        // Validación
+        $request->validate([
+            'from_date' => 'required',
+            'to_date' => 'required|after_or_equal:from_date',
+        ]);
+
+
+        // Formulario datos
+        $data = $request->all();
+        $data['holidays_status_id'] = 1; //Pending
+
+        // Dates
+        if(isset($data['from_date'])){
+            if ($data['from_date'] != null){
+                $data['from_date'] = date('Y-m-d', strtotime(str_replace('/', '-',  $data['from_date'])));
+            }
+        }
+        if(isset($data['to_date'])){
+            if ($data['to_date'] != null){
+                $data['to_date'] = date('Y-m-d', strtotime(str_replace('/', '-',  $data['to_date'])));
+            }
+        }
+
+        // Booleans
+        if (!isset($data['half_day'])) {
+            $data['half_day'] = 0;
+        }else{
+            //Si se marcó la casilla será medio día
+            $data['half_day'] = 1;
+        }
+
+        // Fecha DESDE enviada desde formulario
+        $dataFromToTime = strtotime($data['from_date']);
+        $dataFromDateTime = new \DateTime();
+        $dataFromDateTime->setTimestamp($dataFromToTime);
+        // Fecha HASTA enviada desde formulariof
+        $dataToToTime = strtotime($data['to_date']);
+        $dataToDateTime = new \DateTime();
+        $dataToDateTime->setTimestamp($dataToToTime);
+
+        if($data['half_day'] == 1){
+            if($dataFromDateTime != $dataToDateTime){
+                return redirect()->back()->with('toast', [
+                      'icon' => 'error',
+                      'mensaje' => 'No se pueden pedir medios días en intervalos'
+                    ]
+                );
+            }
+        }
+
+        // Días que tiene de vacaciones
+        $userHolidaysQuantity = Holidays::where('admin_user_id', $data['admin_user_id'] )->get()->first();
+
+        // Días que tiene pedidos
+        $holidaysPetitions = HolidaysPetitions::where('admin_user_id', $data['admin_user_id'] )->orderBy('created_at', 'asc')->get();
+
+        // Calcular cuantos días está pidiendo
+        $petitionQuantityDaysInterval =  $dataFromDateTime->diff($dataToDateTime);
+        $petitionQuantityDays = $petitionQuantityDaysInterval->days;
+        $petitionQuantityDays += 1;
+
+        // Si la fecha es la misma se ha pedido 1 día.
+        $petitionSingleDay = false;
+        if ($dataFromDateTime == $dataToDateTime ){
+            $petitionSingleDay = true;
+        }
+        if( $petitionSingleDay == true){
+            if( $data['half_day'] == 1){
+                $petitionQuantityDays -= 0.5;
+            }
+        }
+
+        ////////////////////////////////////////
+        //   Condiciones que deben cumplirse: //
+        ////////////////////////////////////////
+
+        // Si alguno de los días es sábado o domingo no puede pedirse vacaciones
+        $signleDayisWeekend = false;
+        if($dataFromDateTime->format('N') >= 6){
+            $signleDayisWeekend = true;
+        }
+
+        // Si es fin de semana y un día solo
+        if( $petitionSingleDay && $signleDayisWeekend){
+            return redirect()->back()->with('toast', [
+                'icon' => 'error',
+                'mensaje' => 'La fecha no puede ser fin de semana'
+              ]
+          );
+        }
+
+        // Si es fin de semana y un intervalo
+        $start = $dataFromDateTime;
+        $end = $dataToDateTime;
+        $end->modify('+1 day');
+        $period = new \DatePeriod($start, new \DateInterval('P1D'), $end);
+        foreach($period as $dt) {
+            $curr = $dt->format('D');
+            // Si es Sábado o Domingo
+            if ($curr == 'Sat' || $curr == 'Sun' ) {
+                return redirect()->back()->with('toast', [
+                    'icon' => 'error',
+                    'mensaje' => 'Las fechas no pueden ser fin de semana'
+                  ]
+              );
+            }
+        }
+        //****** BUG *****
+        // No deja por ejemplo si el usuario tiene el dia 25 y 27 el 26 estando libre
+
+
+        // Que no tenga vacaciones ya pedidas ese día o periodo
+        foreach($holidaysPetitions as $holidaysPetition ){
+            // Desde
+            $petitionFromToTime = strtotime($holidaysPetition->from);
+            $petitionFromDateTime = new \DateTime();
+            $petitionFromDateTime->setTimestamp($petitionFromToTime);
+            // Hasta
+            $petitionToToTime = strtotime($holidaysPetition->to);
+            $petitionToDateTime = new \DateTime();
+            $petitionToDateTime->setTimestamp($petitionToToTime);
+            $dataToDateTime->modify('-1 day');
+            // Comprobar si están en medio las fechas de ya disponibles
+            $dateFromDateTimeIsBetween = $dataFromDateTime >= $petitionFromDateTime && $dataFromDateTime <= $petitionToDateTime ;
+            $dateToDateTimeIsBetween = $dataToDateTime >= $petitionFromDateTime && $dataToDateTime <= $petitionToDateTime;
+
+        }
+
+        // Que la/s fecha/s introducidas sean mayor o igual que la actual
+        $today =  strtotime(date("Y-m-d"));
+        $todayTime = new \DateTime();
+        $todayTime->setTimestamp($today);
+        $dataToToTime = strtotime($data['to_date']);
+        $dataToDateTime = new \DateTime();
+        $dataToDateTime->setTimestamp($dataToToTime);
+
+        if($dataFromDateTime < $todayTime || $dataToDateTime < $todayTime ){
+            return redirect()->back()->with('toast', [
+                'icon' => 'error',
+                'mensaje' => 'Las fechas deben ser posterior a la actual'
+              ]
+          );
+        }
+
+        // Si dispone de los días necesarios
+        if( $petitionQuantityDays > $userHolidaysQuantity->quantity   ){
+            return redirect()->back()->with('toast', [
+                'icon' => 'error',
+                'mensaje' => 'No dispone de días de vacaciones suficientes'
+              ]
+          );
+        }
+
+        //formatear datos
+        if(isset($data['from_date'])){
+            if ($data['from_date'] != null){
+                $data['from_date'] = date('Y-m-d', strtotime(str_replace('/', '-',  $data['from_date'])));
+            }
+        }
+        if(isset($data['to_date'])){
+            if ($data['to_date'] != null){
+                $data['to_date'] = date('Y-m-d', strtotime(str_replace('/', '-',  $data['to_date'])));
+            }
+        }
+        $from = $data['from_date'];
+        $to = $data['to_date'];
+        $data['from'] =$data['from_date'];
+        $data['to'] =$data['to_date'];
+        $data['total_days'] = $petitionQuantityDays;
+        $petitionQuantityDaysNegative = -1 * abs($petitionQuantityDays);
+
+        // Guardar
+        $holidayPetition = HolidaysPetitions::create($data);
+        $holidayPetitionSaved = $holidayPetition->save();
+
+        // Resto las vacaciones
+        if($holidayPetitionSaved){
+            $updatedHolidaysQuantity =  $userHolidaysQuantity->quantity - $petitionQuantityDays;
+            // Actualizo los días de vacaciones del usuario en la base de datos
+            if($updatedHolidaysQuantity >= 0){
+                $updateHolidaysDone = Holidays::where('admin_user_id', Auth::user()->id )->update(array('quantity' => $updatedHolidaysQuantity ));
+            }
+            // Añado un registro en holidays_additions guardando esta operación
+            if($updateHolidaysDone){
+                DB::table('holidays_additions')->insert([
+                    [
+                        'admin_user_id' => $data['admin_user_id'],
+                        'quantity_before' => $userHolidaysQuantity->quantity,
+                        'quantity_to_add' => $petitionQuantityDaysNegative,
+                        'quantity_now' => $updatedHolidaysQuantity,
+                        'manual' => 0,
+                        'holiday_petition' => 1,
+                        'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                    ],
+                ]);
+            }
+        }
+        // Respuesta
+        return redirect()->route('holiday.admin.petitions',)->with('toast', [
+            'icon' => 'success',
+            'mensaje' => 'La petición de vacaciones se realizó correctamente'
+          ]
+      );
+
+    }
+
 }
