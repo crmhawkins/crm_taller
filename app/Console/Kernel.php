@@ -25,17 +25,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('vacacioner:add')->monthlyOn(1, '08:00');
-        $schedule->command('correos:get')->everyMinute();
-        $schedule->command('correos:getFacturas')->everyMinute();
-        $schedule->command('Jornada:finalizar')->dailyAt('03:00');
-        $schedule->command('Alertas:facturaFuera')->dailyAt('03:00');
-        $schedule->command('Alertas:peticiones')->dailyAt('03:00');
-        $schedule->command('Alertas:presupuestoAceptadoTareas')->dailyAt('03:00');
-        $schedule->command('Alertas:presupuestoAceptadoTareasFinalizar')->dailyAt('03:00');
-        $schedule->command('Alertas:presupuestoAceptar')->dailyAt('03:00');
-        $schedule->command('Alertas:presupuestoConfirmar')->dailyAt('03:00');
-        $schedule->command('Alertas:presupuestoFinalizado')->dailyAt('03:00');
-        $schedule->command('Alertas:HorasTrabajadas')->weeklyOn(5, '23:30');
+       // $schedule->command('correos:get')->everyMinute();
+       // $schedule->command('correos:getFacturas')->everyMinute();
+       // $schedule->command('Jornada:finalizar')->dailyAt('03:00');
+       // $schedule->command('Alertas:facturaFuera')->dailyAt('03:00');
+       // $schedule->command('Alertas:peticiones')->dailyAt('03:00');
+      //  $schedule->command('Alertas:presupuestoAceptadoTareas')->dailyAt('03:00');
+       // $schedule->command('Alertas:presupuestoAceptadoTareasFinalizar')->dailyAt('03:00');
+       // $schedule->command('Alertas:presupuestoAceptar')->dailyAt('03:00');
+       // $schedule->command('Alertas:presupuestoConfirmar')->dailyAt('03:00');
+       // $schedule->command('Alertas:presupuestoFinalizado')->dailyAt('03:00');
+       // $schedule->command('Alertas:HorasTrabajadas')->weeklyOn(5, '23:30');
 
 
         // $schedule->call(function () {

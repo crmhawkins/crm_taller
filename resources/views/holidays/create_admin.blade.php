@@ -38,7 +38,7 @@
                             <label for="admin_user_id" class="form-label">Usuario</label>
                             <select class="form-select" name="admin_user_id" id="admin_user_id">
                                 @foreach ($user as $value)
-                                    <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                    <option value="{{ $value->id }}">{{ $value->name.' '.$value->surname }}</option>
                                 @endforeach
                             </select>
                         </div>
