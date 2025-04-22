@@ -328,7 +328,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/holidays/acceptHolidays', [AdminHolidaysController::class, 'acceptHolidays'])->name('holiday.admin.acceptHolidays');
         Route::post('/holidays/denyHolidays', [AdminHolidaysController::class, 'denyHolidays'])->name('holiday.admin.denyHolidays');
         Route::post('/holidays/getDate/{holidaysPetitions}', [AdminHolidaysController::class, 'getDate'])->name('holiday.admin.getDate');
-        Route::post('/holidays/admin/create', [AdminHolidaysController::class, 'createHoliday'])->name('holiday.admin.user.create');
+        Route::get('/holidays/admin/create', [AdminHolidaysController::class, 'createHoliday'])->name('holiday.admin.user.create');
         Route::post('/holidays/admin/store', [AdminHolidaysController::class, 'storeHoliday'])->name('holiday.admin.user.store');
 
         // Users (USUARIOS)
